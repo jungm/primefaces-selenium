@@ -13,37 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.primefaces.extensions.arquillian.example;
+package org.primefaces.extensions.selenium.example;
 
-import java.io.File;
-import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.graphene.page.InitialPage;
-import org.jboss.shrinkwrap.api.spec.WebArchive;
-import org.jboss.shrinkwrap.resolver.api.maven.embedded.EmbeddedMaven;
-import org.junit.Assert;
-import org.junit.Test;
-import org.primefaces.extensions.arquillian.AbstractPrimePageTest;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.primefaces.extensions.selenium.AbstractPrimePageTest;
 
 public class IndexPageTest extends AbstractPrimePageTest {
-    
-    @Deployment(testable = false)
-    public static WebArchive createDeployment()
-    {
-        WebArchive webArchive = (WebArchive) EmbeddedMaven.forProject(new File("pom.xml"))
-                .useMaven3Version("3.3.9")
-                .setGoals("package")
-                .setQuiet()
-                .skipTests(true)
-                .ignoreFailure()
-                .build().getDefaultBuiltArchive();
 
-        return webArchive;
-    }
-    
     @Test
-    public void myFirstTest(@InitialPage IndexPage index) throws InterruptedException {
+    public void myFirstTest(IndexPage index) throws InterruptedException {
         // right page?
-        Assert.assertTrue(index.isAt());
+        Assertions.assertTrue(index.isAt());
         assertNotDisplayed(index.getCar());
         
         // just to follow the browser with a human eye for the showcase :D - not need in your real tests
@@ -52,7 +33,7 @@ public class IndexPageTest extends AbstractPrimePageTest {
         // select manufacturer
         assertDisplayed(index.getManufacturer());
         index.getManufacturer().select("BMW");
-        Assert.assertTrue(index.getManufacturer().isSelected("BMW"));
+        Assertions.assertTrue(index.getManufacturer().isSelected("BMW"));
         
         // just to follow the browser with a human eye for the showcase :D - not need in your real tests
         Thread.sleep(2000);

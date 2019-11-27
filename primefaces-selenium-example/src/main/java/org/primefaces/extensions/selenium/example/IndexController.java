@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.primefaces.extensions.arquillian.example;
+package org.primefaces.extensions.selenium.example;
 
 import java.io.Serializable;
 import javax.faces.view.ViewScoped;

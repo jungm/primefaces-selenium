@@ -13,15 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.primefaces.extensions.arquillian.example;
+package org.primefaces.extensions.selenium.example;
 
-import org.jboss.arquillian.graphene.page.Location;
 import org.openqa.selenium.support.FindBy;
-import org.primefaces.extensions.arquillian.AbstractPrimePage;
-import org.primefaces.extensions.arquillian.component.InputText;
-import org.primefaces.extensions.arquillian.component.SelectOneMenu;
+import org.primefaces.extensions.selenium.AbstractPrimePage;
+import org.primefaces.extensions.selenium.component.InputText;
+import org.primefaces.extensions.selenium.component.SelectOneMenu;
 
-@Location("index.xhtml")
 public class IndexPage extends AbstractPrimePage {
     
     @FindBy(id = "form:manufacturer")
@@ -36,5 +34,10 @@ public class IndexPage extends AbstractPrimePage {
 
     public InputText getCar() {
         return car;
+    }
+
+    @Override
+    public String getLocation() {
+        return "index.xhtml";
     }
 }
