@@ -1,0 +1,99 @@
+/**
+ * Copyright 2011-2019 PrimeFaces Extensions
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.primefaces.extensions.selenium.internal;
+
+import net.bytebuddy.ByteBuddy;
+import net.bytebuddy.implementation.InvocationHandlerAdapter;
+import net.bytebuddy.matcher.ElementMatchers;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import net.bytebuddy.matcher.ElementMatcher;
+import org.openqa.selenium.TimeoutException;
+import org.primefaces.extensions.selenium.PrimeSelenium;
+import org.primefaces.extensions.selenium.spi.WebDriverProvider;
+
+public class Guard {
+
+    private Guard() {
+
+    }
+
+    public static <T> T ajax(T target) {
+        Class<?> classToProxy = target.getClass();
+        List<Class> interfacesToImplement = new ArrayList<>();
+        ElementMatcher.Junction methods = ElementMatchers.isPublic();
+
+        if (Modifier.isPrivate(classToProxy.getModifiers()) || Modifier.isFinal(classToProxy.getModifiers())) {
+            interfacesToImplement = Arrays.asList(classToProxy.getInterfaces());
+            classToProxy = Object.class;
+            methods = null;
+
+            for (Class c : interfacesToImplement) {
+                if (methods == null) {
+                    methods = ElementMatchers.isDeclaredBy(c);
+                }
+                else {
+                    methods = methods.or(ElementMatchers.isDeclaredBy(c));
+                }
+            }
+        }
+
+        Class<T> proxyClass = new ByteBuddy()
+                .subclass(classToProxy)
+                .implement(interfacesToImplement)
+                .method(methods)
+                .intercept(InvocationHandlerAdapter.of((Object proxy, Method method, Object[] args) -> {
+                    try {
+                        PrimeSelenium.executeScript("window.primeselenium_ars=0;");
+
+                        Object result = method.invoke(target, args);
+
+                        WebDriver driver = WebDriverProvider.get();
+
+                        int ajaxTimeout = ConfigProvider.getInstance().getAjaxTimeout();
+
+                        WebDriverWait wait = new WebDriverWait(driver, ajaxTimeout, 100);
+                        wait.until(d -> {
+                            return (Boolean) ((JavascriptExecutor) driver)
+                                    .executeScript("return !window.primeselenium_ars || window.primeselenium_ars == 4;");
+                        });
+
+                        return result;
+                    }
+                    catch (TimeoutException e) {
+                        // ist in timeout gelaufen - wahrscheinilch kein ajax request - gscheide excception
+                        throw e;
+                    }
+                }))
+                .make()
+                .load(target.getClass().getClassLoader())
+                .getLoaded();
+
+        try {
+            return proxyClass.newInstance();
+        }
+        catch (InstantiationException | IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}

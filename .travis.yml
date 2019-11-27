@@ -1,0 +1,8 @@
+language: java
+jdk:
+- openjdk8
+- openjdk11
+
+script:
+- cd primefaces-arquillian && mvn --batch-mode clean install && cd ..
+- cd primefaces-arquillian-example && mvn --batch-mode clean install -DskipTests && cd ..

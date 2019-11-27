@@ -1,0 +1,170 @@
+/**
+ * Copyright 2011-2019 PrimeFaces Extensions
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.primefaces.extensions.selenium;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.primefaces.extensions.selenium.internal.ConfigProvider;
+import org.primefaces.extensions.selenium.internal.Guard;
+import org.primefaces.extensions.selenium.spi.PrimePageFactory;
+import org.primefaces.extensions.selenium.spi.WebDriverProvider;
+import org.primefaces.extensions.selenium.spi.PrimeSeleniumAdapter;
+
+public final class PrimeSelenium {
+
+    private PrimeSelenium() {
+        super();
+    }
+
+    public static WebDriver getWebDriver() {
+        return WebDriverProvider.get();
+    }
+
+    public static <T> T executeScript(String script, Object... args) {
+        JavascriptExecutor executor = (JavascriptExecutor) getWebDriver();
+        return (T) executor.executeScript(script, args);
+    }
+
+    public static <T extends AbstractPrimePage> T goTo(Class<T> pageClass) {
+        WebDriver driver = WebDriverProvider.get();
+
+        T page = PrimePageFactory.create(pageClass, driver);
+        driver.get(getUrl(page));
+
+        return page;
+    }
+
+    public static void goTo(AbstractPrimePage page) {
+        WebDriver driver = WebDriverProvider.get();
+        driver.get(getUrl(page));
+    }
+
+    public static String getUrl(AbstractPrimePage page) {
+        PrimeSeleniumAdapter adapter = ConfigProvider.getInstance().getAdapter();
+
+        String baseLocation = page.getBaseLocation();
+        if (adapter != null) {
+            baseLocation = adapter.getBaseUrl();
+        }
+
+        return baseLocation + page.getLocation();
+    }
+
+    public static String getUrl(String url) {
+        PrimeSeleniumAdapter adapter = ConfigProvider.getInstance().getAdapter();
+        return adapter.getBaseUrl() + url;
+    }
+
+    public static boolean hasCssClass(WebElement element, String cssClass) {
+        String classes = element.getAttribute("class");
+        if (classes == null || cssClass.isEmpty()) {
+            return false;
+        }
+
+        for (String currentClass : classes.split(" ")) {
+            if (currentClass.equals(cssClass)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public static boolean isElementPresent(By by) {
+        try {
+            getWebDriver().findElement(by);
+            return true;
+        }
+        catch (NoSuchElementException e) {
+            return false;
+        }
+    }
+
+    public static boolean isElementPresent(WebElement element) {
+        try {
+            element.isDisplayed(); // just any method to check if NoSuchElementException will be thrown
+            return true;
+        }
+        catch (NoSuchElementException e) {
+            return false;
+        }
+    }
+
+    public static boolean isElementDisplayed(By by) {
+        try {
+            return getWebDriver().findElement(by).isDisplayed();
+        }
+        catch (NoSuchElementException e) {
+            return false;
+        }
+    }
+
+    public static boolean isElementDisplayed(WebElement element) {
+        try {
+            return element.isDisplayed();
+        }
+        catch (NoSuchElementException e) {
+            return false;
+        }
+    }
+
+    public static boolean isElementEnabled(By by) {
+        try {
+            return getWebDriver().findElement(by).isEnabled();
+        }
+        catch (NoSuchElementException e) {
+            return false;
+        }
+    }
+
+    public static boolean isElementEnabled(WebElement element) {
+        try {
+            return element.isEnabled();
+        }
+        catch (NoSuchElementException e) {
+            return false;
+        }
+    }
+
+    public static <T> T guardHttp(T target) {
+        return target;
+    }
+
+    public static <T> T guardAjax(T target) {
+        return Guard.ajax(target);
+    }
+
+    public static WebDriverWait waitGui() {
+        int uiTimeout = ConfigProvider.getInstance().getUiTimeout();
+
+        WebDriver driver = WebDriverProvider.get();
+        WebDriverWait wait = new WebDriverWait(driver, uiTimeout, 100);
+
+        return wait;
+    }
+
+    public static void disableAnimations() {
+        executeScript("if (window.$) { $(function() { $.fx.off = true; }); }");
+    }
+
+    public static void enableAnimations() {
+        executeScript("if (window.$) { $(function() { $.fx.off = false; }); }");
+    }
+}

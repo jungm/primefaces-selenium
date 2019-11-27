@@ -1,0 +1,6 @@
+# Maven build results
+/primefaces-arquillian-example/target/
+/primefaces-arquillian/target/
+/primefaces-selenium-core/target/
+/primefaces-selenium-components/target/
+/target/
