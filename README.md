@@ -5,7 +5,7 @@
 [![Build Status](https://travis-ci.org/primefaces-extensions/primefaces-selenium.svg?branch=master)](https://travis-ci.org/primefaces-extensions/primefaces-selenium)
 
 # primefaces-selenium
-PrimeFaces testing support based on Junit5, Selenium and the concept of page ojects / fragements.
+PrimeFaces testing support based on JUnit5, Selenium and the concept of page ojects / fragements.
 It also supports JUnit5 parallel test execution to speed up tests.
 
 This is the sucessor of primefaces-arquillian and heavily inspired by Arquillian Graphene.
