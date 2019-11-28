@@ -71,8 +71,6 @@ public class PrimePageFragmentFactory {
 
             WebDriver driver = WebDriverProvider.get();
 
-            fillMembers(driver, new DefaultElementLocatorFactory(element), proxy);
-
             if (proxy instanceof WebDriverAware) {
                 ((WebDriverAware) proxy).setWebDriver(driver);
             }
@@ -90,6 +88,8 @@ public class PrimePageFragmentFactory {
                     }
                 });
             }
+
+            fillMembers(driver, new DefaultElementLocatorFactory(element), proxy);
 
             return proxy;
         }
