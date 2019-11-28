@@ -23,7 +23,7 @@ public class ConfigProvider {
     private static ConfigProvider configProvider = null;
 
     private int uiTimeout = 2;
-    private int ajaxTimeout = 5;
+    private int ajaxTimeout = 10;
     private boolean disableJQueryAnimations = true;
     private PrimeSeleniumAdapter adapter;
 

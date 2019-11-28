@@ -75,6 +75,10 @@ public class InterceptNavigationEventListener extends AbstractWebDriverEventList
 
     @Override
     public void beforeClickOn(WebElement element, WebDriver driver) {
+        if (!isScriptInstalled()) {
+            executeOnloadScripts();
+        }
+
         String uid = getUid();
         if (uid == null || uid.isEmpty()) {
             uid = newUid();
@@ -84,6 +88,11 @@ public class InterceptNavigationEventListener extends AbstractWebDriverEventList
 
     @Override
     public void afterClickOn(WebElement element, WebDriver driver) {
+        if (!isScriptInstalled()) {
+            executeOnloadScripts();
+            return;
+        }
+
         // navigation happened on button click?
         String uid = getUid();
         if (!Objects.equals(uid, LAST_UID.get())) {
@@ -94,16 +103,20 @@ public class InterceptNavigationEventListener extends AbstractWebDriverEventList
         }
     }
 
+    public boolean isScriptInstalled() {
+        return PrimeSelenium.executeScript("return window.pfselenium != null;");
+    }
+
     public String newUid() {
         return UUID.randomUUID().toString();
     }
 
     public void setUid(String uid) {
-        PrimeSelenium.executeScript("window.primeselenium_uid = '" + uid + "';");
+        PrimeSelenium.executeScript("window.pfselenium.uid = '" + uid + "';");
         LAST_UID.set(uid);
     }
 
     public String getUid() {
-        return PrimeSelenium.executeScript("return window.primeselenium_uid;");
+        return PrimeSelenium.executeScript("return window.pfselenium.uid;");
     }
 }
