@@ -36,15 +36,19 @@ public class LocatingElementListHandler implements InvocationHandler {
 
     @Override
     public Object invoke(Object object, Method method, Object[] objects) throws Throwable {
-        List<WebElement> elements;
-        if (genericClass == WebElement.class) {
-            elements = locator.findElements();
-        }
-        else {
-            elements = new ArrayList<>();
-            for (WebElement element : locator.findElements()) {
-                elements.add(PrimePageFragmentFactory.create(genericClass, element));
+        List<WebElement> elements = locator.findElements();
+
+        if (genericClass != WebElement.class) {
+            ArrayList<WebElement> fragments = new ArrayList<>();
+
+            for (int i = 0; i < elements.size(); i++) {
+                WebElement element = elements.get(i);
+                WebElement fragment = PrimePageFragmentFactory.create(genericClass, element, new ElementLocatorProxy(locator, i));
+
+                fragments.add(fragment);
             }
+
+            elements = fragments;
         }
 
         try {
@@ -53,6 +57,27 @@ public class LocatingElementListHandler implements InvocationHandler {
         catch (InvocationTargetException e) {
             // Unwrap the underlying exception
             throw e.getCause();
+        }
+    }
+
+    static class ElementLocatorProxy implements ElementLocator {
+
+        private final ElementLocator locator;
+        private final int i;
+
+        public ElementLocatorProxy(ElementLocator locator, int i) {
+            this.locator = locator;
+            this.i = i;
+        }
+
+        @Override
+        public WebElement findElement() {
+            return locator.findElements().get(i);
+        }
+
+        @Override
+        public List<WebElement> findElements() {
+            throw new UnsupportedOperationException("Not supported yet.");
         }
     }
 }

@@ -54,6 +54,22 @@ public class PrimePageFragmentFactory {
     }
 
     public static <T extends WebElement> T create(Class<T> fragment, WebElement element) {
+        ElementLocator el = new ElementLocator() {
+            @Override
+            public WebElement findElement() {
+                return element;
+            }
+
+            @Override
+            public List<WebElement> findElements() {
+                return null;
+            }
+        };
+
+        return create(fragment, element, el);
+    }
+
+    public static <T extends WebElement> T create(Class<T> fragment, WebElement element, ElementLocator el) {
         Class<T> proxyClass = (Class<T>) new ByteBuddy()
                 .subclass(fragment)
                 .implement(WrapsElement.class)
@@ -61,7 +77,7 @@ public class PrimePageFragmentFactory {
                         .or(ElementMatchers.isDeclaredBy(WrapsElement.class))
                         .or(ElementMatchers.named("hashCode"))
                         .or(ElementMatchers.named("equals")))
-                .intercept(InvocationHandlerAdapter.of((Object proxy, Method method, Object[] args) -> method.invoke(element, args)))
+                .intercept(InvocationHandlerAdapter.of((Object proxy, Method method, Object[] args) -> method.invoke(el.findElement(), args)))
                 .make()
                 .load(PrimeSelenium.class.getClassLoader())
                 .getLoaded();
@@ -76,20 +92,10 @@ public class PrimePageFragmentFactory {
             }
 
             if (proxy instanceof ElementLocatorAware) {
-                ((ElementLocatorAware) proxy).setElementLocator(new ElementLocator() {
-                    @Override
-                    public WebElement findElement() {
-                        return element;
-                    }
-
-                    @Override
-                    public List<WebElement> findElements() {
-                        return null;
-                    }
-                });
+                ((ElementLocatorAware) proxy).setElementLocator(el);
             }
 
-            fillMembers(driver, new DefaultElementLocatorFactory(element), proxy);
+            fillMembers(driver, new DefaultElementLocatorFactory(proxy), proxy);
 
             return proxy;
         }
