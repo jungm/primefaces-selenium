@@ -15,6 +15,7 @@
  */
 package org.primefaces.extensions.selenium.internal;
 
+import java.lang.reflect.InvocationHandler;
 import net.bytebuddy.ByteBuddy;
 import net.bytebuddy.implementation.InvocationHandlerAdapter;
 import net.bytebuddy.matcher.ElementMatchers;
@@ -38,7 +39,54 @@ public class Guard {
 
     }
 
+    public static <T> T http(T target) {
+        return proxy(target, (Object proxy, Method method, Object[] args) -> {
+            try {
+                Object result = method.invoke(target, args);
+
+                WebDriver driver = WebDriverProvider.get();
+                WebDriverWait wait = new WebDriverWait(driver, 5, 100);
+                wait.until(d -> (Boolean) ((JavascriptExecutor) driver).executeScript("return document.readyState === 'complete'"));
+
+                return result;
+            }
+            catch (TimeoutException e) {
+                // ist in timeout gelaufen - wahrscheinilch kein ajax request - gscheide excception
+                throw e;
+            }
+        });
+    }
+
     public static <T> T ajax(T target) {
+        return proxy(target, (Object proxy, Method method, Object[] args) -> {
+            try {
+                PrimeSelenium.executeScript("window.primeselenium_ars=0;");
+
+                Object result = method.invoke(target, args);
+
+                WebDriver driver = WebDriverProvider.get();
+
+                int ajaxTimeout = ConfigProvider.getInstance().getAjaxTimeout();
+
+                WebDriverWait wait = new WebDriverWait(driver, ajaxTimeout, 200);
+                wait.until(d -> {
+                    return (Boolean) ((JavascriptExecutor) driver)
+                            .executeScript("return document.readyState === 'complete'"
+                                    + " && (!window.jQuery || jQuery.active == 0)"
+                                    + " && (!pfselenium.ajaxReadyState || pfselenium.ajaxReadyState == 4)"
+                                    + " && pfselenium.navigating === false;");
+                });
+
+                return result;
+            }
+            catch (TimeoutException e) {
+                // ist in timeout gelaufen - wahrscheinilch kein ajax request - gscheide excception
+                throw e;
+            }
+        });
+    }
+
+    public static <T> T proxy(T target, InvocationHandler handler) {
         Class<?> classToProxy = target.getClass();
         List<Class> interfacesToImplement = new ArrayList<>();
         ElementMatcher.Junction methods = ElementMatchers.isPublic();
@@ -62,32 +110,7 @@ public class Guard {
                 .subclass(classToProxy)
                 .implement(interfacesToImplement)
                 .method(methods)
-                .intercept(InvocationHandlerAdapter.of((Object proxy, Method method, Object[] args) -> {
-                    try {
-                        PrimeSelenium.executeScript("window.primeselenium_ars=0;");
-
-                        Object result = method.invoke(target, args);
-
-                        WebDriver driver = WebDriverProvider.get();
-
-                        int ajaxTimeout = ConfigProvider.getInstance().getAjaxTimeout();
-
-                        WebDriverWait wait = new WebDriverWait(driver, ajaxTimeout, 200);
-                        wait.until(d -> {
-                            return (Boolean) ((JavascriptExecutor) driver)
-                                    .executeScript("return document.readyState === 'complete'"
-                                            + " && (!window.jQuery || jQuery.active == 0)"
-                                            + " && (!pfselenium.ajaxReadyState || pfselenium.ajaxReadyState == 4)"
-                                            + " && pfselenium.navigating === false;");
-                        });
-
-                        return result;
-                    }
-                    catch (TimeoutException e) {
-                        // ist in timeout gelaufen - wahrscheinilch kein ajax request - gscheide excception
-                        throw e;
-                    }
-                }))
+                .intercept(InvocationHandlerAdapter.of(handler))
                 .make()
                 .load(target.getClass().getClassLoader())
                 .getLoaded();

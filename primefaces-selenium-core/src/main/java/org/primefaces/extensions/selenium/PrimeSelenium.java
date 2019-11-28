@@ -144,7 +144,7 @@ public final class PrimeSelenium {
     }
 
     public static <T> T guardHttp(T target) {
-        return target;
+        return Guard.http(target);
     }
 
     public static <T> T guardAjax(T target) {
