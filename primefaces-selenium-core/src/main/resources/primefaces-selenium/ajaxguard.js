@@ -21,8 +21,7 @@ XMLHttpRequest.prototype.send = function() {
     originalSend.apply(this, arguments);
 };
 
-// change readyState, so our waits/guards wait until the new page is loaded, when readyState==complete again
-// this can happen also in AJAX redirects, also when a AJAX guard is used, as the redirect is executed after all "readystatechange" listeners
+// try to listen on navigation, which can happen inside AJAX requests
 window.addEventListener("beforeunload", function() {
     window.pfselenium.navigating = true;
 });
