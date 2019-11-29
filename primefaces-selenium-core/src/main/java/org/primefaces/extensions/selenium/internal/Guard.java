@@ -66,15 +66,12 @@ public class Guard {
 
                 WebDriver driver = WebDriverProvider.get();
 
-                int ajaxTimeout = ConfigProvider.getInstance().getAjaxTimeout();
-
-                WebDriverWait wait = new WebDriverWait(driver, ajaxTimeout, 100);
+                WebDriverWait wait = new WebDriverWait(driver, ConfigProvider.getInstance().getAjaxTimeout(), 100);
                 wait.until(d -> {
                     return (Boolean) ((JavascriptExecutor) driver)
                             .executeScript("return document.readyState === 'complete'"
                                     + " && (!window.jQuery || jQuery.active == 0)"
-                                    + " && pfselenium.xhr === null"
-                                    + " && pfselenium.navigating === false;");
+                                    + " && (!window.pfselenium || (pfselenium.xhr === null && pfselenium.navigating === false));");
                 });
 
                 return result;
