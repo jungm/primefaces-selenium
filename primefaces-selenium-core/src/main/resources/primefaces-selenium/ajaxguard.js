@@ -1,24 +1,24 @@
 window.pfselenium = {
     uid : null,
     navigating : false,
-    ajaxReadyState : null
+    xhr : null
 };
 
-var originalOpen = XMLHttpRequest.prototype.open;
-XMLHttpRequest.prototype.open = function() {
-    this.addEventListener('readystatechange', function() {
-        if (this.readyState === 4) {
-            // TODO our listener isn't the last, add some timeout to set the finished status
-            // as the response will be evaluated within a readystatechange callback, too
-            setTimeout(function() {
-                window.pfselenium.ajaxReadyState = 4;
-            }, 500);
-        }
-        else {
-            window.pfselenium.ajaxReadyState = this.readyState;
-        }
+var originalSend = XMLHttpRequest.prototype.send;
+XMLHttpRequest.prototype.send = function() {
+    window.pfselenium.xhr = this;
+
+    this.addEventListener("load", function() {
+        window.pfselenium.xhr = null;
     });
-    originalOpen.apply(this, arguments);
+    this.addEventListener("error", function() {
+        window.pfselenium.xhr = null;
+    });
+    this.addEventListener("abort", function() {
+        window.pfselenium.xhr = null;
+    });
+
+    originalSend.apply(this, arguments);
 };
 
 // change readyState, so our waits/guards wait until the new page is loaded, when readyState==complete again

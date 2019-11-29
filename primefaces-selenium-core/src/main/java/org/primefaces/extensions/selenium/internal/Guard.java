@@ -60,7 +60,7 @@ public class Guard {
     public static <T> T ajax(T target) {
         return proxy(target, (Object proxy, Method method, Object[] args) -> {
             try {
-                PrimeSelenium.executeScript("window.primeselenium_ars=0;");
+                PrimeSelenium.executeScript("pfselenium.xhr = 'somethingJustNotNull';");
 
                 Object result = method.invoke(target, args);
 
@@ -73,7 +73,7 @@ public class Guard {
                     return (Boolean) ((JavascriptExecutor) driver)
                             .executeScript("return document.readyState === 'complete'"
                                     + " && (!window.jQuery || jQuery.active == 0)"
-                                    + " && (!pfselenium.ajaxReadyState || pfselenium.ajaxReadyState == 4)"
+                                    + " && pfselenium.xhr === null"
                                     + " && pfselenium.navigating === false;");
                 });
 

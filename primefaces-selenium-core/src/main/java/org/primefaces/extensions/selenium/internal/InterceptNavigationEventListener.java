@@ -57,10 +57,6 @@ public class InterceptNavigationEventListener extends AbstractWebDriverEventList
     }
 
     public void executeOnloadScripts() {
-        WebDriver driver = WebDriverProvider.get();
-        WebDriverWait wait = new WebDriverWait(driver, 5, 100);
-        wait.until(d -> (Boolean) ((JavascriptExecutor) driver).executeScript("return document.readyState === 'complete'"));
-
         if (ConfigProvider.getInstance().isDisableJQueryAnimations()) {
             PrimeSelenium.disableAnimations();
         }
@@ -111,6 +107,10 @@ public class InterceptNavigationEventListener extends AbstractWebDriverEventList
     }
 
     public boolean isScriptInstalled() {
+        WebDriver driver = WebDriverProvider.get();
+        WebDriverWait wait = new WebDriverWait(driver, 5, 100);
+        wait.until(d -> (Boolean) ((JavascriptExecutor) driver).executeScript("return document.readyState === 'complete'"));
+
         return PrimeSelenium.executeScript("return window.pfselenium != null;");
     }
 
