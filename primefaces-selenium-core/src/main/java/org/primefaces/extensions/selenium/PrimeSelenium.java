@@ -152,10 +152,20 @@ public final class PrimeSelenium {
     }
 
     public static WebDriverWait waitGui() {
-        int uiTimeout = ConfigProvider.getInstance().getUiTimeout();
-
+        ConfigProvider config = ConfigProvider.getInstance();
         WebDriver driver = WebDriverProvider.get();
-        WebDriverWait wait = new WebDriverWait(driver, uiTimeout, 100);
+
+        WebDriverWait wait = new WebDriverWait(driver, config.getGuiTimeout(), 100);
+
+        return wait;
+    }
+
+    public static WebDriverWait waitDocumentLoad() {
+        ConfigProvider config = ConfigProvider.getInstance();
+        WebDriver driver = WebDriverProvider.get();
+
+        WebDriverWait wait = new WebDriverWait(driver, config.getDocumentLoadTimeout(), 100);
+        wait.until(PrimeExpectedConditions.documentLoaded());
 
         return wait;
     }

@@ -44,9 +44,7 @@ public class Guard {
             try {
                 Object result = method.invoke(target, args);
 
-                WebDriver driver = WebDriverProvider.get();
-                WebDriverWait wait = new WebDriverWait(driver, 5, 100);
-                wait.until(d -> (Boolean) ((JavascriptExecutor) driver).executeScript("return document.readyState === 'complete'"));
+                PrimeSelenium.waitDocumentLoad();
 
                 return result;
             }

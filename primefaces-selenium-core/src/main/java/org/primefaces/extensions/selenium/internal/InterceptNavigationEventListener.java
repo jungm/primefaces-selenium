@@ -25,10 +25,7 @@ import org.openqa.selenium.support.events.AbstractWebDriverEventListener;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.primefaces.extensions.selenium.PrimeSelenium;
-import org.primefaces.extensions.selenium.spi.WebDriverProvider;
 
 public class InterceptNavigationEventListener extends AbstractWebDriverEventListener {
 
@@ -107,9 +104,7 @@ public class InterceptNavigationEventListener extends AbstractWebDriverEventList
     }
 
     public boolean isScriptInstalled() {
-        WebDriver driver = WebDriverProvider.get();
-        WebDriverWait wait = new WebDriverWait(driver, 5, 100);
-        wait.until(d -> (Boolean) ((JavascriptExecutor) driver).executeScript("return document.readyState === 'complete'"));
+        PrimeSelenium.waitDocumentLoad();
 
         return PrimeSelenium.executeScript("return window.pfselenium != null;");
     }

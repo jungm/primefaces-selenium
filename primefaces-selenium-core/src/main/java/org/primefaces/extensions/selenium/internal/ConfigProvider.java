@@ -22,8 +22,10 @@ public class ConfigProvider {
 
     private static ConfigProvider configProvider = null;
 
-    private int uiTimeout = 2;
+    private int guiTimeout = 2;
     private int ajaxTimeout = 10;
+    private int documentLoadTimeout = 10;
+
     private boolean disableJQueryAnimations = true;
     private PrimeSeleniumAdapter adapter;
 
@@ -32,14 +34,19 @@ public class ConfigProvider {
             Properties properties = new Properties();
             properties.load(this.getClass().getResourceAsStream("/primefaces-selenium/config.properties"));
 
-            String uiTimeout = properties.getProperty("uiTimeout");
-            if (uiTimeout != null && !uiTimeout.trim().isEmpty()) {
-                this.uiTimeout = Integer.parseInt(uiTimeout);
+            String guiTimeout = properties.getProperty("guiTimeout");
+            if (guiTimeout != null && !guiTimeout.trim().isEmpty()) {
+                this.guiTimeout = Integer.parseInt(guiTimeout);
             }
 
             String ajaxTimeout = properties.getProperty("ajaxTimeout");
             if (ajaxTimeout != null && !ajaxTimeout.trim().isEmpty()) {
                 this.ajaxTimeout = Integer.parseInt(ajaxTimeout);
+            }
+
+            String documentLoadTimeout = properties.getProperty("documentLoadTimeout");
+            if (documentLoadTimeout != null && !documentLoadTimeout.trim().isEmpty()) {
+                this.documentLoadTimeout = Integer.parseInt(documentLoadTimeout);
             }
 
             String disableJQueryAnimations = properties.getProperty("disableJQueryAnimations");
@@ -60,12 +67,16 @@ public class ConfigProvider {
         }
     }
 
-    public int getUiTimeout() {
-        return uiTimeout;
+    public int getGuiTimeout() {
+        return guiTimeout;
     }
 
     public int getAjaxTimeout() {
         return ajaxTimeout;
+    }
+
+    public int getDocumentLoadTimeout() {
+        return documentLoadTimeout;
     }
 
     public boolean isDisableJQueryAnimations() {

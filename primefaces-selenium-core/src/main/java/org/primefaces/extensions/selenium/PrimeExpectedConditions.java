@@ -27,6 +27,10 @@ public final class PrimeExpectedConditions {
         super();
     }
 
+    public static ExpectedCondition<Boolean> documentLoaded() {
+        return driver -> (Boolean) ((JavascriptExecutor) driver).executeScript("return document.readyState === 'complete'");
+    }
+
     public static ExpectedCondition<Boolean> jQueryNotActive() {
         return driver -> (Boolean) ((JavascriptExecutor) driver).executeScript("return jQuery.active == 0;");
     }
