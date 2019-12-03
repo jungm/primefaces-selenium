@@ -110,10 +110,18 @@ public abstract class SelectOneMenu extends AbstractInputComponent {
     }
 
     public void select(int index) {
+        if (isSelected(index)) {
+            return;
+        }
+
         select(getLabel(index));
     }
 
     public void deselect(int index) {
+        if (!isSelected(index)) {
+            return;
+        }
+
         deselect(getLabel(index));
     }
 

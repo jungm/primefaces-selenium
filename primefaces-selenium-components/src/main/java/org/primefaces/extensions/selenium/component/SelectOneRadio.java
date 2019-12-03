@@ -34,6 +34,10 @@ public abstract class SelectOneRadio extends AbstractComponent {
     private List<WebElement> radiobuttons;
 
     public void select(int index) {
+        if (getSelectedIndex() == index) {
+            return;
+        }
+
         WebElement radiobutton = radiobuttons.get(index);
         PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibileAndAnimationComplete(radiobutton));
 
@@ -83,8 +87,6 @@ public abstract class SelectOneRadio extends AbstractComponent {
 
         int idx = 0;
         for (WebElement radiobutton : radiobuttons) {
-            idx++;
-
             WebElement input = radiobutton.findElement(By.tagName("input"));
             WebElement label = getRoot().findElement(By.cssSelector("label[for='" + input.getAttribute("id") + "']"));
             WebElement box = radiobutton.findElement(By.className("ui-radiobutton-box"));
@@ -95,6 +97,8 @@ public abstract class SelectOneRadio extends AbstractComponent {
             item.setValue(input.getAttribute("value"));
             item.setSelected(PrimeSelenium.hasCssClass(box, "ui-state-active"));
             items.add(item);
+
+            idx++;
         }
 
         return items;

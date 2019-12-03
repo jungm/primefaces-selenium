@@ -59,12 +59,14 @@ public abstract class SelectOneButton extends AbstractInputComponent {
     }
 
     public void select(String label) {
-        if (!isSelected(label)) {
-            for (WebElement element : options) {
-                if (element.getText().equalsIgnoreCase(label)) {
-                    click(element);
-                    return;
-                }
+        if (isSelected(label)) {
+            return;
+        }
+
+        for (WebElement element : options) {
+            if (element.getText().equalsIgnoreCase(label)) {
+                click(element);
+                return;
             }
         }
     }
@@ -78,12 +80,14 @@ public abstract class SelectOneButton extends AbstractInputComponent {
             return;
         }
 
-        if (isSelected(label)) {
-            for (WebElement element : options) {
-                if (element.getText().equalsIgnoreCase(label)) {
-                    click(element);
-                    return;
-                }
+        if (!isSelected(label)) {
+            return;
+        }
+
+        for (WebElement element : options) {
+            if (element.getText().equalsIgnoreCase(label)) {
+                click(element);
+                return;
             }
         }
     }

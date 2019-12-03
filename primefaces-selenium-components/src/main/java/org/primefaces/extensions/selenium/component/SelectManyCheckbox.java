@@ -107,8 +107,6 @@ public abstract class SelectManyCheckbox extends AbstractComponent {
 
         int idx = 0;
         for (WebElement checkbox : checkboxes) {
-            idx++;
-
             WebElement input = checkbox.findElement(By.tagName("input"));
             WebElement label = getRoot().findElement(By.cssSelector("label[for='" + input.getAttribute("id") + "']"));
             WebElement box = checkbox.findElement(By.className("ui-chkbox-box"));
@@ -119,6 +117,8 @@ public abstract class SelectManyCheckbox extends AbstractComponent {
             item.setValue(input.getAttribute("value"));
             item.setSelected(PrimeSelenium.hasCssClass(box, "ui-state-active"));
             items.add(item);
+
+            idx++;
         }
 
         return items;
