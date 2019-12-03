@@ -1,5 +1,4 @@
 window.pfselenium = {
-    uid : null,
     navigating : false,
     xhr : null
 };
