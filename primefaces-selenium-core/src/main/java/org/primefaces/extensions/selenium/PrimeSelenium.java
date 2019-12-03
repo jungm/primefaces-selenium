@@ -18,6 +18,7 @@ package org.primefaces.extensions.selenium;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -92,7 +93,7 @@ public final class PrimeSelenium {
             getWebDriver().findElement(by);
             return true;
         }
-        catch (NoSuchElementException e) {
+        catch (NoSuchElementException | StaleElementReferenceException e) {
             return false;
         }
     }
@@ -102,7 +103,7 @@ public final class PrimeSelenium {
             element.isDisplayed(); // just any method to check if NoSuchElementException will be thrown
             return true;
         }
-        catch (NoSuchElementException e) {
+        catch (NoSuchElementException | StaleElementReferenceException e) {
             return false;
         }
     }
@@ -111,7 +112,7 @@ public final class PrimeSelenium {
         try {
             return getWebDriver().findElement(by).isDisplayed();
         }
-        catch (NoSuchElementException e) {
+        catch (NoSuchElementException | StaleElementReferenceException e) {
             return false;
         }
     }
@@ -120,7 +121,7 @@ public final class PrimeSelenium {
         try {
             return element.isDisplayed();
         }
-        catch (NoSuchElementException e) {
+        catch (NoSuchElementException | StaleElementReferenceException e) {
             return false;
         }
     }
@@ -129,7 +130,7 @@ public final class PrimeSelenium {
         try {
             return getWebDriver().findElement(by).isEnabled();
         }
-        catch (NoSuchElementException e) {
+        catch (NoSuchElementException | StaleElementReferenceException e) {
             return false;
         }
     }
@@ -138,7 +139,7 @@ public final class PrimeSelenium {
         try {
             return element.isEnabled();
         }
-        catch (NoSuchElementException e) {
+        catch (NoSuchElementException | StaleElementReferenceException e) {
             return false;
         }
     }
