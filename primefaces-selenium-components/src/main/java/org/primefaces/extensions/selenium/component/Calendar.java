@@ -67,8 +67,7 @@ public abstract class Calendar extends AbstractInputComponent {
 
         // Emulate user input instead of using js, calendar.setDate() can't go beyond mindate/maxdate
         getInput().sendKeys(Keys.chord(Keys.CONTROL, "a")); // select everything
-        getInput().sendKeys(Keys.DELETE); // delete
-        getInput().sendKeys(formattedDate);
+        getInput().sendKeys(formattedDate); //overwrite value
 
         if (ComponentUtils.hasAjaxBehavior(getRoot(), "dateSelect")) {
             PrimeSelenium.guardAjax(getInput()).sendKeys(Keys.TAB);
