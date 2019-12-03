@@ -63,6 +63,7 @@ public abstract class SelectOneButton extends AbstractInputComponent {
             for (WebElement element : options) {
                 if (element.getText().equalsIgnoreCase(label)) {
                     click(element);
+                    return;
                 }
             }
         }
@@ -81,6 +82,7 @@ public abstract class SelectOneButton extends AbstractInputComponent {
             for (WebElement element : options) {
                 if (element.getText().equalsIgnoreCase(label)) {
                     click(element);
+                    return;
                 }
             }
         }
