@@ -56,6 +56,8 @@ public class Guard {
     }
 
     public static <T> T ajax(T target) {
+        InterceptNavigationEventListener.executeOnloadScripts();
+
         return proxy(target, (Object proxy, Method method, Object[] args) -> {
             try {
                 PrimeSelenium.executeScript("pfselenium.xhr = 'somethingJustNotNull';");

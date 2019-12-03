@@ -22,14 +22,10 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.events.AbstractWebDriverEventListener;
 
-import java.util.Objects;
-import java.util.UUID;
 import java.util.stream.Collectors;
 import org.primefaces.extensions.selenium.PrimeSelenium;
 
 public class InterceptNavigationEventListener extends AbstractWebDriverEventListener {
-
-    private static final ThreadLocal<String> LAST_UID = new ThreadLocal<>();
 
     private static String ajaxScript = null;
 
@@ -53,15 +49,31 @@ public class InterceptNavigationEventListener extends AbstractWebDriverEventList
         executeOnloadScripts();
     }
 
-    public void executeOnloadScripts() {
+    @Override
+    public void beforeClickOn(WebElement element, WebDriver driver) {
+        executeOnloadScripts();
+    }
+
+    @Override
+    public void afterClickOn(WebElement element, WebDriver driver) {
+        executeOnloadScripts();
+    }
+
+
+    public static void executeOnloadScripts() {
+        if (isScriptInstalled()) {
+            return;
+        }
+
         if (ConfigProvider.getInstance().isDisableJQueryAnimations()) {
             PrimeSelenium.disableAnimations();
         }
 
         if (ajaxScript == null) {
             try {
-                try (BufferedReader buffer = new BufferedReader(
-                        new InputStreamReader(this.getClass().getResourceAsStream("/primefaces-selenium/ajaxguard.js"), StandardCharsets.UTF_8))) {
+                try (BufferedReader buffer = new BufferedReader(new InputStreamReader(
+                        InterceptNavigationEventListener.class.getResourceAsStream("/primefaces-selenium/ajaxguard.js"),
+                        StandardCharsets.UTF_8))) {
                     ajaxScript = buffer.lines().collect(Collectors.joining("\n"));
                 }
             }
@@ -73,52 +85,9 @@ public class InterceptNavigationEventListener extends AbstractWebDriverEventList
         PrimeSelenium.executeScript("(function () { " + ajaxScript + " })();");
     }
 
-    @Override
-    public void beforeClickOn(WebElement element, WebDriver driver) {
-        if (!isScriptInstalled()) {
-            executeOnloadScripts();
-        }
-
-        String uid = getUid();
-        if (uid == null || uid.isEmpty()) {
-            uid = newUid();
-            setUid(uid);
-        }
-    }
-
-    @Override
-    public void afterClickOn(WebElement element, WebDriver driver) {
-        if (!isScriptInstalled()) {
-            executeOnloadScripts();
-            return;
-        }
-
-        // navigation happened on button click?
-        String uid = getUid();
-        if (!Objects.equals(uid, LAST_UID.get())) {
-            executeOnloadScripts();
-
-            uid = newUid();
-            setUid(uid);
-        }
-    }
-
-    public boolean isScriptInstalled() {
+    private static boolean isScriptInstalled() {
         PrimeSelenium.waitDocumentLoad();
 
         return PrimeSelenium.executeScript("return window.pfselenium != null;");
-    }
-
-    public String newUid() {
-        return UUID.randomUUID().toString();
-    }
-
-    public void setUid(String uid) {
-        PrimeSelenium.executeScript("window.pfselenium.uid = '" + uid + "';");
-        LAST_UID.set(uid);
-    }
-
-    public String getUid() {
-        return PrimeSelenium.executeScript("return window.pfselenium.uid;");
     }
 }
