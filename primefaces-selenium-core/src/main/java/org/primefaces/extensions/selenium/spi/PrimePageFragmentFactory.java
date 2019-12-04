@@ -84,8 +84,8 @@ public class PrimePageFragmentFactory {
             if (proxy instanceof AbstractPrimePage) {
                 ((AbstractPrimePage) proxy).setWebDriver(driver);
             }
-
             if (proxy instanceof AbstractPrimePageFragment) {
+                ((AbstractPrimePageFragment) proxy).setWebDriver(driver);
                 ((AbstractPrimePageFragment) proxy).setElementLocator(el);
             }
 
@@ -130,12 +130,12 @@ public class PrimePageFragmentFactory {
             value = proxy((Class<T>) field.getType(),
                 MethodDelegation.to(new ElementLocatorInterceptor(el)));
 
-            if (value instanceof AbstractPrimePageFragment) {
-                ((AbstractPrimePageFragment) value).setElementLocator(el);
-            }
-
             if (value instanceof AbstractPrimePage) {
                 ((AbstractPrimePage) value).setWebDriver(driver);
+            }
+            if (value instanceof AbstractPrimePageFragment) {
+                ((AbstractPrimePageFragment) value).setWebDriver(driver);
+                ((AbstractPrimePageFragment) value).setElementLocator(el);
             }
 
             DefaultElementLocatorFactory delf = new DefaultElementLocatorFactory((SearchContext) value);
