@@ -25,7 +25,7 @@ public class OnloadScripts {
     }
 
     public static void execute() {
-        if (isScriptInstalled()) {
+        if (isInstalled()) {
             return;
         }
 
@@ -33,7 +33,7 @@ public class OnloadScripts {
         PrimeSelenium.executeScript("(function () { " + String.join(";", onloadScripts) + " })();");
     }
 
-    private static boolean isScriptInstalled() {
+    private static boolean isInstalled() {
         PrimeSelenium.waitDocumentLoad();
 
         return PrimeSelenium.executeScript("return window.pfselenium != null;");
