@@ -80,6 +80,9 @@ import org.primefaces.extensions.selenium.AbstractPrimePageTest;
 
 public class IndexPageTest extends AbstractPrimePageTest {
 
+    @Inject
+    private AnotherPage another;
+
     @Test
     public void myFirstTest(IndexPage index) throws InterruptedException {
         // right page?
@@ -103,6 +106,10 @@ public class IndexPageTest extends AbstractPrimePageTest {
 
         // just to follow the browser with a human eye for the showcase :D - not need in your real tests
         Thread.sleep(2000);
+
+        another.goTo();
+        
+        ...
     }
 }
 ```
