@@ -24,12 +24,12 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.pagefactory.ElementLocator;
 import org.primefaces.extensions.selenium.spi.PrimePageFragmentFactory;
 
-public class LocatingElementListHandler implements InvocationHandler {
+public class ListProxyInvocationHandler implements InvocationHandler {
 
     private final ElementLocator locator;
     private final Class<? extends WebElement> genericClass;
 
-    public LocatingElementListHandler(ElementLocator locator, Class<? extends WebElement> genericClass) {
+    public ListProxyInvocationHandler(ElementLocator locator, Class<? extends WebElement> genericClass) {
         this.locator = locator;
         this.genericClass = genericClass;
     }

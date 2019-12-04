@@ -20,7 +20,7 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 import org.primefaces.extensions.selenium.internal.ConfigProvider;
 import org.primefaces.extensions.selenium.spi.PrimeSeleniumAdapter;
 
-public class AdapterExtension implements BeforeAllCallback, ExtensionContext.Store.CloseableResource {
+public class BootstrapExtension implements BeforeAllCallback, ExtensionContext.Store.CloseableResource {
 
     private static final Object SYNCHRONIZER = new Object();
 
@@ -35,7 +35,7 @@ public class AdapterExtension implements BeforeAllCallback, ExtensionContext.Sto
 
                 // Your "before all tests" startup logic goes here
                 // The following line registers a callback hook when the root test context is shut down
-                context.getRoot().getStore(ExtensionContext.Namespace.GLOBAL).put(AdapterExtension.class.getName(), this);
+                context.getRoot().getStore(ExtensionContext.Namespace.GLOBAL).put(BootstrapExtension.class.getName(), this);
 
                 started = true;
             }

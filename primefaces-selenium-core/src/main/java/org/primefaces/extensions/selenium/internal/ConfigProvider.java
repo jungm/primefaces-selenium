@@ -15,7 +15,13 @@
  */
 package org.primefaces.extensions.selenium.internal;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
+import java.util.stream.Collectors;
 import org.primefaces.extensions.selenium.spi.PrimeSeleniumAdapter;
 
 public class ConfigProvider {
@@ -28,6 +34,7 @@ public class ConfigProvider {
 
     private boolean disableJQueryAnimations = true;
     private PrimeSeleniumAdapter adapter;
+    private List<String> onloadScripts;
 
     public ConfigProvider() {
         try {
@@ -61,10 +68,27 @@ public class ConfigProvider {
             else {
                 throw new RuntimeException("No lifecycle set via config.properties!");
             }
+
+            buildOnloadScripts();
         }
         catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    protected void buildOnloadScripts() throws Exception {
+        onloadScripts = new ArrayList<>();
+        try (BufferedReader buffer = new BufferedReader(new InputStreamReader(
+                getClass().getResourceAsStream("/primefaces-selenium/ajaxguard.js"),
+                StandardCharsets.UTF_8))) {
+            onloadScripts.add(buffer.lines().collect(Collectors.joining("\n")));
+        }
+
+        if (disableJQueryAnimations) {
+            onloadScripts.add("if (window.$) { $(function() { $.fx.off = true; }); }");
+        }
+
+        adapter.registerOnloadScripts(onloadScripts);
     }
 
     public int getGuiTimeout() {
@@ -85,6 +109,10 @@ public class ConfigProvider {
 
     public PrimeSeleniumAdapter getAdapter() {
         return adapter;
+    }
+
+    public List<String> getOnloadScripts() {
+        return onloadScripts;
     }
 
     public static synchronized ConfigProvider getInstance() {

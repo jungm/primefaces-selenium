@@ -29,7 +29,7 @@ import org.primefaces.extensions.selenium.PrimeSelenium;
 import org.primefaces.extensions.selenium.spi.PrimePageFactory;
 import org.primefaces.extensions.selenium.spi.WebDriverProvider;
 
-public class PageExtension implements ParameterResolver, TestInstancePostProcessor {
+public class PageInjectionExtension implements ParameterResolver, TestInstancePostProcessor {
 
     @Override
     public boolean supportsParameter(ParameterContext parameterContext, ExtensionContext extensionContext)

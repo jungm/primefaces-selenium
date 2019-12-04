@@ -41,12 +41,12 @@ import org.openqa.selenium.support.pagefactory.ElementLocatorFactory;
 import org.primefaces.extensions.selenium.PrimeSelenium;
 import org.primefaces.extensions.selenium.findby.FindByParentPartialId;
 import org.primefaces.extensions.selenium.findby.FindByParentPartialIdElementLocator;
-import org.primefaces.extensions.selenium.internal.ProxyUtils;
+import org.primefaces.extensions.selenium.internal.proxy.ProxyUtils;
 import org.primefaces.extensions.selenium.internal.WebDriverAware;
 import org.primefaces.extensions.selenium.internal.proxy.ElementLocatorInterceptor;
-import org.primefaces.extensions.selenium.internal.proxy.LocatingElementListHandler;
+import org.primefaces.extensions.selenium.internal.proxy.ListProxyInvocationHandler;
 import org.primefaces.extensions.selenium.internal.ElementLocatorAware;
-import org.primefaces.extensions.selenium.internal.LazyElementLocator;
+import org.primefaces.extensions.selenium.internal.proxy.LazyElementLocator;
 
 public class PrimePageFragmentFactory {
 
@@ -187,7 +187,7 @@ public class PrimePageFragmentFactory {
 
         Class<? extends WebElement> genericClass = extractGenericListType(field);
         if (genericClass != null) {
-            InvocationHandler handler = new LocatingElementListHandler(el, genericClass);
+            InvocationHandler handler = new ListProxyInvocationHandler(el, genericClass);
 
             List<? extends WebElement> proxy;
             proxy = (List<? extends WebElement>) Proxy.newProxyInstance(

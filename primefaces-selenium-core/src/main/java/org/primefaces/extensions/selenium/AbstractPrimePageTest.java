@@ -22,15 +22,15 @@ import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.primefaces.extensions.selenium.internal.junit.AdapterExtension;
-import org.primefaces.extensions.selenium.internal.junit.PageExtension;
+import org.primefaces.extensions.selenium.internal.junit.BootstrapExtension;
+import org.primefaces.extensions.selenium.internal.junit.PageInjectionExtension;
 import org.primefaces.extensions.selenium.internal.junit.WebDriverExtension;
 import org.primefaces.extensions.selenium.spi.WebDriverProvider;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@ExtendWith(AdapterExtension.class)
+@ExtendWith(BootstrapExtension.class)
 @ExtendWith(WebDriverExtension.class)
-@ExtendWith(PageExtension.class)
+@ExtendWith(PageInjectionExtension.class)
 public abstract class AbstractPrimePageTest {
 
     protected void assertPresent(WebElement element) {

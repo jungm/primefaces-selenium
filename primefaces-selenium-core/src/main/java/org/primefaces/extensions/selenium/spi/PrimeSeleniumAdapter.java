@@ -15,6 +15,7 @@
  */
 package org.primefaces.extensions.selenium.spi;
 
+import java.util.List;
 import org.openqa.selenium.WebDriver;
 
 public interface PrimeSeleniumAdapter {
@@ -27,4 +28,9 @@ public interface PrimeSeleniumAdapter {
     String getBaseUrl();
 
     void shutdown() throws Exception;
+
+
+    default void registerOnloadScripts(List<String> scripts) {
+
+    }
 }

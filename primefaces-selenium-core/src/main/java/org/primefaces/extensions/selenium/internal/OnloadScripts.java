@@ -15,30 +15,27 @@
  */
 package org.primefaces.extensions.selenium.internal;
 
-import java.lang.reflect.Field;
 import java.util.List;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.pagefactory.ElementLocator;
-import org.openqa.selenium.support.pagefactory.ElementLocatorFactory;
+import org.primefaces.extensions.selenium.PrimeSelenium;
 
-public class LazyElementLocator implements ElementLocator {
+public class OnloadScripts {
 
-    private final ElementLocatorFactory elf;
-    private final Field field;
+    private OnloadScripts() {
 
-    public LazyElementLocator(ElementLocatorFactory elf, Field field) {
-        this.elf = elf;
-        this.field = field;
     }
 
-    @Override
-    public WebElement findElement() {
-        return elf.createLocator(field).findElement();
+    public static void execute() {
+        if (isScriptInstalled()) {
+            return;
+        }
+
+        List<String> onloadScripts = ConfigProvider.getInstance().getOnloadScripts();
+        PrimeSelenium.executeScript("(function () { " + String.join(";", onloadScripts) + " })();");
     }
 
-    @Override
-    public List<WebElement> findElements() {
-        return elf.createLocator(field).findElements();
-    }
+    private static boolean isScriptInstalled() {
+        PrimeSelenium.waitDocumentLoad();
 
+        return PrimeSelenium.executeScript("return window.pfselenium != null;");
+    }
 }

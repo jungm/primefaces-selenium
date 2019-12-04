@@ -56,7 +56,7 @@ public class Guard {
     }
 
     public static <T> T ajax(T target) {
-        InterceptNavigationEventListener.executeOnloadScripts();
+        OnloadScripts.execute();
 
         return proxy(target, (Object proxy, Method method, Object[] args) -> {
             try {
