@@ -79,7 +79,7 @@ public class ConfigProvider {
     protected void buildOnloadScripts() throws Exception {
         onloadScripts = new ArrayList<>();
         try (BufferedReader buffer = new BufferedReader(new InputStreamReader(
-                getClass().getResourceAsStream("/primefaces-selenium/ajaxguard.js"),
+                getClass().getResourceAsStream("/primefaces-selenium/onload.js"),
                 StandardCharsets.UTF_8))) {
             onloadScripts.add(buffer.lines().collect(Collectors.joining("\n")));
         }
