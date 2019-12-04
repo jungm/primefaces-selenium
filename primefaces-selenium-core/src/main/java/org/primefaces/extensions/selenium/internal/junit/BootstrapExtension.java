@@ -33,7 +33,6 @@ public class BootstrapExtension implements BeforeAllCallback, ExtensionContext.S
                 PrimeSeleniumAdapter adapter = ConfigProvider.getInstance().getAdapter();
                 adapter.startup();
 
-                // Your "before all tests" startup logic goes here
                 // The following line registers a callback hook when the root test context is shut down
                 context.getRoot().getStore(ExtensionContext.Namespace.GLOBAL).put(BootstrapExtension.class.getName(), this);
 
@@ -44,7 +43,6 @@ public class BootstrapExtension implements BeforeAllCallback, ExtensionContext.S
 
     @Override
     public void close() throws Exception {
-        // Your "after all tests" logic goes here
         PrimeSeleniumAdapter adapter = ConfigProvider.getInstance().getAdapter();
         adapter.shutdown();
     }
