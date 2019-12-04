@@ -15,6 +15,11 @@
  */
 package org.primefaces.extensions.selenium.internal.proxy;
 
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class ProxyUtils {
 
     private ProxyUtils() {
@@ -27,4 +32,19 @@ public class ProxyUtils {
         return clazz;
     }
 
+    public static List<Field> collectFields(Object instance) {
+        Class<?> clazz = getUnproxiedClass(instance.getClass());
+
+        ArrayList<Field> fields = new ArrayList<>();
+        fields.addAll(Arrays.asList(clazz.getDeclaredFields()));
+
+        Class<?> superClazz = clazz.getSuperclass();
+        while (superClazz != null && superClazz != Object.class) {
+            fields.addAll(Arrays.asList(superClazz.getDeclaredFields()));
+
+            superClazz = superClazz.getSuperclass();
+        }
+
+        return fields;
+    }
 }

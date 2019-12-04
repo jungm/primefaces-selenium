@@ -16,10 +16,9 @@
 package org.primefaces.extensions.selenium;
 
 import org.openqa.selenium.WebDriver;
-import org.primefaces.extensions.selenium.internal.WebDriverAware;
 import org.primefaces.extensions.selenium.spi.WebDriverProvider;
 
-public abstract class AbstractPrimePage implements WebDriverAware {
+public abstract class AbstractPrimePage {
 
     private WebDriver webDriver;
 
@@ -37,12 +36,10 @@ public abstract class AbstractPrimePage implements WebDriverAware {
         return WebDriverProvider.get().getCurrentUrl().contains(getLocation());
     }
 
-    @Override
     public WebDriver getWebDriver() {
         return webDriver;
     }
 
-    @Override
     public void setWebDriver(WebDriver webDriver) {
         this.webDriver = webDriver;
     }

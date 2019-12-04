@@ -18,7 +18,7 @@ package org.primefaces.extensions.selenium.spi;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.primefaces.extensions.selenium.internal.ConfigProvider;
-import org.primefaces.extensions.selenium.internal.InterceptNavigationEventListener;
+import org.primefaces.extensions.selenium.internal.OnloadScriptsEventListener;
 
 public class WebDriverProvider {
 
@@ -40,7 +40,7 @@ public class WebDriverProvider {
             driver = adapter.createWebDriver();
 
             EventFiringWebDriver eventDriver = new EventFiringWebDriver(driver);
-            eventDriver.register(new InterceptNavigationEventListener());
+            eventDriver.register(new OnloadScriptsEventListener());
 
             set(eventDriver);
 

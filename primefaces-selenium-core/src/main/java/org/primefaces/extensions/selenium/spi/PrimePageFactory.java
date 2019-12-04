@@ -28,7 +28,7 @@ public class PrimePageFactory {
         try {
             T instance = page.newInstance();
 
-            PrimePageFragmentFactory.fillMembers(driver, new DefaultElementLocatorFactory(driver), instance);
+            PrimePageFragmentFactory.setMembers(driver, new DefaultElementLocatorFactory(driver), instance);
 
             instance.setWebDriver(driver);
 

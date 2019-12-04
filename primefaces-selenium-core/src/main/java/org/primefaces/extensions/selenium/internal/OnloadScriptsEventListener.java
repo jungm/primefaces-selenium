@@ -19,7 +19,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.events.AbstractWebDriverEventListener;
 
-public class InterceptNavigationEventListener extends AbstractWebDriverEventListener {
+public class OnloadScriptsEventListener extends AbstractWebDriverEventListener {
 
     @Override
     public void afterNavigateTo(String url, WebDriver driver) {

@@ -40,7 +40,7 @@ public class Guard {
     }
 
     public static <T> T http(T target) {
-        return proxy(target, (Object proxy, Method method, Object[] args) -> {
+        return proxy(target, (Object p, Method method, Object[] args) -> {
             try {
                 Object result = method.invoke(target, args);
 
@@ -49,8 +49,7 @@ public class Guard {
                 return result;
             }
             catch (TimeoutException e) {
-                // ist in timeout gelaufen - wahrscheinilch kein ajax request - gscheide excception
-                throw e;
+                throw new TimeoutException("Timeout while waiting for document ready!", e);
             }
         });
     }
@@ -58,7 +57,7 @@ public class Guard {
     public static <T> T ajax(T target) {
         OnloadScripts.execute();
 
-        return proxy(target, (Object proxy, Method method, Object[] args) -> {
+        return proxy(target, (Object p, Method method, Object[] args) -> {
             try {
                 PrimeSelenium.executeScript("pfselenium.xhr = 'somethingJustNotNull';");
 
@@ -77,17 +76,17 @@ public class Guard {
                 return result;
             }
             catch (TimeoutException e) {
-                // ist in timeout gelaufen - wahrscheinilch kein ajax request - gscheide excception
-                throw e;
+                throw new TimeoutException("Timeout while waiting for AJAX complete!", e);
             }
         });
     }
 
-    public static <T> T proxy(T target, InvocationHandler handler) {
+    private static <T> T proxy(T target, InvocationHandler handler) {
         Class<?> classToProxy = target.getClass();
         List<Class> interfacesToImplement = new ArrayList<>();
         ElementMatcher.Junction methods = ElementMatchers.isPublic();
 
+        // class is not proxyable - lets try to implement interfaces
         if (Modifier.isPrivate(classToProxy.getModifiers()) || Modifier.isFinal(classToProxy.getModifiers())) {
             interfacesToImplement = Arrays.asList(classToProxy.getInterfaces());
             classToProxy = Object.class;

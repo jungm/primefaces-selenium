@@ -24,12 +24,12 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.pagefactory.ElementLocator;
 import org.primefaces.extensions.selenium.spi.PrimePageFragmentFactory;
 
-public class ListProxyInvocationHandler implements InvocationHandler {
+public class ElementsLocatorInterceptor implements InvocationHandler {
 
     private final ElementLocator locator;
     private final Class<? extends WebElement> genericClass;
 
-    public ListProxyInvocationHandler(ElementLocator locator, Class<? extends WebElement> genericClass) {
+    public ElementsLocatorInterceptor(ElementLocator locator, Class<? extends WebElement> genericClass) {
         this.locator = locator;
         this.genericClass = genericClass;
     }
@@ -43,7 +43,7 @@ public class ListProxyInvocationHandler implements InvocationHandler {
 
             for (int i = 0; i < elements.size(); i++) {
                 WebElement element = elements.get(i);
-                WebElement fragment = PrimePageFragmentFactory.create(genericClass, element, new ElementLocatorProxy(locator, i));
+                WebElement fragment = PrimePageFragmentFactory.create(genericClass, element, new IndexedElementLocator(locator, i));
 
                 fragments.add(fragment);
             }
@@ -60,12 +60,12 @@ public class ListProxyInvocationHandler implements InvocationHandler {
         }
     }
 
-    static class ElementLocatorProxy implements ElementLocator {
+    static class IndexedElementLocator implements ElementLocator {
 
         private final ElementLocator locator;
         private final int i;
 
-        public ElementLocatorProxy(ElementLocator locator, int i) {
+        public IndexedElementLocator(ElementLocator locator, int i) {
             this.locator = locator;
             this.i = i;
         }

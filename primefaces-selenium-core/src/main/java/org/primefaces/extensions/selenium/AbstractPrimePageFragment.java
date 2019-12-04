@@ -19,30 +19,24 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.WrapsElement;
 import org.openqa.selenium.support.pagefactory.ElementLocator;
-import org.primefaces.extensions.selenium.internal.WebDriverAware;
-import org.primefaces.extensions.selenium.internal.ElementLocatorAware;
 
-public abstract class AbstractPrimePageFragment implements WebElement, WrapsElement, ElementLocatorAware, WebDriverAware {
+public abstract class AbstractPrimePageFragment implements WebElement, WrapsElement {
 
     private ElementLocator elementLocator;
     private WebDriver webDriver;
 
-    @Override
     public ElementLocator getElementLocator() {
         return elementLocator;
     }
 
-    @Override
     public void setElementLocator(ElementLocator elementLocator) {
         this.elementLocator = elementLocator;
     }
 
-    @Override
     public WebDriver getWebDriver() {
         return webDriver;
     }
 
-    @Override
     public void setWebDriver(WebDriver webDriver) {
         this.webDriver = webDriver;
     }

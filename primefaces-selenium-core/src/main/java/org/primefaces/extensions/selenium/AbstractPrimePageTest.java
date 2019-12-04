@@ -133,7 +133,7 @@ public abstract class AbstractPrimePageTest {
         assertIsAt(page.getLocation());
     }
 
-    protected void assertIsAt(Class<?> pageClass) {
+    protected void assertIsAt(Class<? extends AbstractPrimePage> pageClass) {
         String location;
         try {
             location = PrimeSelenium.getUrl((AbstractPrimePage) pageClass.newInstance());
