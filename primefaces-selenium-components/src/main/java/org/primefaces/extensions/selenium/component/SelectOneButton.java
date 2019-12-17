@@ -47,6 +47,10 @@ public abstract class SelectOneButton extends AbstractInputComponent {
         return getSelectedLabel().equalsIgnoreCase(label);
     }
 
+    public boolean isSelected(int index) {
+        return index == options.indexOf(activeOption);
+    }
+
     public void selectNext() {
         int activeIndex = options.indexOf(activeOption);
         int nextIndex = activeIndex + 1;
@@ -55,7 +59,7 @@ public abstract class SelectOneButton extends AbstractInputComponent {
             nextIndex = 0;
         }
 
-        click(options.get(nextIndex));
+        select(nextIndex);
     }
 
     public void select(String label) {
@@ -69,6 +73,26 @@ public abstract class SelectOneButton extends AbstractInputComponent {
                 return;
             }
         }
+    }
+
+    public void select(int index) {
+        if (index > options.size()) {
+            throw new IndexOutOfBoundsException("Index " + index + ", Size " + options.size());
+        }
+
+        if (isSelected(index)) {
+            return;
+        }
+
+        click(options.get(index));
+    }
+
+    public void selectFirst() {
+        select(0);
+    }
+
+    public void selectLast() {
+        select(options.size() - 1);
     }
 
     public void deselect(String label) {
@@ -90,6 +114,26 @@ public abstract class SelectOneButton extends AbstractInputComponent {
                 return;
             }
         }
+    }
+
+    public void deselect(int index) {
+        deselect(index, false);
+    }
+
+    public void deselect(int index, boolean ignoreDeselectable) {
+        if (index > options.size()) {
+            throw new IndexOutOfBoundsException("Index " + index + ", Size " + options.size());
+        }
+
+        if (!ignoreDeselectable && !isUnselectable()) {
+            return;
+        }
+
+        if (!isSelected(index)) {
+            return;
+        }
+
+        click(options.get(index));
     }
 
     public boolean isUnselectable() {
