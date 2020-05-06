@@ -50,5 +50,4 @@ public class OnloadScriptsEventListener extends AbstractWebDriverEventListener {
     public void afterClickOn(WebElement element, WebDriver driver) {
         OnloadScripts.execute();
     }
-
 }
