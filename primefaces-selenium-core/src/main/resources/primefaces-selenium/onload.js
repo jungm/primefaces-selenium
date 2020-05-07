@@ -1,5 +1,6 @@
 window.pfselenium = {
     navigating : false,
+    submitting : false,
     xhr : null
 };
 
@@ -20,10 +21,20 @@ XMLHttpRequest.prototype.send = function() {
     originalSend.apply(this, arguments);
 };
 
+var originalSubmit = HTMLFormElement.prototype.submit;
+HTMLFormElement.prototype.submit = function() {
+    window.pfselenium.submitting = true;
+
+    originalSubmit.apply(this, arguments);
+};
+
+
 // try to listen on navigation, which can happen inside AJAX requests
 window.addEventListener("beforeunload", function() {
+    window.pfselenium.submitting = false;
     window.pfselenium.navigating = true;
 });
 window.addEventListener("unload", function() {
+    window.pfselenium.submitting = false;
     window.pfselenium.navigating = true;
 });

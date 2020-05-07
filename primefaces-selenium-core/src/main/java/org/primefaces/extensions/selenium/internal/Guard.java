@@ -44,7 +44,14 @@ public class Guard {
             try {
                 Object result = method.invoke(target, args);
 
-                PrimeSelenium.waitDocumentLoad();
+                WebDriver driver = WebDriverProvider.get();
+
+                WebDriverWait wait = new WebDriverWait(driver, ConfigProvider.getInstance().getHttpTimeout(), 100);
+                wait.until(d -> {
+                    return (Boolean) ((JavascriptExecutor) driver)
+                            .executeScript("return document.readyState === 'complete'"
+                                    + " && (!window.pfselenium || pfselenium.submitting === false);");
+                });
 
                 return result;
             }
