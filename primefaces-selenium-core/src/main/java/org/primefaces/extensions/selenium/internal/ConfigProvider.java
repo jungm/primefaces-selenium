@@ -74,9 +74,10 @@ public class ConfigProvider {
                 if (adapter != null && !adapter.trim().isEmpty()) {
                     this.adapter = (PrimeSeleniumAdapter) Class.forName(adapter).newInstance();
                 }
-                else {
-                    throw new RuntimeException("No lifecycle set via config.properties!");
-                }
+            }
+
+            if (adapter == null) {
+                throw new RuntimeException("No lifecycle set via config.properties!");
             }
 
             buildOnloadScripts();
