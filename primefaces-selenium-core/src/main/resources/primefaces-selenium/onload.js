@@ -25,7 +25,14 @@ var originalSubmit = HTMLFormElement.prototype.submit;
 HTMLFormElement.prototype.submit = function() {
     window.pfselenium.submitting = true;
 
+    var submitToCurrentWindow = !this.target || this.target === '' || this.target === '_self' || this.target === window.name;
+
     originalSubmit.apply(this, arguments);
+
+    // in case the form was submmited to another tab -> "release" the current window from the wait guard
+    if (!submitToCurrentWindow) {
+        window.pfselenium.submitting = false;
+    }
 };
 
 
