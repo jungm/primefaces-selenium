@@ -31,10 +31,10 @@ HTMLFormElement.prototype.submit = function() {
 
 // try to listen on navigation, which can happen inside AJAX requests
 window.addEventListener("beforeunload", function() {
-    window.pfselenium.submitting = false;
     window.pfselenium.navigating = true;
+    window.pfselenium.submitting = false;
 });
 window.addEventListener("unload", function() {
-    window.pfselenium.submitting = false;
     window.pfselenium.navigating = true;
+    window.pfselenium.submitting = false;
 });

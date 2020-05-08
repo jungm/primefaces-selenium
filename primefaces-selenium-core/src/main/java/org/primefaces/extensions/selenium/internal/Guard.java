@@ -42,6 +42,8 @@ public class Guard {
     public static <T> T http(T target) {
         return proxy(target, (Object p, Method method, Object[] args) -> {
             try {
+                PrimeSelenium.executeScript("pfselenium.submitting = true;");
+
                 Object result = method.invoke(target, args);
 
                 WebDriver driver = WebDriverProvider.get();
@@ -50,7 +52,7 @@ public class Guard {
                 wait.until(d -> {
                     return (Boolean) ((JavascriptExecutor) driver)
                             .executeScript("return document.readyState === 'complete'"
-                                    + " && (!window.pfselenium || pfselenium.submitting === false);");
+                                    + " && (!window.pfselenium || pfselenium.submitting === false && pfselenium.navigating === false);");
                 });
 
                 return result;
