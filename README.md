@@ -9,10 +9,10 @@
 PrimeFaces testing support based on JUnit5, Selenium and the concept of page ojects / fragements.
 It also supports JUnit5 parallel test execution to speed up tests.
 
-This is the sucessor of primefaces-arquillian and heavily inspired by Arquillian Graphene.
+This is the successor of primefaces-arquillian and heavily inspired by Arquillian Graphene.
 
 ### Compatibility
-Only tested on PrimeFaces 7.0+.
+Only tested on PrimeFaces 8.0+.
 
 ### Status
 Currently only the following components are implemented (partially):
