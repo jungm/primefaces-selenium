@@ -36,112 +36,112 @@ import org.primefaces.extensions.selenium.spi.WebDriverProvider;
 @ExtendWith(PageInjectionExtension.class)
 public abstract class AbstractPrimePageTest {
 
-    protected void assertPresent(final WebElement element) {
+    protected void assertPresent(WebElement element) {
         if (!PrimeSelenium.isElementPresent(element)) {
             Assertions.fail("Element should be present!");
         }
     }
 
-    protected void assertPresent(final By by) {
+    protected void assertPresent(By by) {
         if (!PrimeSelenium.isElementPresent(by)) {
             Assertions.fail("Element should be present!");
         }
     }
 
-    protected void assertNotPresent(final WebElement element) {
+    protected void assertNotPresent(WebElement element) {
         if (PrimeSelenium.isElementPresent(element)) {
             Assertions.fail("Element should not be present!");
         }
     }
 
-    protected void assertNotPresent(final By by) {
+    protected void assertNotPresent(By by) {
         if (PrimeSelenium.isElementPresent(by)) {
             Assertions.fail("Element should not be present!");
         }
     }
 
-    protected void assertDisplayed(final WebElement element) {
+    protected void assertDisplayed(WebElement element) {
         if (!PrimeSelenium.isElementDisplayed(element)) {
             Assertions.fail("Element should be displayed!");
         }
     }
 
-    protected void assertDisplayed(final By by) {
+    protected void assertDisplayed(By by) {
         if (!PrimeSelenium.isElementDisplayed(by)) {
             Assertions.fail("Element should be displayed!");
         }
     }
 
-    protected void assertNotDisplayed(final WebElement element) {
+    protected void assertNotDisplayed(WebElement element) {
         if (PrimeSelenium.isElementDisplayed(element)) {
             Assertions.fail("Element should not be displayed!");
         }
     }
 
-    protected void assertNotDisplayed(final By by) {
+    protected void assertNotDisplayed(By by) {
         if (PrimeSelenium.isElementDisplayed(by)) {
             Assertions.fail("Element should not be displayed!");
         }
     }
 
-    protected void assertEnabled(final WebElement element) {
+    protected void assertEnabled(WebElement element) {
         if (!PrimeSelenium.isElementEnabled(element)) {
             Assertions.fail("Element should be enabled!");
         }
     }
 
-    protected void assertEnabled(final By by) {
+    protected void assertEnabled(By by) {
         if (!PrimeSelenium.isElementEnabled(by)) {
             Assertions.fail("Element should be enabled!");
         }
     }
 
-    protected void assertNotEnabled(final WebElement element) {
+    protected void assertNotEnabled(WebElement element) {
         if (PrimeSelenium.isElementEnabled(element)) {
             Assertions.fail("Element should not be enabled!");
         }
     }
 
-    protected void assertNotEnabled(final By by) {
+    protected void assertNotEnabled(By by) {
         if (PrimeSelenium.isElementEnabled(by)) {
             Assertions.fail("Element should not be enabled!");
         }
     }
 
-    protected void assertDisabled(final WebElement element) {
+    protected void assertDisabled(WebElement element) {
         if (PrimeSelenium.isElementEnabled(element)) {
             Assertions.fail("Element should be disabled!");
         }
     }
 
-    protected void assertDisabled(final By by) {
+    protected void assertDisabled(By by) {
         if (PrimeSelenium.isElementEnabled(by)) {
             Assertions.fail("Element should be disabled!");
         }
     }
 
-    protected void assertNotDisabled(final WebElement element) {
+    protected void assertNotDisabled(WebElement element) {
         if (!PrimeSelenium.isElementEnabled(element)) {
             Assertions.fail("Element should not be disabled!");
         }
     }
 
-    protected void assertNotDisabled(final By by) {
+    protected void assertNotDisabled(By by) {
         if (!PrimeSelenium.isElementEnabled(by)) {
             Assertions.fail("Element should not be disabled!");
         }
     }
 
-    protected void assertIsAt(final AbstractPrimePage page) {
+    protected void assertIsAt(AbstractPrimePage page) {
         assertIsAt(page.getLocation());
     }
 
-    protected void assertIsAt(final Class<? extends AbstractPrimePage> pageClass) {
-        final String location;
+    protected void assertIsAt(Class<? extends AbstractPrimePage> pageClass) {
+        String location;
         try {
             location = PrimeSelenium.getUrl((AbstractPrimePage) pageClass.newInstance());
         }
-        catch (final InstantiationException | IllegalAccessException ex) {
+        catch (InstantiationException | IllegalAccessException ex) {
             throw new RuntimeException(ex);
         }
 
@@ -149,16 +149,16 @@ public abstract class AbstractPrimePageTest {
     }
 
     protected void assertNoJavascriptErrors() {
-        final LogEntries logEntries = getWebDriver().manage().logs().get(LogType.BROWSER);
-        final List<LogEntry> severe = logEntries.getAll().stream()
+        LogEntries logEntries = getWebDriver().manage().logs().get(LogType.BROWSER);
+        List<LogEntry> severe = logEntries.getAll().stream()
                     .filter(l -> l.getLevel() == Level.SEVERE)
                     .collect(Collectors.toList());
         Assertions.assertTrue(severe.isEmpty());
     }
 
     protected void printConsole() {
-        final LogEntries logEntries = getWebDriver().manage().logs().get(LogType.BROWSER);
-        for (final LogEntry log : logEntries) {
+        LogEntries logEntries = getWebDriver().manage().logs().get(LogType.BROWSER);
+        for (LogEntry log : logEntries) {
             if (log.getLevel() == Level.SEVERE) {
                 System.err.println(log.getMessage());
             }
@@ -168,11 +168,11 @@ public abstract class AbstractPrimePageTest {
         }
     }
 
-    protected void assertIsAt(final String relativePath) {
+    protected void assertIsAt(String relativePath) {
         Assertions.assertTrue(getWebDriver().getCurrentUrl().contains(relativePath));
     }
 
-    protected <T extends AbstractPrimePage> T goTo(final Class<T> pageClass) {
+    protected <T extends AbstractPrimePage> T goTo(Class<T> pageClass) {
         return PrimeSelenium.goTo(pageClass);
     }
 
