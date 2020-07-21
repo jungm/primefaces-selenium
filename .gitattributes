@@ -1,11 +1,31 @@
-# Some storm-webapp logviewer tests require input files to have LF line endings due to byte counting.
-storm-webapp/src/test/resources/*.log.test text eol=lf
-
-# Convert the test on check-in and check-out (the conversion of all files has been done once on master and should be enforced from now on)
+# Set the default behavior, in case people don't have core.autocrlf set.
 * text=auto
 
-# There're reports of EOL conversion messing up PNG files, but that might have been a bug in git 2.10 only (see https://github.com/git/git/blob/master/Documentation/RelNotes/2.10.0.txt#L248 for details)
+# Explicitly declare text files you want to always be normalized and converted
+# to native line endings on checkout.
+*.c text
+*.h text
+*.java text
+*.css text
+*.js text
+*.xml text
+*.dtd text
+*.xsl text
+*.properties text
+*.txt text
+*.svg text
+*.yml text
+*.md text
+
+# Declare files that will always have CRLF line endings on checkout.
+*.sln text eol=crlf
+
+# Denote all files that are truly binary and should not be modified.
 *.png binary
-*.tar.gz binary
-*.zip binary
-*.tgz binary
+*.gif binary
+*.jpg binary
+*.jpeg binary
+*.eot binary
+*.ttf binary
+*.woff binary
+*.woff2 binary
