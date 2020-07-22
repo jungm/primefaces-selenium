@@ -13,11 +13,14 @@
 package org.primefaces.extensions.selenium;
 
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -25,12 +28,14 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.logging.LogEntries;
 import org.openqa.selenium.logging.LogEntry;
 import org.openqa.selenium.logging.LogType;
+import org.openqa.selenium.logging.Logs;
 import org.primefaces.extensions.selenium.internal.junit.BootstrapExtension;
 import org.primefaces.extensions.selenium.internal.junit.PageInjectionExtension;
 import org.primefaces.extensions.selenium.internal.junit.WebDriverExtension;
 import org.primefaces.extensions.selenium.spi.WebDriverProvider;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @ExtendWith(BootstrapExtension.class)
 @ExtendWith(WebDriverExtension.class)
 @ExtendWith(PageInjectionExtension.class)
@@ -148,16 +153,28 @@ public abstract class AbstractPrimePageTest {
         assertIsAt(location);
     }
 
+    /**
+     * Checks the browse console and asserts there are no SEVERE level messages.
+     */
     protected void assertNoJavascriptErrors() {
-        LogEntries logEntries = getWebDriver().manage().logs().get(LogType.BROWSER);
+        LogEntries logEntries = getLogsForType(LogType.BROWSER);
+        if (logEntries == null) {
+            return;
+        }
         List<LogEntry> severe = logEntries.getAll().stream()
                     .filter(l -> l.getLevel() == Level.SEVERE)
                     .collect(Collectors.toList());
-        Assertions.assertTrue(severe.isEmpty());
+        Assertions.assertTrue(severe.isEmpty(), "Javascript errors were detected in the browser console.");
     }
 
+    /**
+     * Dumps to System.out or System.err any messages found in the browser console.
+     */
     protected void printConsole() {
-        LogEntries logEntries = getWebDriver().manage().logs().get(LogType.BROWSER);
+        LogEntries logEntries = getLogsForType(LogType.BROWSER);
+        if (logEntries == null) {
+            return;
+        }
         for (LogEntry log : logEntries) {
             if (log.getLevel() == Level.SEVERE) {
                 System.err.println(log.getMessage());
@@ -166,6 +183,24 @@ public abstract class AbstractPrimePageTest {
                 System.out.println(log.getMessage());
             }
         }
+    }
+
+    /**
+     * Utility method for checking the browser console for a specific type of message.
+     *
+     * @param type the {@link LogType} you are searching for
+     * @return either NULL if not available or the {@link LogEntries}
+     */
+    protected LogEntries getLogsForType(String type) {
+        Logs logs = getWebDriver().manage().logs();
+        if (logs == null) {
+            return null;
+        }
+        Set<String> types = logs.getAvailableLogTypes();
+        if (!types.contains(LogType.BROWSER)) {
+            return null;
+        }
+        return logs.get(type);
     }
 
     protected void assertIsAt(String relativePath) {
@@ -179,4 +214,5 @@ public abstract class AbstractPrimePageTest {
     protected WebDriver getWebDriver() {
         return WebDriverProvider.get();
     }
+
 }
