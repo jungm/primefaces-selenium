@@ -25,15 +25,16 @@ Currently only the following components are implemented (partially):
 - Calendar
 - CommandButton
 - CommandLink
+- InputMask
 - InputNumber
 - InputSwitch
 - InputText
 - InputTextarea
 - Messages
 - Panel
-- SelectOneButton
 - SelectBooleanCheckbox
 - SelectManyCheckbox
+- SelectOneButton
 - SelectOneButton
 - SelectOneMenu
 - SelectOneRadio
