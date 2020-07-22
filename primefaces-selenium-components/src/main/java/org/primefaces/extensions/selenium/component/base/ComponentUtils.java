@@ -43,6 +43,11 @@ public class ComponentUtils {
         return script.contains("PrimeFaces.ab(") || script.contains("pf.ab(") || script.contains("mojarra.ab(") || script.contains("jsf.ajax.request");
     }
 
+    public static String getWidgetConfiguration(WebElement element) {
+        String id = element.getAttribute("id");
+        return PrimeSelenium.executeScript("return JSON.stringify(" + getWidgetByIdScript(id) + ".cfg);");
+    }
+
     public static String getWidgetByIdScript(String id) {
         return "PrimeFaces.getWidgetById('" + id + "')";
     }
