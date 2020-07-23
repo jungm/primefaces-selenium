@@ -30,7 +30,7 @@ import org.primefaces.extensions.selenium.findby.FindByParentPartialId;
 public abstract class Calendar extends AbstractInputComponent {
 
     @FindByParentPartialId("_input")
-    public WebElement input;
+    private WebElement input;
 
     public LocalDateTime getValue() {
         Object date = PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".getDate()");
