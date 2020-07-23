@@ -21,14 +21,30 @@ import org.primefaces.extensions.selenium.PrimeSelenium;
 
 public abstract class InputMask extends InputText {
 
+    /**
+     * Client side widget method to set the current value.
+     *
+     * @param value the value to set the input to
+     */
     public void setWidgetValue(Serializable value) {
         PrimeSelenium.executeScript(getWidgetByIdScript() + ".setValue(" + value + ");");
     }
 
+    /**
+     * Client side widget method to get the current value.
+     *
+     * @return the current value
+     */
     public String getWidgetValue() {
         return PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".getValue();");
     }
 
+    /**
+     * Client side widget method to get the unmasked value.
+     *
+     * @return the unmasked value
+     * @since 9.0
+     */
     public String getWidgetValueUnmasked() {
         return PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".getValueUnmasked();");
     }
