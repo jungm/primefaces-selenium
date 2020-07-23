@@ -15,6 +15,21 @@
  */
 package org.primefaces.extensions.selenium.component;
 
+import java.io.Serializable;
+
+import org.primefaces.extensions.selenium.PrimeSelenium;
+
 public abstract class InputMask extends InputText {
 
+    public void setWidgetValue(Serializable value) {
+        PrimeSelenium.executeScript(getWidgetByIdScript() + ".setValue(" + value + ");");
+    }
+
+    public String getWidgetValue() {
+        return PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".getValue();");
+    }
+
+    public String getWidgetValueUnmasked() {
+        return PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".getValueUnmasked();");
+    }
 }
