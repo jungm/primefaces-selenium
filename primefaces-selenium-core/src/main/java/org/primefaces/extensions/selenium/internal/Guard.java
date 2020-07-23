@@ -1,5 +1,5 @@
-/**
- * Copyright 2011-2019 PrimeFaces Extensions
+/*
+ * Copyright 2011-2020 PrimeFaces Extensions
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,20 +16,20 @@
 package org.primefaces.extensions.selenium.internal;
 
 import java.lang.reflect.InvocationHandler;
-import net.bytebuddy.ByteBuddy;
-import net.bytebuddy.implementation.InvocationHandlerAdapter;
-import net.bytebuddy.matcher.ElementMatchers;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.WebDriverWait;
-
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import net.bytebuddy.ByteBuddy;
+import net.bytebuddy.implementation.InvocationHandlerAdapter;
 import net.bytebuddy.matcher.ElementMatcher;
+import net.bytebuddy.matcher.ElementMatchers;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.TimeoutException;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.primefaces.extensions.selenium.PrimeSelenium;
 import org.primefaces.extensions.selenium.spi.WebDriverProvider;
 
@@ -51,8 +51,8 @@ public class Guard {
                 WebDriverWait wait = new WebDriverWait(driver, ConfigProvider.getInstance().getHttpTimeout(), 100);
                 wait.until(d -> {
                     return (Boolean) ((JavascriptExecutor) driver)
-                            .executeScript("return document.readyState === 'complete'"
-                                    + " && (!window.pfselenium || pfselenium.submitting === false && pfselenium.navigating === false);");
+                                .executeScript("return document.readyState === 'complete'"
+                                            + " && (!window.pfselenium || pfselenium.submitting === false && pfselenium.navigating === false);");
                 });
 
                 return result;
@@ -77,9 +77,9 @@ public class Guard {
                 WebDriverWait wait = new WebDriverWait(driver, ConfigProvider.getInstance().getAjaxTimeout(), 100);
                 wait.until(d -> {
                     return (Boolean) ((JavascriptExecutor) driver)
-                            .executeScript("return document.readyState === 'complete'"
-                                    + " && (!window.jQuery || jQuery.active == 0)"
-                                    + " && (!window.pfselenium || (pfselenium.xhr === null && pfselenium.navigating === false));");
+                                .executeScript("return document.readyState === 'complete'"
+                                            + " && (!window.jQuery || jQuery.active == 0)"
+                                            + " && (!window.pfselenium || (pfselenium.xhr === null && pfselenium.navigating === false));");
                 });
 
                 return result;
@@ -112,13 +112,13 @@ public class Guard {
         }
 
         Class<T> proxyClass = new ByteBuddy()
-                .subclass(classToProxy)
-                .implement(interfacesToImplement)
-                .method(methods)
-                .intercept(InvocationHandlerAdapter.of(handler))
-                .make()
-                .load(target.getClass().getClassLoader())
-                .getLoaded();
+                    .subclass(classToProxy)
+                    .implement(interfacesToImplement)
+                    .method(methods)
+                    .intercept(InvocationHandlerAdapter.of(handler))
+                    .make()
+                    .load(target.getClass().getClassLoader())
+                    .getLoaded();
 
         try {
             return proxyClass.newInstance();

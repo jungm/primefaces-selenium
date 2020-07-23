@@ -1,5 +1,5 @@
-/**
- * Copyright 2011-2019 PrimeFaces Extensions
+/*
+ * Copyright 2011-2020 PrimeFaces Extensions
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,13 +15,13 @@
  */
 package org.primefaces.extensions.selenium.component;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.extensions.selenium.PrimeSelenium;
 import org.primefaces.extensions.selenium.component.base.AbstractInputComponent;
-
-import java.util.ArrayList;
-import java.util.List;
 import org.primefaces.extensions.selenium.component.base.ComponentUtils;
 
 public abstract class SelectOneButton extends AbstractInputComponent {
@@ -32,15 +32,23 @@ public abstract class SelectOneButton extends AbstractInputComponent {
     @FindBy(css = ".ui-button.ui-state-active")
     private WebElement activeOption;
 
+    public List<WebElement> getOptions() {
+        return options;
+    }
+
+    public WebElement getActiveOption() {
+        return activeOption;
+    }
+
     public List<String> getOptionLabels() {
         List<String> result = new ArrayList<>();
-        options.forEach((element) -> result.add(element.getText()));
+        getOptions().forEach((element) -> result.add(element.getText()));
 
         return result;
     }
 
     public String getSelectedLabel() {
-        return activeOption.getText();
+        return getActiveOption().getText();
     }
 
     public boolean isSelected(String label) {
@@ -48,14 +56,14 @@ public abstract class SelectOneButton extends AbstractInputComponent {
     }
 
     public boolean isSelected(int index) {
-        return index == options.indexOf(activeOption);
+        return index == getOptions().indexOf(getActiveOption());
     }
 
     public void selectNext() {
-        int activeIndex = options.indexOf(activeOption);
+        int activeIndex = getOptions().indexOf(getActiveOption());
         int nextIndex = activeIndex + 1;
 
-        if (nextIndex >= options.size()) {
+        if (nextIndex >= getOptions().size()) {
             nextIndex = 0;
         }
 
@@ -67,7 +75,7 @@ public abstract class SelectOneButton extends AbstractInputComponent {
             return;
         }
 
-        for (WebElement element : options) {
+        for (WebElement element : getOptions()) {
             if (element.getText().equalsIgnoreCase(label)) {
                 click(element);
                 return;
@@ -76,15 +84,15 @@ public abstract class SelectOneButton extends AbstractInputComponent {
     }
 
     public void select(int index) {
-        if (index > options.size()) {
-            throw new IndexOutOfBoundsException("Index " + index + ", Size " + options.size());
+        if (index > getOptions().size()) {
+            throw new IndexOutOfBoundsException("Index " + index + ", Size " + getOptions().size());
         }
 
         if (isSelected(index)) {
             return;
         }
 
-        click(options.get(index));
+        click(getOptions().get(index));
     }
 
     public void selectFirst() {
@@ -92,7 +100,7 @@ public abstract class SelectOneButton extends AbstractInputComponent {
     }
 
     public void selectLast() {
-        select(options.size() - 1);
+        select(getOptions().size() - 1);
     }
 
     public void deselect(String label) {
@@ -108,7 +116,7 @@ public abstract class SelectOneButton extends AbstractInputComponent {
             return;
         }
 
-        for (WebElement element : options) {
+        for (WebElement element : getOptions()) {
             if (element.getText().equalsIgnoreCase(label)) {
                 click(element);
                 return;
@@ -121,8 +129,8 @@ public abstract class SelectOneButton extends AbstractInputComponent {
     }
 
     public void deselect(int index, boolean ignoreDeselectable) {
-        if (index > options.size()) {
-            throw new IndexOutOfBoundsException("Index " + index + ", Size " + options.size());
+        if (index > getOptions().size()) {
+            throw new IndexOutOfBoundsException("Index " + index + ", Size " + getOptions().size());
         }
 
         if (!ignoreDeselectable && !isUnselectable()) {
@@ -133,7 +141,7 @@ public abstract class SelectOneButton extends AbstractInputComponent {
             return;
         }
 
-        click(options.get(index));
+        click(getOptions().get(index));
     }
 
     public boolean isUnselectable() {

@@ -1,5 +1,5 @@
-/**
- * Copyright 2011-2019 PrimeFaces Extensions
+/*
+ * Copyright 2011-2020 PrimeFaces Extensions
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,8 +35,7 @@ public class ProxyUtils {
     public static List<Field> collectFields(Object instance) {
         Class<?> clazz = getUnproxiedClass(instance.getClass());
 
-        ArrayList<Field> fields = new ArrayList<>();
-        fields.addAll(Arrays.asList(clazz.getDeclaredFields()));
+        ArrayList<Field> fields = new ArrayList<>(Arrays.asList(clazz.getDeclaredFields()));
 
         Class<?> superClazz = clazz.getSuperclass();
         while (superClazz != null && superClazz != Object.class) {

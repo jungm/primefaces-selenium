@@ -1,5 +1,5 @@
-/**
- * Copyright 2011-2019 PrimeFaces Extensions
+/*
+ * Copyright 2011-2020 PrimeFaces Extensions
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,18 +15,13 @@
  */
 package org.primefaces.extensions.selenium;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.StaleElementReferenceException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.primefaces.extensions.selenium.internal.ConfigProvider;
 import org.primefaces.extensions.selenium.internal.Guard;
 import org.primefaces.extensions.selenium.spi.PrimePageFactory;
-import org.primefaces.extensions.selenium.spi.WebDriverProvider;
 import org.primefaces.extensions.selenium.spi.PrimeSeleniumAdapter;
+import org.primefaces.extensions.selenium.spi.WebDriverProvider;
 
 public final class PrimeSelenium {
 

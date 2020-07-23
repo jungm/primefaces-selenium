@@ -1,5 +1,5 @@
-/**
- * Copyright 2011-2019 PrimeFaces Extensions
+/*
+ * Copyright 2011-2020 PrimeFaces Extensions
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,16 +35,16 @@ public final class PrimeExpectedConditions {
         return driver -> (Boolean) ((JavascriptExecutor) driver).executeScript("return jQuery.active == 0;");
     }
 
-    public static ExpectedCondition<Boolean> visibileAndAnimationComplete(WebElement element) {
+    public static ExpectedCondition<Boolean> visibleAndAnimationComplete(WebElement element) {
         return ExpectedConditions.and(
-                jQueryNotActive(),
-                ExpectedConditions.visibilityOf(element));
+                    jQueryNotActive(),
+                    ExpectedConditions.visibilityOf(element));
     }
 
     public static ExpectedCondition<Boolean> invisibleAndAnimationComplete(WebElement element) {
         return ExpectedConditions.and(
-                jQueryNotActive(),
-                ExpectedConditions.invisibilityOf(element));
+                    jQueryNotActive(),
+                    ExpectedConditions.invisibilityOf(element));
     }
 
     public static ExpectedCondition<Boolean> visibleInViewport(WebElement element) {
@@ -52,15 +52,15 @@ public final class PrimeExpectedConditions {
             @Override
             public Boolean apply(WebDriver webDriver) {
                 return (Boolean) PrimeSelenium.executeScript(
-                        "var elem = arguments[0],"
-                        + "    box = elem.getBoundingClientRect(),"
-                        + "    cx = box.left + box.width / 2,"
-                        + "    cy = box.top + box.height / 2,"
-                        + "    e = document.elementFromPoint(cx, cy);"
-                        + "for (; e; e = e.parentElement) {"
-                        + "    if (e === elem) { return true; }"
-                        + "}"
-                        + "return false;", element);
+                            "var elem = arguments[0],"
+                                        + "    box = elem.getBoundingClientRect(),"
+                                        + "    cx = box.left + box.width / 2,"
+                                        + "    cy = box.top + box.height / 2,"
+                                        + "    e = document.elementFromPoint(cx, cy);"
+                                        + "for (; e; e = e.parentElement) {"
+                                        + "    if (e === elem) { return true; }"
+                                        + "}"
+                                        + "return false;", element);
             }
 
             @Override

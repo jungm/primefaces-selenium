@@ -1,5 +1,5 @@
-/**
- * Copyright 2011-2019 PrimeFaces Extensions
+/*
+ * Copyright 2011-2020 PrimeFaces Extensions
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,17 +15,16 @@
  */
 package org.primefaces.extensions.selenium.findby;
 
-import org.openqa.selenium.support.FindBy;
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import org.openqa.selenium.support.FindBy;
+
 /**
  * Alternative {@link FindBy} annotation, which should only be used in page fragments.
  * It searches by id, starting from the parent element, based on the id of the parent concatenated with {@link #value()}.
- *
  * Sometimes, for example with <code>appendTo="..."</code>, the child element is moved to somewhere else in the DOM.
  * In this case you have to set {@link #searchFromRoot()} to <code>true</code>.
  */

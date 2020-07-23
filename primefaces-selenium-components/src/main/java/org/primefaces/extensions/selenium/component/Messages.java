@@ -1,5 +1,5 @@
-/**
- * Copyright 2011-2019 PrimeFaces Extensions
+/*
+ * Copyright 2011-2020 PrimeFaces Extensions
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,23 +18,24 @@ package org.primefaces.extensions.selenium.component;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.primefaces.extensions.selenium.component.base.AbstractComponent;
 import org.primefaces.extensions.selenium.component.model.Msg;
 import org.primefaces.extensions.selenium.component.model.Severity;
-import org.primefaces.extensions.selenium.component.base.AbstractComponent;
 
 public abstract class Messages extends AbstractComponent {
 
     @FindBy(tagName = "div")
-    private List<WebElement> messagesSeverties;
+    private List<WebElement> messagesSeverities;
 
     public List<Msg> getAllMessages() {
         List<Msg> result = new ArrayList<>();
 
-        for (WebElement messageSeverity : messagesSeverties) {
+        for (WebElement messageSeverity : messagesSeverities) {
 
             Severity severity = Severity.toSeverity(messageSeverity.getAttribute("class"));
 
@@ -68,13 +69,13 @@ public abstract class Messages extends AbstractComponent {
 
     public List<Msg> getMessagesBySeverity(Severity severity) {
         return getAllMessages().stream()
-                .filter(message -> severity.equals(message.getSeverity()))
-                .collect(Collectors.toList());
+                    .filter(message -> severity.equals(message.getSeverity()))
+                    .collect(Collectors.toList());
     }
 
     public List<String> getAllSummaries() {
         return getAllMessages().stream()
-            .map(Msg::getSummary)
-            .collect(Collectors.toList());
+                    .map(Msg::getSummary)
+                    .collect(Collectors.toList());
     }
 }

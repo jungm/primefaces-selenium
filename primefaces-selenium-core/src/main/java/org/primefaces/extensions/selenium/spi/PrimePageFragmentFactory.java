@@ -1,5 +1,5 @@
-/**
- * Copyright 2011-2019 PrimeFaces Extensions
+/*
+ * Copyright 2011-2020 PrimeFaces Extensions
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,13 +15,9 @@
  */
 package org.primefaces.extensions.selenium.spi;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Method;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Proxy;
-import java.lang.reflect.Type;
+import java.lang.reflect.*;
 import java.util.List;
+
 import net.bytebuddy.ByteBuddy;
 import net.bytebuddy.implementation.Implementation;
 import net.bytebuddy.implementation.InvocationHandlerAdapter;
@@ -42,10 +38,10 @@ import org.primefaces.extensions.selenium.AbstractPrimePageFragment;
 import org.primefaces.extensions.selenium.PrimeSelenium;
 import org.primefaces.extensions.selenium.findby.FindByParentPartialId;
 import org.primefaces.extensions.selenium.findby.FindByParentPartialIdElementLocator;
-import org.primefaces.extensions.selenium.internal.proxy.ProxyUtils;
 import org.primefaces.extensions.selenium.internal.proxy.ElementLocatorInterceptor;
 import org.primefaces.extensions.selenium.internal.proxy.ElementsLocatorInterceptor;
 import org.primefaces.extensions.selenium.internal.proxy.LazyElementLocator;
+import org.primefaces.extensions.selenium.internal.proxy.ProxyUtils;
 
 public class PrimePageFragmentFactory {
 
@@ -77,7 +73,7 @@ public class PrimePageFragmentFactory {
     public static <T extends WebElement> T create(Class<T> fragment, WebElement element, ElementLocator el) {
         try {
             T proxy = proxy(fragment,
-                    InvocationHandlerAdapter.of((Object p, Method method, Object[] args) -> method.invoke(el.findElement(), args)));
+                        InvocationHandlerAdapter.of((Object p, Method method, Object[] args) -> method.invoke(el.findElement(), args)));
 
             WebDriver driver = WebDriverProvider.get();
 
@@ -102,8 +98,8 @@ public class PrimePageFragmentFactory {
 
         for (Field field : ProxyUtils.collectFields(obj)) {
             if (field.getAnnotation(FindBy.class) != null
-                    || field.getAnnotation(FindAll.class) != null
-                    || field.getAnnotation(FindBys.class) != null) {
+                        || field.getAnnotation(FindAll.class) != null
+                        || field.getAnnotation(FindBys.class) != null) {
                 ElementLocator el = new LazyElementLocator(elf, field);
 
                 setMember(driver, el, field, obj);
@@ -123,12 +119,13 @@ public class PrimePageFragmentFactory {
         }
     }
 
+    @SuppressWarnings("unchecked")
     private static <T> void setMember(WebDriver driver, ElementLocator el, Field field, Object obj) {
         Object value = null;
 
         if (WebElement.class.isAssignableFrom(field.getType())) {
             value = proxy((Class<T>) field.getType(),
-                MethodDelegation.to(new ElementLocatorInterceptor(el)));
+                        MethodDelegation.to(new ElementLocatorInterceptor(el)));
 
             if (value instanceof AbstractPrimePage) {
                 ((AbstractPrimePage) value).setWebDriver(driver);
@@ -148,8 +145,8 @@ public class PrimePageFragmentFactory {
             if (genericClass != null) {
                 InvocationHandler handler = new ElementsLocatorInterceptor(el, genericClass);
 
-                value = (List<? extends WebElement>) Proxy.newProxyInstance(
-                        ProxyUtils.class.getClassLoader(), new Class[]{List.class}, handler);
+                value = Proxy.newProxyInstance(
+                            ProxyUtils.class.getClassLoader(), new Class[] {List.class}, handler);
             }
         }
 
@@ -162,6 +159,7 @@ public class PrimePageFragmentFactory {
         }
     }
 
+    @SuppressWarnings("unchecked")
     private static Class<? extends WebElement> extractGenericListType(Field field) {
         // Attempt to discover the generic type of the list
         Type genericType = field.getGenericType();
@@ -177,24 +175,25 @@ public class PrimePageFragmentFactory {
             }
         }
         catch (ClassNotFoundException ex) {
-
+            // do nothing
         }
 
         return null;
     }
 
+    @SuppressWarnings("unchecked")
     private static <T> T proxy(Class<T> clazz, Implementation interceptor) {
         Class<T> proxyClass = (Class<T>) new ByteBuddy()
-                .subclass(clazz)
-                .implement(WrapsElement.class)
-                .method(ElementMatchers.isDeclaredBy(WebElement.class)
-                        .or(ElementMatchers.isDeclaredBy(WrapsElement.class))
-                        .or(ElementMatchers.named("hashCode"))
-                        .or(ElementMatchers.named("equals")))
-                .intercept(interceptor)
-                .make()
-                .load(PrimeSelenium.class.getClassLoader())
-                .getLoaded();
+                    .subclass(clazz)
+                    .implement(WrapsElement.class)
+                    .method(ElementMatchers.isDeclaredBy(WebElement.class)
+                                .or(ElementMatchers.isDeclaredBy(WrapsElement.class))
+                                .or(ElementMatchers.named("hashCode"))
+                                .or(ElementMatchers.named("equals")))
+                    .intercept(interceptor)
+                    .make()
+                    .load(PrimeSelenium.class.getClassLoader())
+                    .getLoaded();
 
         try {
             return proxyClass.newInstance();

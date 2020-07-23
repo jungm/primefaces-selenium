@@ -1,5 +1,5 @@
-/**
- * Copyright 2011-2019 PrimeFaces Extensions
+/*
+ * Copyright 2011-2020 PrimeFaces Extensions
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,12 +15,12 @@
  */
 package org.primefaces.extensions.selenium.component;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.extensions.selenium.PrimeSelenium;
-
-import java.util.List;
-import java.util.stream.Collectors;
 import org.primefaces.extensions.selenium.component.base.AbstractComponent;
 import org.primefaces.extensions.selenium.component.base.ComponentUtils;
 
@@ -31,6 +31,10 @@ public abstract class AccordionPanel extends AbstractComponent {
 
     @FindBy(css = ".ui-accordion-header")
     private List<WebElement> headers;
+
+    public List<WebElement> getHeaders() {
+        return headers;
+    }
 
     /**
      * Toggle the tab denoted by the specified index.
@@ -63,7 +67,7 @@ public abstract class AccordionPanel extends AbstractComponent {
      */
     public List<String> getTabHeaders() {
         return headers.stream()
-            .map(WebElement::getText)
-            .collect(Collectors.toList());
+                    .map(WebElement::getText)
+                    .collect(Collectors.toList());
     }
 }

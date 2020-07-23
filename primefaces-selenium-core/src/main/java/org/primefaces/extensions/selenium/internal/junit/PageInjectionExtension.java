@@ -1,5 +1,5 @@
-/**
- * Copyright 2011-2019 PrimeFaces Extensions
+/*
+ * Copyright 2011-2020 PrimeFaces Extensions
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,15 +15,12 @@
  */
 package org.primefaces.extensions.selenium.internal.junit;
 
-import org.junit.jupiter.api.extension.ExtensionContext;
-import org.junit.jupiter.api.extension.ParameterContext;
-import org.junit.jupiter.api.extension.ParameterResolutionException;
-import org.junit.jupiter.api.extension.ParameterResolver;
-import org.junit.jupiter.api.extension.TestInstancePostProcessor;
-import org.openqa.selenium.WebDriver;
+import java.lang.reflect.Field;
 
 import javax.inject.Inject;
-import java.lang.reflect.Field;
+
+import org.junit.jupiter.api.extension.*;
+import org.openqa.selenium.WebDriver;
 import org.primefaces.extensions.selenium.AbstractPrimePage;
 import org.primefaces.extensions.selenium.PrimeSelenium;
 import org.primefaces.extensions.selenium.spi.PrimePageFactory;
@@ -33,14 +30,14 @@ public class PageInjectionExtension implements ParameterResolver, TestInstancePo
 
     @Override
     public boolean supportsParameter(ParameterContext parameterContext, ExtensionContext extensionContext)
-            throws ParameterResolutionException {
+                throws ParameterResolutionException {
 
         return AbstractPrimePage.class.isAssignableFrom(parameterContext.getParameter().getType());
     }
 
     @Override
     public Object resolveParameter(ParameterContext parameterContext, ExtensionContext extensionContext)
-            throws ParameterResolutionException {
+                throws ParameterResolutionException {
 
         WebDriver driver = WebDriverProvider.get(true);
 
@@ -57,8 +54,8 @@ public class PageInjectionExtension implements ParameterResolver, TestInstancePo
             field.setAccessible(true);
 
             if (field.getAnnotation(Inject.class) != null
-                    && AbstractPrimePage.class.isAssignableFrom(field.getType())
-                    && field.get(testInstance) == null) {
+                        && AbstractPrimePage.class.isAssignableFrom(field.getType())
+                        && field.get(testInstance) == null) {
 
                 WebDriver driver = WebDriverProvider.get(true);
 

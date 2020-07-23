@@ -1,5 +1,5 @@
-/**
- * Copyright 2011-2019 PrimeFaces Extensions
+/*
+ * Copyright 2011-2020 PrimeFaces Extensions
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import java.util.stream.Collectors;
+
 import org.primefaces.extensions.selenium.spi.PrimeSeleniumAdapter;
 
 public class ConfigProvider {
@@ -40,7 +41,7 @@ public class ConfigProvider {
 
     public ConfigProvider() {
         try {
-            InputStream config = this.getClass().getResourceAsStream("/primefaces-selenium/config.properties");
+            InputStream config = getClass().getResourceAsStream("/primefaces-selenium/config.properties");
             if (config != null) {
                 Properties properties = new Properties();
                 properties.load(config);
@@ -90,8 +91,8 @@ public class ConfigProvider {
     protected void buildOnloadScripts() throws Exception {
         onloadScripts = new ArrayList<>();
         try (BufferedReader buffer = new BufferedReader(new InputStreamReader(
-                getClass().getResourceAsStream("/primefaces-selenium/onload.js"),
-                StandardCharsets.UTF_8))) {
+                    getClass().getResourceAsStream("/primefaces-selenium/onload.js"),
+                    StandardCharsets.UTF_8))) {
             onloadScripts.add(buffer.lines().collect(Collectors.joining("\n")));
         }
 

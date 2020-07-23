@@ -1,5 +1,5 @@
-/**
- * Copyright 2011-2019 PrimeFaces Extensions
+/*
+ * Copyright 2011-2020 PrimeFaces Extensions
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,16 +15,16 @@
  */
 package org.primefaces.extensions.selenium.component;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.extensions.selenium.PrimeExpectedConditions;
 import org.primefaces.extensions.selenium.PrimeSelenium;
 import org.primefaces.extensions.selenium.component.base.AbstractComponent;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 import org.primefaces.extensions.selenium.component.base.ComponentUtils;
 import org.primefaces.extensions.selenium.component.model.SelectItem;
 
@@ -33,10 +33,14 @@ public abstract class SelectManyCheckbox extends AbstractComponent {
     @FindBy(css = ".ui-chkbox")
     private List<WebElement> checkboxes;
 
+    public List<WebElement> getCheckboxes() {
+        return checkboxes;
+    }
+
     public void toggle(int... indexes) {
         for (int i : indexes) {
-            WebElement checkbox = checkboxes.get(i);
-            PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibileAndAnimationComplete(checkbox));
+            WebElement checkbox = getCheckboxes().get(i);
+            PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(checkbox));
 
             WebElement input = checkbox.findElement(By.tagName("input"));
             if (ComponentUtils.isAjaxScript(input.getAttribute("onchange"))) {
@@ -89,13 +93,13 @@ public abstract class SelectManyCheckbox extends AbstractComponent {
     }
 
     public int getItemsSize() {
-        return checkboxes.size();
+        return getCheckboxes().size();
     }
 
     public List<String> getLabels() {
-        return checkboxes.stream()
-                .map(WebElement::getText)
-                .collect(Collectors.toList());
+        return getCheckboxes().stream()
+                    .map(WebElement::getText)
+                    .collect(Collectors.toList());
     }
 
     public String getLabel(int index) {
@@ -106,7 +110,7 @@ public abstract class SelectManyCheckbox extends AbstractComponent {
         ArrayList<SelectItem> items = new ArrayList<>();
 
         int idx = 0;
-        for (WebElement checkbox : checkboxes) {
+        for (WebElement checkbox : getCheckboxes()) {
             WebElement input = checkbox.findElement(By.tagName("input"));
             WebElement label = getRoot().findElement(By.cssSelector("label[for='" + input.getAttribute("id") + "']"));
             WebElement box = checkbox.findElement(By.className("ui-chkbox-box"));

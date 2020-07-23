@@ -1,5 +1,5 @@
-/**
- * Copyright 2011-2019 PrimeFaces Extensions
+/*
+ * Copyright 2011-2020 PrimeFaces Extensions
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,10 +15,10 @@
  */
 package org.primefaces.extensions.selenium.component;
 
-import org.primefaces.extensions.selenium.component.html.Link;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.primefaces.extensions.selenium.PrimeSelenium;
 import org.primefaces.extensions.selenium.component.base.ComponentUtils;
+import org.primefaces.extensions.selenium.component.html.Link;
 
 public abstract class CommandLink extends Link {
 

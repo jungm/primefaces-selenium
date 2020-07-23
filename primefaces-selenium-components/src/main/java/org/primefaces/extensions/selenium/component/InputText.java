@@ -1,5 +1,5 @@
-/**
- * Copyright 2011-2019 PrimeFaces Extensions
+/*
+ * Copyright 2011-2020 PrimeFaces Extensions
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,16 +15,17 @@
  */
 package org.primefaces.extensions.selenium.component;
 
-import org.primefaces.extensions.selenium.component.base.AbstractInputComponent;
-
 import java.io.Serializable;
+
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebElement;
 import org.primefaces.extensions.selenium.PrimeSelenium;
+import org.primefaces.extensions.selenium.component.base.AbstractInputComponent;
 import org.primefaces.extensions.selenium.component.base.ComponentUtils;
 
 public abstract class InputText extends AbstractInputComponent {
 
-    protected boolean isOnchangeAjaxified() {
+    public boolean isOnchangeAjaxified() {
         return ComponentUtils.isAjaxScript(getInput().getAttribute("onchange"));
     }
 
@@ -33,14 +34,15 @@ public abstract class InputText extends AbstractInputComponent {
     }
 
     public void setValue(Serializable value) {
-        getInput().clear();
-        getInput().sendKeys(value.toString());
+        WebElement input = getInput();
+        input.clear();
+        input.sendKeys(value.toString());
 
         if (isOnchangeAjaxified()) {
-            PrimeSelenium.guardAjax(getInput()).sendKeys(Keys.TAB);
+            PrimeSelenium.guardAjax(input).sendKeys(Keys.TAB);
         }
         else {
-            getInput().sendKeys(Keys.TAB);
+            input.sendKeys(Keys.TAB);
         }
     }
 }

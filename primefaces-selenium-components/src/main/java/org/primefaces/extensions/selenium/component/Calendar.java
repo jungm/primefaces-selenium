@@ -1,5 +1,5 @@
-/**
- * Copyright 2011-2019 PrimeFaces Extensions
+/*
+ * Copyright 2011-2020 PrimeFaces Extensions
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,21 +16,21 @@
 package org.primefaces.extensions.selenium.component;
 
 import java.time.LocalDate;
-import org.primefaces.extensions.selenium.PrimeSelenium;
-import org.primefaces.extensions.selenium.component.base.AbstractInputComponent;
-
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
+
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
+import org.primefaces.extensions.selenium.PrimeSelenium;
+import org.primefaces.extensions.selenium.component.base.AbstractInputComponent;
 import org.primefaces.extensions.selenium.component.base.ComponentUtils;
 import org.primefaces.extensions.selenium.findby.FindByParentPartialId;
 
 public abstract class Calendar extends AbstractInputComponent {
 
     @FindByParentPartialId("_input")
-    private WebElement input;
+    public WebElement input;
 
     public LocalDateTime getValue() {
         Object date = PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".getDate()");
@@ -79,7 +79,7 @@ public abstract class Calendar extends AbstractInputComponent {
 
     public String millisAsFormattedDate(long millis) {
         return PrimeSelenium.executeScript(
-            "return $.datepicker.formatDate(" + getWidgetByIdScript() + ".cfg.dateFormat, new Date(" + millis + "));");
+                    "return $.datepicker.formatDate(" + getWidgetByIdScript() + ".cfg.dateFormat, new Date(" + millis + "));");
     }
 
     public long getTimezoneOffset() {

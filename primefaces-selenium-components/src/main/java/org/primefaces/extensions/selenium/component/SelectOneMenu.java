@@ -1,5 +1,5 @@
-/**
- * Copyright 2011-2019 PrimeFaces Extensions
+/*
+ * Copyright 2011-2020 PrimeFaces Extensions
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@ package org.primefaces.extensions.selenium.component;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.primefaces.extensions.selenium.PrimeExpectedConditions;
@@ -40,8 +41,8 @@ public abstract class SelectOneMenu extends AbstractInputComponent {
     private WebElement panel;
 
     public void toggleDropdown() {
-        if (panel.isDisplayed()) {
-            label.click();
+        if (getPanel().isDisplayed()) {
+            getLabel().click();
 
             PrimeSelenium.waitGui().until(PrimeExpectedConditions.invisibleAndAnimationComplete(panel));
         }
@@ -49,7 +50,7 @@ public abstract class SelectOneMenu extends AbstractInputComponent {
             //label.click();
             PrimeSelenium.executeScript(getWidgetByIdScript() + ".show();");
 
-            PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibileAndAnimationComplete(panel));
+            PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(panel));
         }
     }
 
@@ -58,18 +59,18 @@ public abstract class SelectOneMenu extends AbstractInputComponent {
             return;
         }
 
-        if (!panel.isDisplayed()) {
+        if (!getPanel().isDisplayed()) {
             toggleDropdown();
         }
 
-        for (WebElement element : items.findElements(By.tagName("li"))) {
+        for (WebElement element : getItems().findElements(By.tagName("li"))) {
             if (element.getText().equalsIgnoreCase(label)) {
                 click(element);
                 break;
             }
         }
 
-        if (panel.isDisplayed()) {
+        if (getPanel().isDisplayed()) {
             toggleDropdown();
         }
     }
@@ -79,18 +80,18 @@ public abstract class SelectOneMenu extends AbstractInputComponent {
             return;
         }
 
-        if (!panel.isDisplayed()) {
+        if (!getPanel().isDisplayed()) {
             toggleDropdown();
         }
 
-        for (WebElement element : items.findElements(By.tagName("li"))) {
+        for (WebElement element : getItems().findElements(By.tagName("li"))) {
             if (element.getText().equalsIgnoreCase(label)) {
                 click(element);
                 break;
             }
         }
 
-        if (panel.isDisplayed()) {
+        if (getPanel().isDisplayed()) {
             toggleDropdown();
         }
     }
@@ -105,8 +106,8 @@ public abstract class SelectOneMenu extends AbstractInputComponent {
 
     public List<String> getLabels() {
         return getInput().findElements(By.tagName("option")).stream()
-            .map(e -> e.getAttribute("innerHTML"))
-            .collect(Collectors.toList());
+                    .map(e -> e.getAttribute("innerHTML"))
+                    .collect(Collectors.toList());
     }
 
     public void select(int index) {
@@ -134,8 +135,20 @@ public abstract class SelectOneMenu extends AbstractInputComponent {
     }
 
     @Override
-    protected WebElement getInput() {
+    public WebElement getInput() {
         return input;
+    }
+
+    public WebElement getLabel() {
+        return label;
+    }
+
+    public WebElement getItems() {
+        return items;
+    }
+
+    public WebElement getPanel() {
+        return panel;
     }
 
     protected void click(WebElement element) {
