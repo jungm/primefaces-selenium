@@ -21,6 +21,7 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.primefaces.extensions.selenium.PrimeSelenium;
@@ -28,10 +29,19 @@ import org.primefaces.extensions.selenium.component.base.AbstractInputComponent;
 import org.primefaces.extensions.selenium.component.base.ComponentUtils;
 import org.primefaces.extensions.selenium.findby.FindByParentPartialId;
 
-public abstract class Calendar extends AbstractInputComponent {
+public abstract class DatePicker extends AbstractInputComponent {
 
     @FindByParentPartialId("_input")
     private WebElement input;
+
+    @Override
+    public WebElement getInput() {
+        return input;
+    }
+
+    public WebElement getPanel() {
+        return getWebDriver().findElement(By.id(getId() + "_panel"));
+    }
 
     public LocalDateTime getValue() {
         Object date = PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".getDate()");
@@ -45,6 +55,17 @@ public abstract class Calendar extends AbstractInputComponent {
 
         //Parse time string and subtract the timezone offset
         return LocalDateTime.parse(utcTimeString, DateTimeFormatter.RFC_1123_DATE_TIME).minusMinutes(timeZoneOffset);
+    }
+
+    public LocalDate getValueAsLocalDate() {
+        Object date = PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".getDate()");
+
+        if (date == null) {
+            return null;
+        }
+
+        String utcTimeString = PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".getDate().toUTCString();");
+        return LocalDate.parse(utcTimeString, DateTimeFormatter.RFC_1123_DATE_TIME);
     }
 
     public void setValue(LocalDate localDate) {
@@ -67,28 +88,25 @@ public abstract class Calendar extends AbstractInputComponent {
         String formattedDate = millisAsFormattedDate(millis);
 
         // Emulate user input instead of using js, calendar.setDate() can't go beyond mindate/maxdate
-        getInput().sendKeys(Keys.chord(Keys.CONTROL, "a")); // select everything
-        getInput().sendKeys(formattedDate); //overwrite value
+        WebElement input = getInput();
+        input.sendKeys(Keys.chord(Keys.CONTROL, "a")); // select everything
+        input.sendKeys(formattedDate); //overwrite value
 
         if (ComponentUtils.hasAjaxBehavior(getRoot(), "dateSelect")) {
-            PrimeSelenium.guardAjax(getInput()).sendKeys(Keys.TAB);
+            PrimeSelenium.guardAjax(input).sendKeys(Keys.TAB);
         }
         else {
-            getInput().sendKeys(Keys.TAB);
+            input.sendKeys(Keys.TAB);
         }
     }
 
     public String millisAsFormattedDate(long millis) {
         return PrimeSelenium.executeScript(
-                    "return $.datepicker.formatDate(" + getWidgetByIdScript() + ".cfg.dateFormat, new Date(" + millis + "));");
+                    "return " + getWidgetByIdScript() + ".jq.data().primeDatePicker.formatDateTime(new Date(" + millis + "));");
     }
 
     public long getTimezoneOffset() {
         return (Long) PrimeSelenium.executeScript("return new Date().getTimezoneOffset();");
     }
 
-    @Override
-    public WebElement getInput() {
-        return input;
-    }
 }
