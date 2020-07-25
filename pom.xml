@@ -5,7 +5,7 @@
 
     <groupId>org.primefaces.extensions</groupId>
     <artifactId>primefaces-selenium</artifactId>
-    <version>8.0.1</version>
+    <version>8.0.2-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>PrimeFaces Selenium</name>
     <description>
