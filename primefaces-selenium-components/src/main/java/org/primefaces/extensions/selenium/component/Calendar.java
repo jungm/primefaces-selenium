@@ -48,13 +48,8 @@ public abstract class Calendar extends AbstractInputComponent {
     }
 
     public LocalDate getValueAsLocalDate() {
-        LocalDateTime date = getValue();
-
-        if (date == null) {
-            return null;
-        }
-
-        return date.toLocalDate();
+        LocalDateTime value = getValue();
+        return value != null ? value.toLocalDate() : null;
     }
 
     public void setValue(LocalDate localDate) {
