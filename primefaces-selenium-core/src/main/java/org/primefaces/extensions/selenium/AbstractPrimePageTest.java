@@ -167,7 +167,7 @@ public abstract class AbstractPrimePageTest {
         List<LogEntry> severe = logEntries.getAll().stream()
                     .filter(l -> l.getLevel() == Level.SEVERE)
                     .collect(Collectors.toList());
-        Assertions.assertTrue(severe.isEmpty(), "Javascript errors were detected in the browser console.");
+        Assertions.assertTrue(severe.isEmpty(), "Javascript errors were detected in the browser console.\r\n" + severe.toString());
     }
 
     /**
@@ -195,6 +195,10 @@ public abstract class AbstractPrimePageTest {
      * @return either NULL if not available or the {@link LogEntries}
      */
     protected LogEntries getLogsForType(String type) {
+        // Firefox does not support https://github.com/mozilla/geckodriver/issues/284
+        if (PrimeSelenium.isFirefox()) {
+            return null;
+        }
         Logs logs = getWebDriver().manage().logs();
         if (logs == null) {
             return null;

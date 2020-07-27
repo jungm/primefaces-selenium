@@ -16,6 +16,7 @@
 package org.primefaces.extensions.selenium;
 
 import org.openqa.selenium.*;
+import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.primefaces.extensions.selenium.internal.ConfigProvider;
 import org.primefaces.extensions.selenium.internal.Guard;
@@ -172,5 +173,25 @@ public final class PrimeSelenium {
 
     public static void enableAnimations() {
         executeScript("if (window.$) { $(function() { $.fx.off = false; }); }");
+    }
+
+    /**
+     * Is the current WebDriver a Chrome driver?
+     *
+     * @return true if Chrome, false if any other browser
+     */
+    public static boolean isChrome() {
+        Capabilities cap = ((EventFiringWebDriver) getWebDriver()).getCapabilities();
+        return "Chrome".equalsIgnoreCase(cap.getBrowserName());
+    }
+
+    /**
+     * Is the current WebDriver a Firefox driver?
+     *
+     * @return true if Firefox, false if any other browser
+     */
+    public static boolean isFirefox() {
+        Capabilities cap = ((EventFiringWebDriver) getWebDriver()).getCapabilities();
+        return "Firefox".equalsIgnoreCase(cap.getBrowserName());
     }
 }
