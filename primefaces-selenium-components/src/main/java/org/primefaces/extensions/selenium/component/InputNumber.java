@@ -47,7 +47,7 @@ public abstract class InputNumber extends InputText {
 
         PrimeSelenium.executeScript(getWidgetByIdScript() + ".setValue(" + value.toString() + ")");
 
-        Script changeTriggerScript = () -> PrimeSelenium.executeScript(getWidgetByIdScript() + ".input.change()");
+        Script changeTriggerScript = () -> PrimeSelenium.executeScript(getWidgetByIdScript() + ".input.trigger('change')");
         changeTriggerScript = isOnchangeAjaxified() ? PrimeSelenium.guardAjax(changeTriggerScript) : changeTriggerScript;
         changeTriggerScript.execute();
     }
