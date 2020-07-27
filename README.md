@@ -120,3 +120,10 @@ public class IndexPageTest extends AbstractPrimePageTest {
 ### Build & Run
 - Build by source (mvn clean install)
 - Run "primefaces-selenium-example" project (mvn clean install)
+
+### Releasing
+- Update pom.xml to new version `e.g 8.0.2`
+- Run `mvn -N versions:update-child-modules -DgenerateBackupPoms=false` to update all child modules versions
+- Commit and push the changes to GitHub
+- In GitHub create a new Release titled `8.0.2` to tag this release
+- Run `mvn clean deploy -Prelease` to push to Maven Central
