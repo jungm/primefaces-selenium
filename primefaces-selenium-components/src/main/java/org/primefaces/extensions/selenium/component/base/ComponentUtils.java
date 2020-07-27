@@ -18,7 +18,11 @@ package org.primefaces.extensions.selenium.component.base;
 import org.openqa.selenium.WebElement;
 import org.primefaces.extensions.selenium.PrimeSelenium;
 
-public class ComponentUtils {
+public final class ComponentUtils {
+
+    private ComponentUtils() {
+        // prevent instantiation
+    }
 
     public static boolean hasAjaxBehavior(WebElement element, String behavior) {
         if (!hasBehavior(element, behavior)) {
