@@ -47,6 +47,16 @@ public abstract class Calendar extends AbstractInputComponent {
         return LocalDateTime.parse(utcTimeString, DateTimeFormatter.RFC_1123_DATE_TIME).minusMinutes(timeZoneOffset);
     }
 
+    public LocalDate getValueAsLocalDate() {
+        LocalDateTime date = getValue();
+
+        if (date == null) {
+            return null;
+        }
+
+        return date.toLocalDate();
+    }
+
     public void setValue(LocalDate localDate) {
         setValue(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli());
     }
