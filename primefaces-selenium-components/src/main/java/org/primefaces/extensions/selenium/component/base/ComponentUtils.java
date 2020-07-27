@@ -15,7 +15,6 @@
  */
 package org.primefaces.extensions.selenium.component.base;
 
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.primefaces.extensions.selenium.PrimeSelenium;
 
@@ -76,16 +75,19 @@ public final class ComponentUtils {
      * When using Chrome what can happen is the keys are sent too fast and the Javascript of the input can't process it fast enough.
      * This method sends the keys 1 at a time using Chrome so the input can properly process each key.
      *
-     * @param driver which WebDriver is in use
-     * @param input  the input component to send keys to
-     * @param value  the value to send to the input
+     * @param input the input component to send keys to
+     * @param value the value to send to the input
      */
-    public static void sendKeys(WebDriver driver, WebElement input, CharSequence value) {
-        if (value == null) {
+    public static void sendKeys(WebElement input, CharSequence value) {
+        if (input == null || value == null) {
             return;
         }
+
         // using classname here to prevent classloading issues
-        if ("ChromeDriver".equalsIgnoreCase(driver.getClass().getSimpleName())) {
+        if (PrimeSelenium.isChrome()) {
+            //focus the input
+            input.click();
+
             // Chrome send keys 1 at a time
             for (int i = 0; i < value.length(); i++) {
                 char c = value.charAt(i);
