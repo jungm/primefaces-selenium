@@ -36,7 +36,7 @@ public abstract class InputText extends AbstractInputComponent {
     public void setValue(Serializable value) {
         WebElement input = getInput();
         input.clear();
-        ComponentUtils.sendKeys(getWebDriver(), input, value.toString());
+        ComponentUtils.sendKeys(input, value.toString());
 
         if (isOnchangeAjaxified()) {
             PrimeSelenium.guardAjax(input).sendKeys(Keys.TAB);
