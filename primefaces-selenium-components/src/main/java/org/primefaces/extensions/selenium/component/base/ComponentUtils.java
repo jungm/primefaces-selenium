@@ -15,6 +15,7 @@
  */
 package org.primefaces.extensions.selenium.component.base;
 
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.primefaces.extensions.selenium.PrimeSelenium;
 
@@ -69,6 +70,32 @@ public final class ComponentUtils {
 
     public static String getWidgetByIdScript(String id) {
         return "PrimeFaces.getWidgetById('" + id + "')";
+    }
+
+    /**
+     * When using Chrome what can happen is the keys are sent too fast and the Javascript of the input can't process it fast enough.
+     * This method sends the keys 1 at a time using Chrome so the input can properly process each key.
+     *
+     * @param driver which WebDriver is in use
+     * @param input  the input component to send keys to
+     * @param value  the value to send to the input
+     */
+    public static void sendKeys(WebDriver driver, WebElement input, CharSequence value) {
+        if (value == null) {
+            return;
+        }
+        // using classname here to prevent classloading issues
+        if ("ChromeDriver".equalsIgnoreCase(driver.getClass().getSimpleName())) {
+            // Chrome send keys 1 at a time
+            for (int i = 0; i < value.length(); i++) {
+                char c = value.charAt(i);
+                input.sendKeys(Character.toString(c));
+            }
+        }
+        else {
+            // Firefox handles it correctly
+            input.sendKeys(value);
+        }
     }
 
 }
