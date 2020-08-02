@@ -15,6 +15,7 @@
  */
 package org.primefaces.extensions.selenium.component;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.extensions.selenium.PrimeSelenium;
@@ -69,5 +70,14 @@ public abstract class TabView extends AbstractComponent {
         return headers.stream()
                     .map(WebElement::getText)
                     .collect(Collectors.toList());
+    }
+
+    /**
+     * Provides the header of the active (selected) {@link TabView} tab.
+     *
+     * @return  the header of the {@link TabView} active (selected) tab
+     */
+    public String getActiveTabHeader() {
+        return this.findElement(new By.ByClassName("ui-tabs-selected")).getText();
     }
 }
