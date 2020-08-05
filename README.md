@@ -40,6 +40,7 @@ Currently only the following components are implemented (partially):
 - SelectOneMenu
 - SelectOneRadio
 - Slider
+- TabView
 - TextEditor
 
 Contributions are very welcome ;)
