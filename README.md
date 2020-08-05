@@ -34,6 +34,7 @@ Currently only the following components are implemented (partially):
 - Messages
 - Panel
 - SelectBooleanCheckbox
+- SelectBooleanButton
 - SelectManyCheckbox
 - SelectOneButton
 - SelectOneButton
