@@ -40,18 +40,15 @@ public abstract class TabView extends AbstractComponent {
     private List<Tab> tabs = null;
 
     public List<Tab> getTabs() {
-        //TODO: add getTabs to AccordionPanel
-
         if (tabs == null) {
             List<Tab> tabs = new ArrayList<>();
 
-            headers.stream().forEach(headerElt -> {
+            headers.forEach(headerElt -> {
                 String title = headerElt.findElement(By.tagName("a")).getText();
-                WebElement header = headerElt;
                 int index = getIndexOfHeader(headerElt);
                 WebElement content = contents.get(index);
 
-                tabs.add(new Tab(title, index, header, content));
+                tabs.add(new Tab(title, index, headerElt, content));
             });
 
             this.tabs = tabs;
@@ -75,11 +72,11 @@ public abstract class TabView extends AbstractComponent {
     }
 
     /**
-     * Provides the active (selected) {@link TabView} tab.
+     * Provides the selected {@link TabView} tab.
      *
-     * @return  the active (selected) tab
+     * @return the selected tab
      */
-    public Tab getActiveTab() {
+    public Tab getSelectedTab() {
         WebElement selectedTabHeader = this.findElement(new By.ByClassName("ui-tabs-selected"));
         int index = getIndexOfHeader(selectedTabHeader);
 

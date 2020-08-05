@@ -18,7 +18,7 @@ package org.primefaces.extensions.selenium.component.model;
 import org.openqa.selenium.WebElement;
 
 /**
- * Component wrapper for the PrimeFaces {@code p:tab.
+ * Component wrapper for the PrimeFaces {@code p:tab}.
  */
 public class Tab {
 
