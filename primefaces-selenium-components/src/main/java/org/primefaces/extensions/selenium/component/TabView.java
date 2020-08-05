@@ -21,10 +21,10 @@ import org.openqa.selenium.support.FindBy;
 import org.primefaces.extensions.selenium.PrimeSelenium;
 import org.primefaces.extensions.selenium.component.base.AbstractComponent;
 import org.primefaces.extensions.selenium.component.base.ComponentUtils;
+import org.primefaces.extensions.selenium.component.model.Tab;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Component wrapper for the PrimeFaces {@code p:tabView}.
@@ -37,27 +37,27 @@ public abstract class TabView extends AbstractComponent {
     @FindBy(css = ".ui-tabs-panel")
     private List<WebElement> contents;
 
-    public List<WebElement> getHeaders() {
-        return headers;
-    }
+    private List<Tab> tabs = null;
 
     public List<Tab> getTabs() {
-        //TODO: maybe do this only once instead of each time
-        //TODO: deprecate/remove some of the old/existing methods
         //TODO: add getTabs to AccordionPanel
 
-        List<Tab> tabs = new ArrayList<>();
+        if (tabs == null) {
+            List<Tab> tabs = new ArrayList<>();
 
-        headers.stream().forEach(headerElt -> {
-            String title = headerElt.findElement(By.tagName("a")).getText();
-            WebElement header = headerElt;
-            int index = Integer.parseInt(headerElt.getAttribute("data-index"));
-            WebElement content = contents.get(index);
+            headers.stream().forEach(headerElt -> {
+                String title = headerElt.findElement(By.tagName("a")).getText();
+                WebElement header = headerElt;
+                int index = getIndexOfHeader(headerElt);
+                WebElement content = contents.get(index);
 
-            tabs.add(new Tab(title, index, header, content));
-        });
+                tabs.add(new Tab(title, index, header, content));
+            });
 
-        return tabs;
+            this.tabs = tabs;
+        }
+
+        return this.tabs;
     }
 
     /**
@@ -75,32 +75,18 @@ public abstract class TabView extends AbstractComponent {
     }
 
     /**
-     * Provides the header of an {@link TabView} tab at the specified index.
+     * Provides the active (selected) {@link TabView} tab.
      *
-     * @param index the index
-     * @return the header of the {@link TabView} tab
+     * @return  the active (selected) tab
      */
-    public String getTabHeader(int index) {
-        return headers.get(index).getText();
+    public Tab getActiveTab() {
+        WebElement selectedTabHeader = this.findElement(new By.ByClassName("ui-tabs-selected"));
+        int index = getIndexOfHeader(selectedTabHeader);
+
+        return getTabs().get(index);
     }
 
-    /**
-     * Provides the headers of the {@link TabView} tabs in their order.
-     *
-     * @return a copy of the headers in order
-     */
-    public List<String> getTabHeaders() {
-        return headers.stream()
-                    .map(WebElement::getText)
-                    .collect(Collectors.toList());
-    }
-
-    /**
-     * Provides the header of the active (selected) {@link TabView} tab.
-     *
-     * @return  the header of the {@link TabView} active (selected) tab
-     */
-    public String getActiveTabHeader() {
-        return this.findElement(new By.ByClassName("ui-tabs-selected")).getText();
+    private Integer getIndexOfHeader(WebElement headerElt) {
+        return Integer.parseInt(headerElt.getAttribute("data-index"));
     }
 }
