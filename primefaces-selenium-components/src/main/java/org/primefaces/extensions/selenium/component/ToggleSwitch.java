@@ -16,7 +16,9 @@
 package org.primefaces.extensions.selenium.component;
 
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.primefaces.extensions.selenium.PrimeSelenium;
+import org.primefaces.extensions.selenium.component.base.ComponentUtils;
 import org.primefaces.extensions.selenium.findby.FindByParentPartialId;
 
 /**
@@ -30,6 +32,18 @@ public abstract class ToggleSwitch extends InputText {
     @Override
     public WebElement getInput() {
         return input;
+    }
+
+    @Override
+    public void click() {
+        PrimeSelenium.waitGui().until(ExpectedConditions.elementToBeClickable(getRoot()));
+
+        if (ComponentUtils.hasAjaxBehavior(getRoot(), "change")) {
+            PrimeSelenium.guardAjax(getRoot()).click();
+        }
+        else {
+            getRoot().click();
+        }
     }
 
     /**
@@ -52,5 +66,5 @@ public abstract class ToggleSwitch extends InputText {
     public void uncheck() {
         PrimeSelenium.executeScript(getWidgetByIdScript() + ".uncheck();");
     }
-    
+
 }
