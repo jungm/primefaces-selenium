@@ -43,4 +43,25 @@ public abstract class InputSwitch extends AbstractInputComponent {
     public WebElement getInput() {
         return input;
     }
+
+    /**
+     * Turns this switch in case it is off, or turns of off in case it is on.
+     */
+    public void toggle() {
+        PrimeSelenium.executeScript(getWidgetByIdScript() + ".toggle();");
+    }
+
+    /**
+     * Turns this switch on if it is not already turned on.
+     */
+    public void check() {
+        PrimeSelenium.executeScript(getWidgetByIdScript() + ".check();");
+    }
+
+    /**
+     * Turns this switch off if it is not already turned of.
+     */
+    public void uncheck() {
+        PrimeSelenium.executeScript(getWidgetByIdScript() + ".uncheck();");
+    }
 }
