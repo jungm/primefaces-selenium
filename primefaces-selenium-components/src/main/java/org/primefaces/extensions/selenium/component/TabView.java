@@ -22,6 +22,7 @@ import org.primefaces.extensions.selenium.PrimeSelenium;
 import org.primefaces.extensions.selenium.component.base.AbstractComponent;
 import org.primefaces.extensions.selenium.component.base.ComponentUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,8 +34,30 @@ public abstract class TabView extends AbstractComponent {
     @FindBy(css = ".ui-tabs-header")
     private List<WebElement> headers;
 
+    @FindBy(css = ".ui-tabs-panel")
+    private List<WebElement> contents;
+
     public List<WebElement> getHeaders() {
         return headers;
+    }
+
+    public List<Tab> getTabs() {
+        //TODO: maybe do this only once instead of each time
+        //TODO: deprecate/remove some of the old/existing methods
+        //TODO: add getTabs to AccordionPanel
+
+        List<Tab> tabs = new ArrayList<>();
+
+        headers.stream().forEach(headerElt -> {
+            String title = headerElt.findElement(By.tagName("a")).getText();
+            WebElement header = headerElt;
+            int index = Integer.parseInt(headerElt.getAttribute("data-index"));
+            WebElement content = contents.get(index);
+
+            tabs.add(new Tab(title, index, header, content));
+        });
+
+        return tabs;
     }
 
     /**
