@@ -21,5 +21,5 @@ import org.primefaces.extensions.selenium.component.base.AbstractToggleComponent
  * Component wrapper for the PrimeFaces {@code p:toggleSwitch}.
  */
 public abstract class ToggleSwitch extends AbstractToggleComponent {
-    
+
 }
