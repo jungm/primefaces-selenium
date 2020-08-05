@@ -71,7 +71,7 @@ public abstract class Spinner extends InputText {
     /**
      * Increments this spinner by one SpinnerCfg.step
      */
-    public void increment(int step) {
+    public void increment() {
         PrimeSelenium.executeScript(getWidgetByIdScript() + ".spin(1);");
     }
 
