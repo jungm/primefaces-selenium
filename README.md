@@ -37,7 +37,6 @@ Currently only the following components are implemented (partially):
 - SelectBooleanButton
 - SelectManyCheckbox
 - SelectOneButton
-- SelectOneButton
 - SelectOneMenu
 - SelectOneRadio
 - Slider
