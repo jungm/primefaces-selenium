@@ -43,6 +43,7 @@ Currently only the following components are implemented (partially):
 - Spinner
 - TabView
 - TextEditor
+- ToggleSwitch
 
 Contributions are very welcome ;)
 
