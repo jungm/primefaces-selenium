@@ -15,53 +15,8 @@
  */
 package org.primefaces.extensions.selenium.component;
 
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.primefaces.extensions.selenium.PrimeSelenium;
-import org.primefaces.extensions.selenium.component.base.AbstractInputComponent;
-import org.primefaces.extensions.selenium.component.base.ComponentUtils;
-import org.primefaces.extensions.selenium.findby.FindByParentPartialId;
+import org.primefaces.extensions.selenium.component.base.AbstractToggleComponent;
 
-public abstract class InputSwitch extends AbstractInputComponent {
+public abstract class InputSwitch extends AbstractToggleComponent {
 
-    @FindByParentPartialId("_input")
-    private WebElement input;
-
-    @Override
-    public void click() {
-        PrimeSelenium.waitGui().until(ExpectedConditions.elementToBeClickable(getRoot()));
-
-        if (ComponentUtils.isAjaxScript(getRoot().getAttribute("onchange"))) {
-            PrimeSelenium.guardAjax(getRoot()).click();
-        }
-        else {
-            getRoot().click();
-        }
-    }
-
-    @Override
-    public WebElement getInput() {
-        return input;
-    }
-
-    /**
-     * Turns this switch in case it is off, or turns of off in case it is on.
-     */
-    public void toggle() {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".toggle();");
-    }
-
-    /**
-     * Turns this switch on if it is not already turned on.
-     */
-    public void check() {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".check();");
-    }
-
-    /**
-     * Turns this switch off if it is not already turned of.
-     */
-    public void uncheck() {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".uncheck();");
-    }
 }

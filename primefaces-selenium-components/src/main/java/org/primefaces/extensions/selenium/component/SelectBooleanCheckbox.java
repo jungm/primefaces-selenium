@@ -15,39 +15,11 @@
  */
 package org.primefaces.extensions.selenium.component;
 
-import org.openqa.selenium.WebElement;
-import org.primefaces.extensions.selenium.PrimeSelenium;
-import org.primefaces.extensions.selenium.component.base.AbstractInputComponent;
-import org.primefaces.extensions.selenium.component.base.ComponentUtils;
-import org.primefaces.extensions.selenium.findby.FindByParentPartialId;
+import org.primefaces.extensions.selenium.component.base.AbstractToggleComponent;
 
-public abstract class SelectBooleanCheckbox extends AbstractInputComponent {
+/**
+ * Component wrapper for the PrimeFaces {@code p:selectBooleanCheckbox}.
+ */
+public abstract class SelectBooleanCheckbox extends AbstractToggleComponent {
 
-    @FindByParentPartialId("_input")
-    private WebElement input;
-
-    @Override
-    public void click() {
-        if (ComponentUtils.isAjaxScript(input.getAttribute("onchange"))) {
-            PrimeSelenium.guardAjax(getRoot()).click();
-        }
-        else {
-            getRoot().click();
-        }
-    }
-
-    public void setValue(boolean value) {
-        if (getValue() != value) {
-            click();
-        }
-    }
-
-    public boolean getValue() {
-        return input.getAttribute("checked") != null;
-    }
-
-    @Override
-    public WebElement getInput() {
-        return input;
-    }
 }

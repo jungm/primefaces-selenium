@@ -15,6 +15,8 @@
  */
 package org.primefaces.extensions.selenium.component;
 
-public abstract class SelectBooleanButton extends SelectBooleanCheckbox {
+import org.primefaces.extensions.selenium.component.base.AbstractToggleComponent;
+
+public abstract class SelectBooleanButton extends AbstractToggleComponent {
 
 }
