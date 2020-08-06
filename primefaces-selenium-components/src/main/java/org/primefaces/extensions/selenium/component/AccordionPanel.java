@@ -40,13 +40,6 @@ public abstract class AccordionPanel extends AbstractComponent {
 
     private List<Tab> tabs = null;
 
-    /**
-     * @deprecated Use se {@link #getTabs()} instead.
-     */
-    public List<WebElement> getHeaders() {
-        return headers;
-    }
-
     public List<Tab> getTabs() {
         if (tabs == null) {
             List<Tab> tabs = new ArrayList<>();
@@ -89,30 +82,5 @@ public abstract class AccordionPanel extends AbstractComponent {
         return getTabs().stream()
                 .filter(tab -> tab.getHeader().getAttribute("class").contains("ui-state-active"))
                 .collect(Collectors.toList());
-    }
-
-    /**
-     * Provides the header of an {@link AccordionPanel} tab at the specified index.
-     *
-     * @deprecated Use se {@link #getTabs()} instead.
-     *
-     * @param index the index
-     * @return the header of the {@link AccordionPanel} tab
-     */
-    public String getTabHeader(int index) {
-        return headers.get(index).getText();
-    }
-
-    /**
-     * Provides the headers of the {@link AccordionPanel} tabs in their order.
-     *
-     * @deprecated Use se {@link #getTabs()} instead.
-     *
-     * @return a copy of the headers in order
-     */
-    public List<String> getTabHeaders() {
-        return headers.stream()
-                    .map(WebElement::getText)
-                    .collect(Collectors.toList());
     }
 }
