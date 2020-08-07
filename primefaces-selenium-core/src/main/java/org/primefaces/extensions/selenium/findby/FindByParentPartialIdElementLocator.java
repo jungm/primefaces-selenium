@@ -50,7 +50,13 @@ public class FindByParentPartialIdElementLocator implements ElementLocator {
             throw new WebDriverException("Id of parent element is null or empty!");
         }
 
-        By by = By.id(parentId + annotation.value());
+        By by;
+        if (annotation.name().length() > 0) {
+            by = By.name(parentId + annotation.name());
+        }
+        else {
+            by = By.id(parentId + annotation.value());
+        }
         if (annotation.searchFromRoot()) {
             return driver.findElements(by);
         }

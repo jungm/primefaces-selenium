@@ -34,5 +34,7 @@ public @interface FindByParentPartialId {
 
     String value();
 
+    String name() default "";
+
     boolean searchFromRoot() default false;
 }

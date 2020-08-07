@@ -23,7 +23,7 @@ import org.primefaces.extensions.selenium.findby.FindByParentPartialId;
 
 public abstract class TextEditor extends InputText {
 
-    @FindByParentPartialId("_input")
+    @FindByParentPartialId(value = "_input", name = "_input")
     private WebElement input;
 
     @FindByParentPartialId("_editor")
@@ -60,7 +60,7 @@ public abstract class TextEditor extends InputText {
             value = "\"\"";
         }
 
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".editor.setText(" + value.toString() + ")");
+        PrimeSelenium.executeScript(getWidgetByIdScript() + ".editor.setText('" + value.toString() + "');");
     }
 
     /**
