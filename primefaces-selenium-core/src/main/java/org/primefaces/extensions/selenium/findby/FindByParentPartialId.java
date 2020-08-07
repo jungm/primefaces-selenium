@@ -27,13 +27,27 @@ import org.openqa.selenium.support.FindBy;
  * It searches by id, starting from the parent element, based on the id of the parent concatenated with {@link #value()}.
  * Sometimes, for example with <code>appendTo="..."</code>, the child element is moved to somewhere else in the DOM.
  * In this case you have to set {@link #searchFromRoot()} to <code>true</code>.
+ * <p>
+ * NOTE: If a sub-element under the parent does not have an ID but only a name you can use the name attribute to specify it
+ * and it will look for the name="xx" instead of ID.
+ * </p>
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 public @interface FindByParentPartialId {
 
+    /**
+     * ID of the component under the parent to find.
+     *
+     * @return the ID
+     */
     String value();
 
+    /**
+     * Name attribute to find instead of using the ID of the component.
+     *
+     * @return the name attribute or default "".
+     */
     String name() default "";
 
     boolean searchFromRoot() default false;
