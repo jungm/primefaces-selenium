@@ -15,8 +15,8 @@
  */
 package org.primefaces.extensions.selenium.component;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
 import org.primefaces.extensions.selenium.PrimeExpectedConditions;
 import org.primefaces.extensions.selenium.PrimeSelenium;
 import org.primefaces.extensions.selenium.component.base.AbstractInputComponent;
@@ -33,9 +33,6 @@ public abstract class AutoComplete extends AbstractInputComponent {
     @FindByParentPartialId(value = "_panel", searchFromRoot = true)
     private WebElement panel;
 
-    @FindBy(css = "ui-autocomplete-items")
-    private WebElement items;
-
     public boolean isOnchangeAjaxified() {
         return ComponentUtils.isAjaxScript(getInput().getAttribute("onchange"));
     }
@@ -46,7 +43,7 @@ public abstract class AutoComplete extends AbstractInputComponent {
     }
 
     public WebElement getItems() {
-        return items;
+        return getWebDriver().findElement(By.className("ui-autocomplete-items"));
     }
 
     public WebElement getPanel() {
