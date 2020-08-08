@@ -22,6 +22,7 @@ Currently only the following components are implemented (partially):
 
 #### JSF / PrimeFaces
 - AccordionPanel
+- AutoComplete
 - Calendar
 - CommandButton
 - CommandLink
