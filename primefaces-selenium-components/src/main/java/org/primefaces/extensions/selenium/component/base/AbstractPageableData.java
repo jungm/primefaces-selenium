@@ -10,9 +10,9 @@ public abstract class AbstractPageableData extends AbstractComponent {
     @FindBy(className = "ui-paginator")
     private WebElement paginator;
 
-    public abstract List<WebElement> getRows();
+    public abstract List<WebElement> getRowsWebElement();
 
-    public WebElement getPaginator() {
+    public WebElement getPaginatorWebElement() {
         return paginator;
     }
 }
