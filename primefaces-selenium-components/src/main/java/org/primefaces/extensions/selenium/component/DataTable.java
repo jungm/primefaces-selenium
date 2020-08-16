@@ -2,7 +2,9 @@ package org.primefaces.extensions.selenium.component;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.primefaces.extensions.selenium.PrimeSelenium;
 import org.primefaces.extensions.selenium.component.base.AbstractPageableData;
+import org.primefaces.extensions.selenium.component.model.data.Page;
 import org.primefaces.extensions.selenium.component.model.data.Paginator;
 import org.primefaces.extensions.selenium.component.model.datatable.Cell;
 import org.primefaces.extensions.selenium.component.model.datatable.Header;
@@ -56,6 +58,19 @@ public abstract class DataTable extends AbstractPageableData {
         }
 
         return header;
+    }
+
+    public void selectPage(Page page) {
+        PrimeSelenium.guardAjax(page.getWebElement()).click();
+        this.rows = null;
+    }
+
+    public void selectPage(int number) {
+        for (Page page : getPaginator().getPages()) {
+            if (page.getNumber() == number) {
+                selectPage(page);
+            }
+        }
     }
 
 }
