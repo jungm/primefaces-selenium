@@ -62,7 +62,12 @@ public abstract class DataTable extends AbstractPageableData {
 
     public void selectPage(Page page) {
         PrimeSelenium.guardAjax(page.getWebElement()).click();
+        resetCachedData();
+    }
+
+    private void resetCachedData() {
         this.rows = null;
+        this.paginator = null;
     }
 
     public void selectPage(int number) {
