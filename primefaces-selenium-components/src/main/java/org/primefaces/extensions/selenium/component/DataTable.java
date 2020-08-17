@@ -2,6 +2,8 @@ package org.primefaces.extensions.selenium.component;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.primefaces.extensions.selenium.PrimeExpectedConditions;
+import org.primefaces.extensions.selenium.PrimeSelenium;
 import org.primefaces.extensions.selenium.component.base.AbstractPageableData;
 import org.primefaces.extensions.selenium.component.model.data.Page;
 import org.primefaces.extensions.selenium.component.model.data.Paginator;
@@ -67,9 +69,8 @@ public abstract class DataTable extends AbstractPageableData {
     }
 
     public void selectPage(Page page) {
-        //TODO: how to wait correct?
-        //PrimeSelenium.guardAjax(page.getWebElement()).click();
         page.getWebElement().click();
+        PrimeSelenium.waitGui().until(PrimeExpectedConditions.jQueryNotActive());
         resetCachedData();
     }
 
@@ -82,10 +83,11 @@ public abstract class DataTable extends AbstractPageableData {
     }
 
     public void sort(String headerText) {
-        //TODO: how to wait correct?
         for (Cell cell : getHeader().getCells()) {
             if (cell.getText().equals(headerText)) {
                 cell.getWebElement().click();
+                PrimeSelenium.waitGui().until(PrimeExpectedConditions.jQueryNotActive());
+                resetCachedData();
             }
         }
     }
