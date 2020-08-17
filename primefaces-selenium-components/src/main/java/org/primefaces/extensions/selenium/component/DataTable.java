@@ -2,7 +2,6 @@ package org.primefaces.extensions.selenium.component;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.primefaces.extensions.selenium.PrimeSelenium;
 import org.primefaces.extensions.selenium.component.base.AbstractPageableData;
 import org.primefaces.extensions.selenium.component.model.data.Page;
 import org.primefaces.extensions.selenium.component.model.data.Paginator;
@@ -44,6 +43,7 @@ public abstract class DataTable extends AbstractPageableData {
 
     @Override
     public Paginator getPaginator() {
+        //TDDO: to cache or not to cache?
         if (paginator == null) {
             paginator = new Paginator(getPaginatorWebElement());
         }
@@ -52,6 +52,7 @@ public abstract class DataTable extends AbstractPageableData {
     }
 
     public Header getHeader() {
+        //TDDO: to cache or not to cache?
         if (header == null) {
             List<Cell> cells = getHeaderWebElement().findElements(By.tagName("th")).stream().map(cellElt -> new Cell(cellElt)).collect(Collectors.toList());
             header = new Header(getHeaderWebElement(), cells);
@@ -60,14 +61,16 @@ public abstract class DataTable extends AbstractPageableData {
         return header;
     }
 
-    public void selectPage(Page page) {
-        PrimeSelenium.guardAjax(page.getWebElement()).click();
-        resetCachedData();
-    }
-
     private void resetCachedData() {
         this.rows = null;
         this.paginator = null;
+    }
+
+    public void selectPage(Page page) {
+        //TODO: how to wait correct?
+        //PrimeSelenium.guardAjax(page.getWebElement()).click();
+        page.getWebElement().click();
+        resetCachedData();
     }
 
     public void selectPage(int number) {
@@ -78,4 +81,12 @@ public abstract class DataTable extends AbstractPageableData {
         }
     }
 
+    public void sort(String headerText) {
+        //TODO: how to wait correct?
+        for (Cell cell : getHeader().getCells()) {
+            if (cell.getText().equals(headerText)) {
+                cell.getWebElement().click();
+            }
+        }
+    }
 }
