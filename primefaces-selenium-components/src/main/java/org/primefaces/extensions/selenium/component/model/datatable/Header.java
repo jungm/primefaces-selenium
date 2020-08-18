@@ -7,9 +7,9 @@ import java.util.List;
 public class Header {
 
     private WebElement webElement;
-    private List<Cell> cells;
+    private List<HeaderCell> cells;
 
-    public Header(WebElement webElement, List<Cell> cells) {
+    public Header(WebElement webElement, List<HeaderCell> cells) {
         this.webElement = webElement;
         this.cells = cells;
     }
@@ -22,15 +22,15 @@ public class Header {
         this.webElement = webElement;
     }
 
-    public List<Cell> getCells() {
+    public List<HeaderCell> getCells() {
         return cells;
     }
 
-    public void setCells(List<Cell> cells) {
+    public void setCells(List<HeaderCell> cells) {
         this.cells = cells;
     }
 
-    public Cell getCell(int index) {
+    public HeaderCell getCell(int index) {
         return getCells().get(index);
     }
 }
