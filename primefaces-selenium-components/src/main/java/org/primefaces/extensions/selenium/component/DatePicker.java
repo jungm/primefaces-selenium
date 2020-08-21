@@ -50,11 +50,15 @@ public abstract class DatePicker extends AbstractInputComponent {
             return null;
         }
 
-        long timeZoneOffset = PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".getDate().getTimezoneOffset()");
+        //TODO: take timeZone - attribute into account when set; currently we always use the default ZoneId.systemDefault()
+
         String utcTimeString = PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".getDate().toUTCString();");
 
-        //Parse time string and subtract the timezone offset
-        return LocalDateTime.parse(utcTimeString, DateTimeFormatter.RFC_1123_DATE_TIME).minusMinutes(timeZoneOffset);
+        //Parse time string and move into server-timezone
+        LocalDateTime dateTime = LocalDateTime.parse(utcTimeString, DateTimeFormatter.RFC_1123_DATE_TIME);
+        dateTime = LocalDateTime.ofInstant(dateTime.toInstant(ZoneOffset.UTC), ZoneId.systemDefault());
+
+        return dateTime;
     }
 
     public LocalDate getValueAsLocalDate() {
@@ -67,13 +71,7 @@ public abstract class DatePicker extends AbstractInputComponent {
     }
 
     public void setValue(LocalDateTime dateTime) {
-        int timezoneOffset = (int) getTimezoneOffset();
-        int timezoneOffsetHours = timezoneOffset / 60;
-        int timezoneOffsetMinutes = timezoneOffset % 60;
-
-        ZoneOffset zoneOffset = ZoneOffset.ofHoursMinutes(timezoneOffsetHours, timezoneOffsetMinutes);
-
-        long millis = dateTime.atOffset(zoneOffset).toInstant().toEpochMilli();
+        long millis = dateTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
 
         setValue(millis);
     }
