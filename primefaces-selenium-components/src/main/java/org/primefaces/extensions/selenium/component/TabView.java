@@ -18,6 +18,7 @@ package org.primefaces.extensions.selenium.component;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.primefaces.extensions.selenium.PrimeExpectedConditions;
 import org.primefaces.extensions.selenium.PrimeSelenium;
 import org.primefaces.extensions.selenium.component.base.AbstractComponent;
 import org.primefaces.extensions.selenium.component.base.ComponentUtils;
@@ -69,6 +70,7 @@ public abstract class TabView extends AbstractComponent {
         else {
             headers.get(index).click();
         }
+        PrimeSelenium.waitGui().until(PrimeExpectedConditions.jQueryNotActive());
     }
 
     /**
