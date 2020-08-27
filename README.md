@@ -124,8 +124,7 @@ public class IndexPageTest extends AbstractPrimePageTest {
 ```
 
 ### Build & Run
-- Build by source (mvn clean install)
-- Run "primefaces-selenium-example" project (mvn clean install)
+- Build by source `mvn clean install`
 
 ### Releasing
 - Run `mvn versions:set -DnewVersion=8.0.2` to update all modules versions
