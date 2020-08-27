@@ -212,8 +212,5 @@
     <modules>
         <module>primefaces-selenium-core</module>
         <module>primefaces-selenium-components</module>
-        <!--
-            <module>primefaces-selenium-example</module>
-        -->
     </modules>
 </project>
