@@ -34,8 +34,8 @@
     </issueManagement>
 
     <scm>
-        <connection>scm:git:git@github.com:primefaces-extensions/primefaces-selenium.git</connection>
-        <developerConnection>scm:git:git@github.com:primefaces-extensions/primefaces-selenium.git</developerConnection>
+        <connection>scm:git:https://github.com/primefaces-extensions/primefaces-selenium.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com/primefaces-extensions/primefaces-selenium.git</developerConnection>
         <url>https://github.com/primefaces-extensions/primefaces-selenium</url>
         <tag>HEAD</tag>
     </scm>
