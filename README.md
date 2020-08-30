@@ -46,6 +46,7 @@ Currently only the following components are implemented (partially):
 - TabView
 - TextEditor
 - ToggleSwitch
+- TriStateCheckbox
 
 Contributions are very welcome ;)
 
