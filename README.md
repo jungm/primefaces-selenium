@@ -28,6 +28,7 @@ Currently only the following components are implemented (partially):
 - CommandLink
 - Datatable
 - DatePicker
+- Dialog
 - InputMask
 - InputNumber
 - InputSwitch
