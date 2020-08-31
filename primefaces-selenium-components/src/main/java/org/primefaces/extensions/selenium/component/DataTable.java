@@ -20,8 +20,6 @@ import org.openqa.selenium.WebElement;
 import org.primefaces.extensions.selenium.PrimeExpectedConditions;
 import org.primefaces.extensions.selenium.PrimeSelenium;
 import org.primefaces.extensions.selenium.component.base.AbstractPageableData;
-import org.primefaces.extensions.selenium.component.model.data.Page;
-import org.primefaces.extensions.selenium.component.model.data.Paginator;
 import org.primefaces.extensions.selenium.component.model.datatable.Cell;
 import org.primefaces.extensions.selenium.component.model.datatable.Header;
 import org.primefaces.extensions.selenium.component.model.datatable.HeaderCell;
@@ -55,12 +53,6 @@ public abstract class DataTable extends AbstractPageableData {
         return findElement(By.tagName("table")).findElement(By.tagName("thead"));
     }
 
-    @Override
-    public Paginator getPaginator() {
-        //paginator may change after each pagination, filter, sort, ... -> do not cache
-        return new Paginator(getPaginatorWebElement());
-    }
-
     public Header getHeader() {
         if (header == null) {
             //header should be stable -> we can cache it
@@ -71,19 +63,6 @@ public abstract class DataTable extends AbstractPageableData {
         }
 
         return header;
-    }
-
-    public void selectPage(Page page) {
-        page.getWebElement().click();
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.jQueryNotActive());
-    }
-
-    public void selectPage(int number) {
-        for (Page page : getPaginator().getPages()) {
-            if (page.getNumber() == number) {
-                selectPage(page);
-            }
-        }
     }
 
     public void sort(String headerText) {

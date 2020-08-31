@@ -26,7 +26,8 @@ Currently only the following components are implemented (partially):
 - Calendar
 - CommandButton
 - CommandLink
-- Datatable
+- DataList
+- DataTable
 - DatePicker
 - Dialog
 - InputMask
