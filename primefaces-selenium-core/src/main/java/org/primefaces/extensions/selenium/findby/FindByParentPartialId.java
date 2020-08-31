@@ -23,13 +23,12 @@ import java.lang.annotation.Target;
 import org.openqa.selenium.support.FindBy;
 
 /**
- * Alternative {@link FindBy} annotation, which should only be used in page fragments.
- * It searches by id, starting from the parent element, based on the id of the parent concatenated with {@link #value()}.
- * Sometimes, for example with <code>appendTo="..."</code>, the child element is moved to somewhere else in the DOM.
- * In this case you have to set {@link #searchFromRoot()} to <code>true</code>.
+ * Alternative {@link FindBy} annotation, which should only be used in page fragments. It searches by id, starting from the parent element, based on the id of
+ * the parent concatenated with {@link #value()}. Sometimes, for example with <code>appendTo="..."</code>, the child element is moved to somewhere else in the
+ * DOM. In this case you have to set {@link #searchFromRoot()} to <code>true</code>.
  * <p>
- * NOTE: If a sub-element under the parent does not have an ID but only a name you can use the name attribute to specify it
- * and it will look for the name="xx" instead of ID.
+ * NOTE: If a sub-element under the parent does not have an ID but only a name you can use the name attribute to specify it and it will look for the name="xx"
+ * instead of ID.
  * </p>
  */
 @Retention(RetentionPolicy.RUNTIME)

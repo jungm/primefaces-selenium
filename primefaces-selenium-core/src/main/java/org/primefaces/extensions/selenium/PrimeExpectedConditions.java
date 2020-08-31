@@ -60,7 +60,8 @@ public final class PrimeExpectedConditions {
                                         + "for (; e; e = e.parentElement) {"
                                         + "    if (e === elem) { return true; }"
                                         + "}"
-                                        + "return false;", element);
+                                        + "return false;",
+                            element);
             }
 
             @Override

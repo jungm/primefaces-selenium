@@ -50,11 +50,11 @@ public abstract class DatePicker extends AbstractInputComponent {
             return null;
         }
 
-        //TODO: take timeZone - attribute into account when set; currently we always use the default ZoneId.systemDefault()
+        // TODO: take timeZone - attribute into account when set; currently we always use the default ZoneId.systemDefault()
 
         String utcTimeString = PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".getDate().toUTCString();");
 
-        //Parse time string and move into server-timezone
+        // Parse time string and move into server-timezone
         LocalDateTime dateTime = LocalDateTime.parse(utcTimeString, DateTimeFormatter.RFC_1123_DATE_TIME);
         dateTime = LocalDateTime.ofInstant(dateTime.toInstant(ZoneOffset.UTC), ZoneId.systemDefault());
 
@@ -82,7 +82,7 @@ public abstract class DatePicker extends AbstractInputComponent {
         // Emulate user input instead of using js, calendar.setDate() can't go beyond mindate/maxdate
         WebElement input = getInput();
         input.sendKeys(Keys.chord(Keys.CONTROL, "a")); // select everything
-        input.sendKeys(formattedDate); //overwrite value
+        input.sendKeys(formattedDate); // overwrite value
 
         if (ComponentUtils.hasAjaxBehavior(getRoot(), "dateSelect")) {
             PrimeSelenium.guardAjax(input).sendKeys(Keys.TAB);

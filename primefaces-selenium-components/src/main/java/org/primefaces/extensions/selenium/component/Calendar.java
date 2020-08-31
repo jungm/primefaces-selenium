@@ -43,7 +43,7 @@ public abstract class Calendar extends AbstractInputComponent {
         long timeZoneOffset = PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".getDate().getTimezoneOffset()");
         String utcTimeString = PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".getDate().toUTCString();");
 
-        //Parse time string and subtract the timezone offset
+        // Parse time string and subtract the timezone offset
         return LocalDateTime.parse(utcTimeString, DateTimeFormatter.RFC_1123_DATE_TIME).minusMinutes(timeZoneOffset);
     }
 
@@ -73,7 +73,7 @@ public abstract class Calendar extends AbstractInputComponent {
 
         // Emulate user input instead of using js, calendar.setDate() can't go beyond mindate/maxdate
         getInput().sendKeys(Keys.chord(Keys.CONTROL, "a")); // select everything
-        getInput().sendKeys(formattedDate); //overwrite value
+        getInput().sendKeys(formattedDate); // overwrite value
 
         if (ComponentUtils.hasAjaxBehavior(getRoot(), "dateSelect")) {
             PrimeSelenium.guardAjax(getInput()).sendKeys(Keys.TAB);

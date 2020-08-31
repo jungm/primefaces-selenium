@@ -15,6 +15,10 @@
  */
 package org.primefaces.extensions.selenium.component;
 
+import java.io.Serializable;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
@@ -23,10 +27,6 @@ import org.primefaces.extensions.selenium.PrimeSelenium;
 import org.primefaces.extensions.selenium.component.base.AbstractInputComponent;
 import org.primefaces.extensions.selenium.component.base.ComponentUtils;
 import org.primefaces.extensions.selenium.findby.FindByParentPartialId;
-
-import java.io.Serializable;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public abstract class AutoComplete extends AbstractInputComponent {
 
@@ -63,8 +63,8 @@ public abstract class AutoComplete extends AbstractInputComponent {
     }
 
     /**
-     * Sets the value and presses tab afterwards.
-     * Attention: Pressing tab selects the first suggested value.
+     * Sets the value and presses tab afterwards. Attention: Pressing tab selects the first suggested value.
+     *
      * @param value
      */
     public void setValue(Serializable value) {
@@ -82,8 +82,7 @@ public abstract class AutoComplete extends AbstractInputComponent {
     }
 
     /**
-     * Sends the Tab-Key to jump to the next input.
-     * Attention: Pressing tab selects the first suggested value.
+     * Sends the Tab-Key to jump to the next input. Attention: Pressing tab selects the first suggested value.
      */
     public void sendTabKey() {
         if (isOnchangeAjaxified()) {

@@ -15,6 +15,9 @@
  */
 package org.primefaces.extensions.selenium.component;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.primefaces.extensions.selenium.PrimeExpectedConditions;
@@ -24,9 +27,6 @@ import org.primefaces.extensions.selenium.component.model.datatable.Cell;
 import org.primefaces.extensions.selenium.component.model.datatable.Header;
 import org.primefaces.extensions.selenium.component.model.datatable.HeaderCell;
 import org.primefaces.extensions.selenium.component.model.datatable.Row;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 public abstract class DataTable extends AbstractPageableData {
 
@@ -38,7 +38,7 @@ public abstract class DataTable extends AbstractPageableData {
     }
 
     public List<Row> getRows() {
-        //rows change after pagination, filter, sort, ... --> do not cache
+        // rows change after pagination, filter, sort, ... --> do not cache
         return getRowsWebElement().stream().map(rowElt -> {
             List<Cell> cells = rowElt.findElements(By.tagName("td")).stream().map(cellElt -> new Cell(cellElt)).collect(Collectors.toList());
             return new Row(rowElt, cells);
@@ -55,10 +55,10 @@ public abstract class DataTable extends AbstractPageableData {
 
     public Header getHeader() {
         if (header == null) {
-            //header should be stable -> we can cache it
+            // header should be stable -> we can cache it
             List<HeaderCell> cells = getHeaderWebElement().findElements(By.tagName("th")).stream()
-                    .map(cellElt -> new HeaderCell(cellElt))
-                    .collect(Collectors.toList());
+                        .map(cellElt -> new HeaderCell(cellElt))
+                        .collect(Collectors.toList());
             header = new Header(getHeaderWebElement(), cells);
         }
 

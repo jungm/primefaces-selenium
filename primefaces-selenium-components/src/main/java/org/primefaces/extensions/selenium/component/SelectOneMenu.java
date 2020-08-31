@@ -47,7 +47,7 @@ public abstract class SelectOneMenu extends AbstractInputComponent {
             PrimeSelenium.waitGui().until(PrimeExpectedConditions.invisibleAndAnimationComplete(panel));
         }
         else {
-            //label.click();
+            // label.click();
             PrimeSelenium.executeScript(getWidgetByIdScript() + ".show();");
 
             PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(panel));

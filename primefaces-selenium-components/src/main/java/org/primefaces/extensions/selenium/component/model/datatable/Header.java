@@ -15,9 +15,9 @@
  */
 package org.primefaces.extensions.selenium.component.model.datatable;
 
-import org.openqa.selenium.WebElement;
-
 import java.util.List;
+
+import org.openqa.selenium.WebElement;
 
 public class Header {
 

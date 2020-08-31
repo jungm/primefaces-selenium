@@ -15,11 +15,11 @@
  */
 package org.primefaces.extensions.selenium.component.model.data;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-
 import java.util.List;
 import java.util.stream.Collectors;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 
 public class Paginator {
 

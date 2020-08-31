@@ -72,8 +72,8 @@ public final class ComponentUtils {
     }
 
     /**
-     * When using Chrome what can happen is the keys are sent too fast and the Javascript of the input can't process it fast enough.
-     * This method sends the keys 1 at a time using Chrome so the input can properly process each key.
+     * When using Chrome what can happen is the keys are sent too fast and the Javascript of the input can't process it fast enough. This method sends the keys
+     * 1 at a time using Chrome so the input can properly process each key.
      *
      * @param input the input component to send keys to
      * @param value the value to send to the input
@@ -85,7 +85,7 @@ public final class ComponentUtils {
 
         // using classname here to prevent classloading issues
         if (PrimeSelenium.isChrome()) {
-            //focus the input
+            // focus the input
             input.click();
 
             // Chrome send keys 1 at a time

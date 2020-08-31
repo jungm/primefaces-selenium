@@ -80,7 +80,7 @@ public abstract class AccordionPanel extends AbstractComponent {
      */
     public List<Tab> getSelectedTabs() {
         return getTabs().stream()
-                .filter(tab -> tab.getHeader().getAttribute("class").contains("ui-state-active"))
-                .collect(Collectors.toList());
+                    .filter(tab -> tab.getHeader().getAttribute("class").contains("ui-state-active"))
+                    .collect(Collectors.toList());
     }
 }

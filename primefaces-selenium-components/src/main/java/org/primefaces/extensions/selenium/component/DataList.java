@@ -15,12 +15,12 @@
  */
 package org.primefaces.extensions.selenium.component;
 
+import java.util.List;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.extensions.selenium.component.base.AbstractPageableData;
-
-import java.util.List;
 
 public abstract class DataList extends AbstractPageableData {
 

@@ -15,6 +15,9 @@
  */
 package org.primefaces.extensions.selenium.component;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -23,9 +26,6 @@ import org.primefaces.extensions.selenium.PrimeSelenium;
 import org.primefaces.extensions.selenium.component.base.AbstractComponent;
 import org.primefaces.extensions.selenium.component.base.ComponentUtils;
 import org.primefaces.extensions.selenium.component.model.Tab;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Component wrapper for the PrimeFaces {@code p:tabView}.

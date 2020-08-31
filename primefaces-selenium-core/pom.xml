@@ -16,6 +16,7 @@
     <name>PrimeFaces Selenium - Core</name>
 
     <properties>
+        <main.basedir>${project.parent.basedir}</main.basedir>
         <byte-buddy.version>1.10.3</byte-buddy.version>
         <junit.version>5.5.2</junit.version>
         <selenium.version>3.141.59</selenium.version>

@@ -17,6 +17,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
+        <main.basedir>${project.basedir}</main.basedir>
     </properties>
 
     <licenses>
@@ -79,34 +80,6 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-checkstyle-plugin</artifactId>
-                <version>3.1.0</version>
-                <configuration>
-                    <consoleOutput>true</consoleOutput>
-                    <configLocation>./checkstyle.xml</configLocation>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>checkstyle</id>
-                        <phase>validate</phase>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                        <configuration>
-                            <failOnViolation>true</failOnViolation>
-                        </configuration>
-                    </execution>
-                </executions>
-                <dependencies>
-                    <dependency>
-                        <groupId>com.puppycrawl.tools</groupId>
-                        <artifactId>checkstyle</artifactId>
-                        <version>8.29</version>
-                    </dependency>
-                </dependencies>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
                 <version>3.0.1</version>
                 <executions>
@@ -166,6 +139,61 @@
                     <releaseProfiles>release</releaseProfiles>
                 </configuration>
             </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-checkstyle-plugin</artifactId>
+                    <version>3.1.1</version>
+                    <configuration>
+                        <consoleOutput>true</consoleOutput>
+                        <configLocation>${main.basedir}/src/conf/checkstyle.xml</configLocation>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <id>checkstyle</id>
+                            <phase>validate</phase>
+                            <goals>
+                                <goal>check</goal>
+                            </goals>
+                            <configuration>
+                                <failOnViolation>true</failOnViolation>
+                            </configuration>
+                        </execution>
+                    </executions>
+                    <dependencies>
+                        <dependency>
+                            <groupId>com.puppycrawl.tools</groupId>
+                            <artifactId>checkstyle</artifactId>
+                            <version>8.35</version>
+                        </dependency>
+                    </dependencies>
+                </plugin>
+                <plugin>
+                    <groupId>com.diffplug.spotless</groupId>
+                    <artifactId>spotless-maven-plugin</artifactId>
+                    <version>2.1.0</version>
+                    <configuration>
+                        <java>
+                            <importOrder>
+                                <order>java,javax,org,com,</order>
+                            </importOrder>
+                            <eclipse>
+                                <file>${main.basedir}/src/conf/eclipse-pfe-formatter.xml</file> 
+                            </eclipse>
+                            <licenseHeader>
+                                <file>${main.basedir}/src/conf/license.txt</file>
+                            </licenseHeader>
+                        </java>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <id>spotless-check</id>
+                            <phase>validate</phase>
+                            <goals>
+                                <goal>check</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
         </plugins>
     </build>
 
