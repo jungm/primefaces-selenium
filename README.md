@@ -130,7 +130,7 @@ public class IndexPageTest extends AbstractPrimePageTest {
 - Build by source `mvn clean install`
 
 ### Releasing
-- Run `mvn versions:set -DnewVersion=8.0.2` to update all modules versions
+- Run `mvn versions:set -DgenerateBackupPoms=false -DnewVersion=8.0.5` to update all modules versions
 - Commit and push the changes to GitHub
-- In GitHub create a new Release titled `8.0.2` to tag this release
+- In GitHub create a new Release titled `8.0.5` to tag this release
 - Run `mvn clean deploy -Prelease` to push to Maven Central
