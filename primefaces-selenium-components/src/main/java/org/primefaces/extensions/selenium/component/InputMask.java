@@ -17,9 +17,16 @@ package org.primefaces.extensions.selenium.component;
 
 import java.io.Serializable;
 
+import org.openqa.selenium.WebElement;
 import org.primefaces.extensions.selenium.PrimeSelenium;
 
 public abstract class InputMask extends InputText {
+
+    @Override public void setValue(Serializable value) {
+        WebElement input = getInput();
+        input.clear();
+        setWidgetValue(value.toString());
+    }
 
     /**
      * Client side widget method to set the current value.
@@ -27,7 +34,7 @@ public abstract class InputMask extends InputText {
      * @param value the value to set the input to
      */
     public void setWidgetValue(Serializable value) {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".setValue(" + value + ");");
+        PrimeSelenium.executeScript(getWidgetByIdScript() + ".setValue('" + value + "');");
     }
 
     /**
