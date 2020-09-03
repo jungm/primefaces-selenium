@@ -22,7 +22,8 @@ import org.primefaces.extensions.selenium.PrimeSelenium;
 
 public abstract class InputMask extends InputText {
 
-    @Override public void setValue(Serializable value) {
+    @Override
+    public void setValue(Serializable value) {
         WebElement input = getInput();
         input.clear();
         setWidgetValue(value.toString());
