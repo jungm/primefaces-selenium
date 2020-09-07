@@ -30,15 +30,12 @@ import org.primefaces.extensions.selenium.component.model.datatable.Row;
 
 public abstract class DataTable extends AbstractPageableData {
 
-    private Header header;
-
     @Override
     public List<WebElement> getRowsWebElement() {
         return findElement(By.tagName("table")).findElement(By.tagName("tbody")).findElements(By.tagName("tr"));
     }
 
     public List<Row> getRows() {
-        // rows change after pagination, filter, sort, ... --> do not cache
         return getRowsWebElement().stream().map(rowElt -> {
             List<Cell> cells = rowElt.findElements(By.tagName("td")).stream().map(cellElt -> new Cell(cellElt)).collect(Collectors.toList());
             return new Row(rowElt, cells);
@@ -54,15 +51,10 @@ public abstract class DataTable extends AbstractPageableData {
     }
 
     public Header getHeader() {
-        if (header == null) {
-            // header should be stable -> we can cache it
-            List<HeaderCell> cells = getHeaderWebElement().findElements(By.tagName("th")).stream()
-                        .map(cellElt -> new HeaderCell(cellElt))
-                        .collect(Collectors.toList());
-            header = new Header(getHeaderWebElement(), cells);
-        }
-
-        return header;
+        List<HeaderCell> cells = getHeaderWebElement().findElements(By.tagName("th")).stream()
+                    .map(cellElt -> new HeaderCell(cellElt))
+                    .collect(Collectors.toList());
+        return new Header(getHeaderWebElement(), cells);
     }
 
     public void sort(String headerText) {
