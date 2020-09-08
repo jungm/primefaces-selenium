@@ -16,6 +16,8 @@
 package org.primefaces.extensions.selenium.component.model.datatable;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.primefaces.extensions.selenium.PrimeExpectedConditions;
 import org.primefaces.extensions.selenium.PrimeSelenium;
@@ -32,19 +34,33 @@ public class HeaderCell extends Cell {
             return getWebElement().findElement(By.className("ui-column-filter"));
         }
 
-        // TODO: should als work for <f:facet name="filter">
-
         return null;
     }
 
-    public void setFilterValue(String filterValue) {
-        getColumnFilter().clear();
-        ComponentUtils.sendKeys(getColumnFilter(), filterValue);
+    public void setFilterValue(String filterValue, boolean unfocusFilterField) {
+        WebElement columnFilterElt;
+
         try {
-            // filter runs delayed - so wait...
-            Thread.sleep(500);
+            // default-filter
+            columnFilterElt = getColumnFilter();
         }
-        catch (InterruptedException ex) {
+        catch (NoSuchElementException ex) {
+            // for <f:facet name="filter">
+            columnFilterElt = getWebElement().findElement(By.tagName("input"));
+        }
+
+        columnFilterElt.clear();
+        ComponentUtils.sendKeys(columnFilterElt, filterValue);
+        if (unfocusFilterField) {
+            columnFilterElt.sendKeys(Keys.TAB);
+        }
+        else {
+            try {
+                // default-filter runs delayed - so wait...
+                Thread.sleep(500);
+            }
+            catch (InterruptedException ex) {
+            }
         }
         PrimeSelenium.waitGui().until(PrimeExpectedConditions.jQueryNotActive());
     }

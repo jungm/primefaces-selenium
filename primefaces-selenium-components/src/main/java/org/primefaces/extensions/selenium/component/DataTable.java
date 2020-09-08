@@ -67,13 +67,13 @@ public abstract class DataTable extends AbstractPageableData {
     }
 
     public void filter(int cellIndex, String filterValue) {
-        getHeader().getCell(cellIndex).setFilterValue(filterValue);
+        getHeader().getCell(cellIndex).setFilterValue(filterValue, false);
     }
 
     public void filter(String headerText, String filterValue) {
         Optional<HeaderCell> cell = getHeader().getCell(headerText);
         if (cell.isPresent()) {
-            cell.get().setFilterValue(filterValue);
+            cell.get().setFilterValue(filterValue, false);
         }
     }
 }
