@@ -16,6 +16,7 @@
 package org.primefaces.extensions.selenium.component;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.openqa.selenium.By;
@@ -58,11 +59,21 @@ public abstract class DataTable extends AbstractPageableData {
     }
 
     public void sort(String headerText) {
-        for (Cell cell : getHeader().getCells()) {
-            if (cell.getText().equals(headerText)) {
-                cell.getWebElement().findElement(By.className("ui-sortable-column-icon")).click();
-                PrimeSelenium.waitGui().until(PrimeExpectedConditions.jQueryNotActive());
-            }
+        Optional<HeaderCell> cell = getHeader().getCell(headerText);
+        if (cell.isPresent()) {
+            cell.get().getWebElement().findElement(By.className("ui-sortable-column-icon")).click();
+            PrimeSelenium.waitGui().until(PrimeExpectedConditions.jQueryNotActive());
+        }
+    }
+
+    public void filter(int cellIndex, String filterValue) {
+        getHeader().getCell(cellIndex).setFilterValue(filterValue);
+    }
+
+    public void filter(String headerText, String filterValue) {
+        Optional<HeaderCell> cell = getHeader().getCell(headerText);
+        if (cell.isPresent()) {
+            cell.get().setFilterValue(filterValue);
         }
     }
 }

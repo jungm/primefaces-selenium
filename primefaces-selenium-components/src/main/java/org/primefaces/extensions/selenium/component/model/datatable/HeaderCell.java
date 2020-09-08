@@ -17,6 +17,9 @@ package org.primefaces.extensions.selenium.component.model.datatable;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.primefaces.extensions.selenium.PrimeExpectedConditions;
+import org.primefaces.extensions.selenium.PrimeSelenium;
+import org.primefaces.extensions.selenium.component.base.ComponentUtils;
 
 public class HeaderCell extends Cell {
 
@@ -28,6 +31,21 @@ public class HeaderCell extends Cell {
         if (getWebElement() != null) {
             return getWebElement().findElement(By.className("ui-column-filter"));
         }
+
+        // TODO: should als work for <f:facet name="filter">
+
         return null;
+    }
+
+    public void setFilterValue(String filterValue) {
+        getColumnFilter().clear();
+        ComponentUtils.sendKeys(getColumnFilter(), filterValue);
+        try {
+            // filter runs delayed - so wait...
+            Thread.sleep(500);
+        }
+        catch (InterruptedException ex) {
+        }
+        PrimeSelenium.waitGui().until(PrimeExpectedConditions.jQueryNotActive());
     }
 }

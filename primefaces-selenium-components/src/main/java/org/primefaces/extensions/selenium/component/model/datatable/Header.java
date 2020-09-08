@@ -16,6 +16,7 @@
 package org.primefaces.extensions.selenium.component.model.datatable;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.openqa.selenium.WebElement;
 
@@ -47,5 +48,11 @@ public class Header {
 
     public HeaderCell getCell(int index) {
         return getCells().get(index);
+    }
+
+    public Optional<HeaderCell> getCell(String headerText) {
+        return getCells().stream()
+                    .filter(cell -> cell.getText().equals(headerText))
+                    .findFirst();
     }
 }
