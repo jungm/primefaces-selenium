@@ -21,7 +21,6 @@ import java.util.stream.Collectors;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.primefaces.extensions.selenium.PrimeExpectedConditions;
 import org.primefaces.extensions.selenium.PrimeSelenium;
 import org.primefaces.extensions.selenium.component.base.AbstractPageableData;
 import org.primefaces.extensions.selenium.component.model.datatable.Cell;
@@ -61,8 +60,7 @@ public abstract class DataTable extends AbstractPageableData {
     public void sort(String headerText) {
         Optional<HeaderCell> cell = getHeader().getCell(headerText);
         if (cell.isPresent()) {
-            cell.get().getWebElement().findElement(By.className("ui-sortable-column-icon")).click();
-            PrimeSelenium.waitGui().until(PrimeExpectedConditions.jQueryNotActive());
+            PrimeSelenium.guardAjax(cell.get().getWebElement().findElement(By.className("ui-sortable-column-icon"))).click();
         }
     }
 
