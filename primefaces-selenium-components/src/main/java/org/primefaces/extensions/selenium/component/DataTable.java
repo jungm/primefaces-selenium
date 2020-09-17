@@ -76,10 +76,10 @@ public abstract class DataTable extends AbstractPageableData {
     }
 
     public void removeFilter(int cellIndex) {
-        filter(cellIndex, "");
+        filter(cellIndex, null);
     }
 
     public void removeFilter(String headerText) {
-        filter(headerText, "");
+        filter(headerText, null);
     }
 }

@@ -50,7 +50,10 @@ public class HeaderCell extends Cell {
         }
 
         columnFilterElt.clear();
-        ComponentUtils.sendKeys(columnFilterElt, filterValue);
+        if (filterValue != null) {
+            ComponentUtils.sendKeys(columnFilterElt, filterValue);
+        }
+        
         if (unfocusFilterField) {
             columnFilterElt.sendKeys(Keys.TAB);
         }
