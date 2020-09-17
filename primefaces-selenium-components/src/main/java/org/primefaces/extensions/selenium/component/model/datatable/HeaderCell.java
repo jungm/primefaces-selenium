@@ -53,6 +53,10 @@ public class HeaderCell extends Cell {
         if (filterValue != null) {
             ComponentUtils.sendKeys(columnFilterElt, filterValue);
         }
+        else {
+            // null filter press backspace to trigger the refiltering
+            columnFilterElt.sendKeys(Keys.BACK_SPACE);
+        }
 
         if (unfocusFilterField) {
             columnFilterElt.sendKeys(Keys.TAB);
