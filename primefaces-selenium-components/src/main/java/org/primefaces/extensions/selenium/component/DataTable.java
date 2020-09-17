@@ -74,4 +74,12 @@ public abstract class DataTable extends AbstractPageableData {
             cell.get().setFilterValue(filterValue, false);
         }
     }
+
+    public void removeFilter(int cellIndex) {
+        filter(cellIndex, "");
+    }
+
+    public void removeFilter(String headerText) {
+        filter(headerText, "");
+    }
 }
