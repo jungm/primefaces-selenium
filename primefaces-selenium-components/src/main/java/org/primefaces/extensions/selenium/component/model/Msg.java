@@ -15,6 +15,9 @@
  */
 package org.primefaces.extensions.selenium.component.model;
 
+import java.util.Objects;
+import java.util.StringJoiner;
+
 public class Msg {
 
     private Severity severity;
@@ -45,4 +48,31 @@ public class Msg {
         this.detail = detail;
     }
 
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", Msg.class.getSimpleName() + "[", "]")
+                    .add("severity=" + severity)
+                    .add("summary='" + summary + "'")
+                    .add("detail='" + detail + "'")
+                    .toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Msg)) {
+            return false;
+        }
+        Msg msg = (Msg) o;
+        return getSeverity() == msg.getSeverity() &&
+                    Objects.equals(getSummary(), msg.getSummary()) &&
+                    Objects.equals(getDetail(), msg.getDetail());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getSeverity(), getSummary(), getDetail());
+    }
 }
