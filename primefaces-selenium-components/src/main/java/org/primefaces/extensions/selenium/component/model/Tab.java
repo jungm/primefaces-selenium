@@ -69,7 +69,8 @@ public class Tab {
         this.content = content;
     }
 
-    @Override public boolean equals(Object o) {
+    @Override
+    public boolean equals(Object o) {
         if (this == o) {
             return true;
         }
@@ -81,11 +82,13 @@ public class Tab {
                     Objects.equals(getIndex(), tab.getIndex());
     }
 
-    @Override public int hashCode() {
+    @Override
+    public int hashCode() {
         return Objects.hash(getTitle(), getIndex());
     }
 
-    @Override public String toString() {
+    @Override
+    public String toString() {
         return new StringJoiner(", ", Tab.class.getSimpleName() + "[", "]")
                     .add("title='" + title + "'")
                     .add("index=" + index)

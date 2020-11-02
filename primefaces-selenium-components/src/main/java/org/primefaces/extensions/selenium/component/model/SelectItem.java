@@ -57,7 +57,8 @@ public class SelectItem {
         this.selected = selected;
     }
 
-    @Override public boolean equals(Object o) {
+    @Override
+    public boolean equals(Object o) {
         if (this == o) {
             return true;
         }
@@ -71,11 +72,13 @@ public class SelectItem {
                     Objects.equals(getValue(), that.getValue());
     }
 
-    @Override public int hashCode() {
+    @Override
+    public int hashCode() {
         return Objects.hash(getIndex(), getLabel(), getValue(), isSelected());
     }
 
-    @Override public String toString() {
+    @Override
+    public String toString() {
         return new StringJoiner(", ", SelectItem.class.getSimpleName() + "[", "]")
                     .add("index=" + index)
                     .add("label='" + label + "'")
