@@ -15,6 +15,9 @@
  */
 package org.primefaces.extensions.selenium.component.model;
 
+import java.util.Objects;
+import java.util.StringJoiner;
+
 import org.openqa.selenium.WebElement;
 
 /**
@@ -65,4 +68,28 @@ public class Tab {
     public void setContent(WebElement content) {
         this.content = content;
     }
+
+    @Override public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Tab)) {
+            return false;
+        }
+        Tab tab = (Tab) o;
+        return Objects.equals(getTitle(), tab.getTitle()) &&
+                    Objects.equals(getIndex(), tab.getIndex());
+    }
+
+    @Override public int hashCode() {
+        return Objects.hash(getTitle(), getIndex());
+    }
+
+    @Override public String toString() {
+        return new StringJoiner(", ", Tab.class.getSimpleName() + "[", "]")
+                    .add("title='" + title + "'")
+                    .add("index=" + index)
+                    .toString();
+    }
+
 }

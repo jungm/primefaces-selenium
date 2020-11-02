@@ -15,6 +15,9 @@
  */
 package org.primefaces.extensions.selenium.component.model;
 
+import java.util.Objects;
+import java.util.StringJoiner;
+
 public class SelectItem {
 
     private int index;
@@ -52,5 +55,32 @@ public class SelectItem {
 
     public void setSelected(boolean selected) {
         this.selected = selected;
+    }
+
+    @Override public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof SelectItem)) {
+            return false;
+        }
+        SelectItem that = (SelectItem) o;
+        return getIndex() == that.getIndex() &&
+                    isSelected() == that.isSelected() &&
+                    Objects.equals(getLabel(), that.getLabel()) &&
+                    Objects.equals(getValue(), that.getValue());
+    }
+
+    @Override public int hashCode() {
+        return Objects.hash(getIndex(), getLabel(), getValue(), isSelected());
+    }
+
+    @Override public String toString() {
+        return new StringJoiner(", ", SelectItem.class.getSimpleName() + "[", "]")
+                    .add("index=" + index)
+                    .add("label='" + label + "'")
+                    .add("value='" + value + "'")
+                    .add("selected=" + selected)
+                    .toString();
     }
 }
