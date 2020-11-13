@@ -28,18 +28,18 @@ import org.primefaces.extensions.selenium.findby.FindByParentPartialId;
 
 public abstract class SelectOneMenu extends AbstractInputComponent {
 
-    @FindByParentPartialId("_label")
-    private WebElement label;
+    @FindByParentPartialId("_input")
+    private WebElement input;
 
     @FindByParentPartialId(value = "_items", searchFromRoot = true)
     private WebElement items;
 
-    @FindByParentPartialId("_input")
-    private WebElement input;
-
     @FindByParentPartialId(value = "_panel", searchFromRoot = true)
     private WebElement panel;
 
+    /**
+     * Either display the dropdown or select the item it if is already displayed.
+     */
     public void toggleDropdown() {
         if (getPanel().isDisplayed()) {
             getLabel().click();
@@ -97,11 +97,18 @@ public abstract class SelectOneMenu extends AbstractInputComponent {
     }
 
     public String getSelectedLabel() {
-        return label.getText();
+        return getLabel().getText();
     }
 
     public boolean isSelected(String label) {
-        return getSelectedLabel().equalsIgnoreCase(label);
+        boolean result = false;
+        try {
+            result = getSelectedLabel().equalsIgnoreCase(label);
+        }
+        catch (Exception e) {
+            // do nothing
+        }
+        return result;
     }
 
     public List<String> getLabels() {
@@ -139,8 +146,12 @@ public abstract class SelectOneMenu extends AbstractInputComponent {
         return input;
     }
 
+    public WebElement getEditableInput() {
+        return getRoot().findElement(By.name(getId() + "_editableInput"));
+    }
+
     public WebElement getLabel() {
-        return label;
+        return getRoot().findElement(By.id(getId() + "_label"));
     }
 
     public WebElement getItems() {
