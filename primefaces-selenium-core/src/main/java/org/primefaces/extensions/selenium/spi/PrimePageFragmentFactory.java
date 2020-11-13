@@ -18,12 +18,6 @@ package org.primefaces.extensions.selenium.spi;
 import java.lang.reflect.*;
 import java.util.List;
 
-import net.bytebuddy.ByteBuddy;
-import net.bytebuddy.implementation.Implementation;
-import net.bytebuddy.implementation.InvocationHandlerAdapter;
-import net.bytebuddy.implementation.MethodDelegation;
-import net.bytebuddy.matcher.ElementMatchers;
-
 import org.openqa.selenium.SearchContext;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -43,6 +37,12 @@ import org.primefaces.extensions.selenium.internal.proxy.ElementLocatorIntercept
 import org.primefaces.extensions.selenium.internal.proxy.ElementsLocatorInterceptor;
 import org.primefaces.extensions.selenium.internal.proxy.LazyElementLocator;
 import org.primefaces.extensions.selenium.internal.proxy.ProxyUtils;
+
+import net.bytebuddy.ByteBuddy;
+import net.bytebuddy.implementation.Implementation;
+import net.bytebuddy.implementation.InvocationHandlerAdapter;
+import net.bytebuddy.implementation.MethodDelegation;
+import net.bytebuddy.matcher.ElementMatchers;
 
 public class PrimePageFragmentFactory {
 
