@@ -55,4 +55,13 @@ public abstract class InputNumber extends InputText {
     public Double getValueToRender() {
         return Double.valueOf(PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".valueToRender;"));
     }
+
+    /**
+     * Gets the value stored using the widget JS method.
+     *
+     * @return the widget's value
+     */
+    public String getWidgetValue() {
+        return PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".getValue();");
+    }
 }
