@@ -19,6 +19,7 @@ import java.util.List;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.primefaces.extensions.selenium.PrimeExpectedConditions;
 import org.primefaces.extensions.selenium.PrimeSelenium;
 import org.primefaces.extensions.selenium.component.model.data.Page;
 import org.primefaces.extensions.selenium.component.model.data.Paginator;
@@ -39,7 +40,8 @@ public abstract class AbstractPageableData extends AbstractComponent {
     }
 
     public void selectPage(Page page) {
-        PrimeSelenium.guardAjax(page.getWebElement()).click();
+        page.getWebElement().click();
+        PrimeSelenium.waitGui().until(PrimeExpectedConditions.jQueryNotActive());
     }
 
     public void selectPage(int number) {
