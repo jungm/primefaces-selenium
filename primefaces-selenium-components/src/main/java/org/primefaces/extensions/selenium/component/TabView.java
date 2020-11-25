@@ -18,10 +18,10 @@ package org.primefaces.extensions.selenium.component;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONObject;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.primefaces.extensions.selenium.PrimeExpectedConditions;
 import org.primefaces.extensions.selenium.PrimeSelenium;
 import org.primefaces.extensions.selenium.component.base.AbstractComponent;
 import org.primefaces.extensions.selenium.component.base.ComponentUtils;
@@ -55,7 +55,7 @@ public abstract class TabView extends AbstractComponent {
             this.tabs = tabs;
         }
 
-        return this.tabs;
+        return tabs;
     }
 
     /**
@@ -64,13 +64,15 @@ public abstract class TabView extends AbstractComponent {
      * @param index the index of the tab to expand
      */
     public void toggleTab(int index) {
-        if (ComponentUtils.hasAjaxBehavior(getRoot(), "tabChange")) {
+        final JSONObject cfg = getWidgetConfiguration();
+        final boolean isDynamic = cfg.has("dynamic") && cfg.getBoolean("dynamic");
+
+        if (isDynamic || ComponentUtils.hasAjaxBehavior(getRoot(), "tabChange")) {
             PrimeSelenium.guardAjax(headers.get(index)).click();
         }
         else {
             headers.get(index).click();
         }
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.jQueryNotActive());
     }
 
     /**
@@ -79,7 +81,7 @@ public abstract class TabView extends AbstractComponent {
      * @return the selected tab
      */
     public Tab getSelectedTab() {
-        WebElement selectedTabHeader = this.findElement(new By.ByClassName("ui-tabs-selected"));
+        WebElement selectedTabHeader = findElement(new By.ByClassName("ui-tabs-selected"));
         int index = getIndexOfHeader(selectedTabHeader);
 
         return getTabs().get(index);
