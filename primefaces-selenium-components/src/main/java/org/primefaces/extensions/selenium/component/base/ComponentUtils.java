@@ -64,7 +64,13 @@ public final class ComponentUtils {
 
     public static String getWidgetConfiguration(WebElement element) {
         String id = element.getAttribute("id");
-        return PrimeSelenium.executeScript("return JSON.stringify(" + getWidgetByIdScript(id) + ".cfg);");
+        return PrimeSelenium.executeScript("return JSON.stringify(" + getWidgetByIdScript(id) + ".cfg, function(key, value) {\n" +
+                    "  if (typeof value === 'function') {\n" +
+                    "    return value.toString();\n" +
+                    "  } else {\n" +
+                    "    return value;\n" +
+                    "  }\n" +
+                    "});");
     }
 
     public static String getWidgetByIdScript(String id) {
