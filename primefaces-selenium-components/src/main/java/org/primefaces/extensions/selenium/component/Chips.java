@@ -23,6 +23,7 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.primefaces.extensions.selenium.PrimeSelenium;
 import org.primefaces.extensions.selenium.component.base.AbstractInputComponent;
+import org.primefaces.extensions.selenium.component.base.ComponentUtils;
 import org.primefaces.extensions.selenium.findby.FindByParentPartialId;
 
 public abstract class Chips extends AbstractInputComponent {
@@ -37,11 +38,9 @@ public abstract class Chips extends AbstractInputComponent {
 
     public List<String> getValues() {
         List<WebElement> chipTokens = getChipTokens();
-        List<String> values = chipTokens.stream()
+        return chipTokens.stream()
                     .map(token -> token.findElement(By.className("ui-chips-token-label")).getText())
                     .collect(Collectors.toList());
-
-        return values;
     }
 
     public List<WebElement> getChipTokens() {
@@ -51,13 +50,24 @@ public abstract class Chips extends AbstractInputComponent {
     public void addValue(String value) {
         WebElement chipsInput = getInput();
         chipsInput.sendKeys(value);
-        PrimeSelenium.guardAjax(chipsInput).sendKeys(Keys.ENTER);
+        if (ComponentUtils.hasAjaxBehavior(getRoot(), "itemSelect")) {
+            PrimeSelenium.guardAjax(chipsInput).sendKeys(Keys.ENTER);
+        }
+        else {
+            chipsInput.sendKeys(Keys.ENTER);
+        }
     }
 
     public void removeValue(String value) {
         for (WebElement chipToken : getChipTokens()) {
             if (chipToken.findElement(By.className("ui-chips-token-label")).getText().equals(value)) {
-                PrimeSelenium.guardAjax(chipToken.findElement(By.className("ui-icon-close"))).click();
+                WebElement closeIcon = chipToken.findElement(By.className("ui-icon-close"));
+                if (ComponentUtils.hasAjaxBehavior(getRoot(), "itemUnselect")) {
+                    PrimeSelenium.guardAjax(closeIcon).click();
+                }
+                else {
+                    closeIcon.click();
+                }
             }
         }
     }
