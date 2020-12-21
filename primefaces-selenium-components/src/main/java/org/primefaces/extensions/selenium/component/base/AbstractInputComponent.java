@@ -16,7 +16,9 @@
 package org.primefaces.extensions.selenium.component.base;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
+import org.primefaces.extensions.selenium.PrimeSelenium;
 
 public abstract class AbstractInputComponent extends AbstractComponent {
 
@@ -35,6 +37,32 @@ public abstract class AbstractInputComponent extends AbstractComponent {
 
     public String getAssignedLabelText() {
         return getAssignedLabel().getText();
+    }
+
+    /**
+     * Copy the current value in the Input to the clipboard.
+     *
+     * @return the value copied to the clipboard
+     */
+    public String copyToClipboard() {
+        WebElement input = getInput();
+        Keys command = PrimeSelenium.isMacOs() ? Keys.COMMAND : Keys.CONTROL;
+        input.sendKeys(Keys.chord(command, "a")); // select everything
+        input.sendKeys(Keys.chord(command, "c")); // copy
+        return input.getText();
+    }
+
+    /**
+     * Paste the current value of the clipboard to the Input.
+     *
+     * @return the value pasted into the input
+     */
+    public String pasteFromClipboard() {
+        WebElement input = getInput();
+        Keys command = PrimeSelenium.isMacOs() ? Keys.COMMAND : Keys.CONTROL;
+        input.sendKeys(Keys.chord(command, "a")); // select everything
+        input.sendKeys(Keys.chord(command, "v")); // paste
+        return input.getText();
     }
 
 }

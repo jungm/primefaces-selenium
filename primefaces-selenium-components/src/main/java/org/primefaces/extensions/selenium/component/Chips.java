@@ -71,4 +71,12 @@ public abstract class Chips extends AbstractInputComponent {
             }
         }
     }
+
+    /**
+     * Converts the current list into a separator delimited list for mass editing while keeping original order of the items or closes the editor turning the
+     * values back into chips.
+     */
+    public void toggleEditor() {
+        PrimeSelenium.executeScript(getWidgetByIdScript() + ".toggleEditor();");
+    }
 }
