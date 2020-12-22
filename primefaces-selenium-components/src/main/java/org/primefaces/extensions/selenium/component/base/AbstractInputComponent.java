@@ -49,7 +49,7 @@ public abstract class AbstractInputComponent extends AbstractComponent {
         Keys command = PrimeSelenium.isMacOs() ? Keys.COMMAND : Keys.CONTROL;
         input.sendKeys(Keys.chord(command, "a")); // select everything
         input.sendKeys(Keys.chord(command, "c")); // copy
-        return input.getText();
+        return input.getAttribute("value");
     }
 
     /**
@@ -62,7 +62,7 @@ public abstract class AbstractInputComponent extends AbstractComponent {
         Keys command = PrimeSelenium.isMacOs() ? Keys.COMMAND : Keys.CONTROL;
         input.sendKeys(Keys.chord(command, "a")); // select everything
         input.sendKeys(Keys.chord(command, "v")); // paste
-        return input.getText();
+        return input.getAttribute("value");
     }
 
 }
