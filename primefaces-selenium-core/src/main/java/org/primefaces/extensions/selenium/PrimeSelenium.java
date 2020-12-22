@@ -21,6 +21,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.primefaces.extensions.selenium.internal.ConfigProvider;
 import org.primefaces.extensions.selenium.internal.Guard;
 import org.primefaces.extensions.selenium.spi.PrimePageFactory;
+import org.primefaces.extensions.selenium.spi.PrimePageFragmentFactory;
 import org.primefaces.extensions.selenium.spi.PrimeSeleniumAdapter;
 import org.primefaces.extensions.selenium.spi.WebDriverProvider;
 
@@ -32,6 +33,31 @@ public final class PrimeSelenium {
 
     public static WebDriver getWebDriver() {
         return WebDriverProvider.get();
+    }
+
+    /**
+     * Creates the PrimeFaces Selenium component for the selector.
+     *
+     * @param fragmentClass the component class to create like InputText.class
+     * @param by the selector to find the component by
+     * @param <T> the type of component returned
+     * @return the component
+     */
+    public static <T extends WebElement> T createFragment(Class<T> fragmentClass, By by) {
+        WebElement element = getWebDriver().findElement(by);
+        return createFragment(fragmentClass, element);
+    }
+
+    /**
+     * Creates the PrimeFaces Selenium component for the element.
+     *
+     * @param fragmentClass the component class to create like InputText.class
+     * @param element the WebElement to bind this component class to
+     * @param <T> the type of component returned
+     * @return the component
+     */
+    public static <T extends WebElement> T createFragment(Class<T> fragmentClass, WebElement element) {
+        return PrimePageFragmentFactory.create(fragmentClass, element);
     }
 
     public static <T> T executeScript(String script, Object... args) {

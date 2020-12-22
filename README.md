@@ -5,21 +5,26 @@
 [![Stackoverflow](https://img.shields.io/badge/StackOverflow-primefaces-chocolate.svg)](https://stackoverflow.com/questions/tagged/primefaces-extensions)
 
 # primefaces-selenium
-PrimeFaces testing support based on JUnit5, Selenium and the concept of page ojects / fragements.
-It also supports JUnit5 parallel test execution to speed up tests.
+
+PrimeFaces testing support based on JUnit5, Selenium and the concept of page ojects / fragements. It also supports JUnit5 parallel test execution to speed up
+tests.
 
 This is the successor of primefaces-arquillian and heavily inspired by Arquillian Graphene.
 
 ### Compatibility
+
 Only tested on PrimeFaces 8.0+.
 
 ### Status
+
 Currently only the following components are implemented (partially):
 
 #### HTML
+
 - Link
 
 #### JSF / PrimeFaces
+
 - AccordionPanel
 - AutoComplete
 - Calendar
@@ -54,7 +59,14 @@ Contributions are very welcome ;)
 
 ### Usage
 
+Creating component without annotations:
+
+```java
+InputText input=PrimeSelenium.createFragment(InputText.class,By.id("test"));
+```
+
 Example view:
+
 ```java
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.extensions.selenium.AbstractPrimePage;
@@ -85,6 +97,7 @@ public class IndexPage extends AbstractPrimePage {
 ```
 
 Example test:
+
 ```java
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -127,9 +140,11 @@ public class IndexPageTest extends AbstractPrimePageTest {
 ```
 
 ### Build & Run
+
 - Build by source `mvn clean install`
 
 ### Releasing
+
 - Run `mvn versions:set -DgenerateBackupPoms=false -DnewVersion=8.0.5` to update all modules versions
 - Commit and push the changes to GitHub
 - In GitHub create a new Release titled `8.0.5` to tag this release
