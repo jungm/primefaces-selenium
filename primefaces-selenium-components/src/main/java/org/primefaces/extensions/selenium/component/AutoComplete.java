@@ -63,6 +63,27 @@ public abstract class AutoComplete extends AbstractInputComponent {
     }
 
     /**
+     * If using multiple mode gets the values of the tokens.
+     *
+     * @return the values in a list
+     */
+    public List<String> getValues() {
+        List<WebElement> tokens = getTokens();
+        return tokens.stream()
+                    .map(token -> token.findElement(By.className("ui-autocomplete-token-label")).getText())
+                    .collect(Collectors.toList());
+    }
+
+    /**
+     * Gets the actual token elements in mutliple mode.
+     *
+     * @return the List of tokens
+     */
+    public List<WebElement> getTokens() {
+        return findElements(By.cssSelector("ul li.ui-autocomplete-token"));
+    }
+
+    /**
      * Sets the value and presses tab afterwards. Attention: Pressing tab selects the first suggested value.
      *
      * @param value
@@ -142,6 +163,24 @@ public abstract class AutoComplete extends AbstractInputComponent {
      */
     public void disable() {
         PrimeSelenium.executeScript(getWidgetByIdScript() + ".disable();");
+    }
+
+    /**
+     * Adds an item to the input field. Especially useful in 'multiple' mode.
+     *
+     * @param item the item to add to the tokens
+     */
+    public void addItem(String item) {
+        PrimeSelenium.executeScript(getWidgetByIdScript() + ".addItem('" + item + "');");
+    }
+
+    /**
+     * Removes an item from the input field. Especially useful in 'multiple' mode.
+     *
+     * @param item the item to remove from the tokens
+     */
+    public void removeItem(String item) {
+        PrimeSelenium.executeScript(getWidgetByIdScript() + ".removeItem('" + item + "');");
     }
 
     public void search(String value) {
