@@ -16,7 +16,9 @@
 package org.primefaces.extensions.selenium.component.base;
 
 import org.json.JSONObject;
+import org.openqa.selenium.WebElement;
 import org.primefaces.extensions.selenium.AbstractPrimePageFragment;
+import org.primefaces.extensions.selenium.PrimeSelenium;
 
 public abstract class AbstractComponent extends AbstractPrimePageFragment {
 
@@ -49,5 +51,31 @@ public abstract class AbstractComponent extends AbstractPrimePageFragment {
             return null;
         }
         return new JSONObject(cfg);
+    }
+
+    /**
+     * Is the event for the root-element ajaxified?
+     *
+     * @param event Event with the `on` prefix, such as `onclick` or `onblur`.
+     * @return
+     */
+    protected boolean isAjaxified(String event) {
+        return isAjaxified(getRoot(), event);
+    }
+
+    /**
+     * Is the event ajaxified?
+     *
+     * @param element Element for which to do the check. (May be a child element of a complex component.) If no element is passed it defaults to getRoot().
+     * @param event Event with the `on` prefix, such as `onclick` or `onblur`.
+     * @return
+     */
+    protected boolean isAjaxified(WebElement element, String event) {
+        if (element == null) {
+            element = getRoot();
+        }
+        Boolean hasCspRegisteredEvent = PrimeSelenium.executeScript("return PrimeFaces.csp.hasRegisteredAjaxifiedEvent('" +
+                    element.getAttribute("id") + "', '" + event + "')");
+        return (ComponentUtils.isAjaxScript(element.getAttribute(event)) || hasCspRegisteredEvent);
     }
 }
