@@ -46,6 +46,26 @@ public abstract class DataTable extends AbstractPageableData {
         return getRows().get(index);
     }
 
+    /**
+     * Gets the Cell at the row/column coordinates.
+     *
+     * @param rowIndex the index of the row
+     * @param colIndex the index of the column in the row
+     * @return the {@link Cell} representing these coordinates
+     * @throws IndexOutOfBoundsException if either row or column not found
+     */
+    public Cell getCell(int rowIndex, int colIndex) throws IndexOutOfBoundsException {
+        Row row = getRow(rowIndex);
+        if (row == null) {
+            throw new IndexOutOfBoundsException("Row " + rowIndex + " was not found in table");
+        }
+        Cell cell = row.getCell(colIndex);
+        if (cell == null) {
+            throw new IndexOutOfBoundsException("Column " + colIndex + " was not found in Row " + rowIndex + ".");
+        }
+        return cell;
+    }
+
     public WebElement getHeaderWebElement() {
         return findElement(By.tagName("table")).findElement(By.tagName("thead"));
     }
