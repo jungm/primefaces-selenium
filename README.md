@@ -54,6 +54,7 @@ Currently only the following components are implemented (partially):
 - Spinner
 - TabView
 - TextEditor
+- Timeline
 - ToggleSwitch
 - TriStateCheckbox
 
