@@ -43,6 +43,7 @@ Currently only the following components are implemented (partially):
 - InputTextarea
 - Messages
 - Panel
+- Password
 - Schedule
 - SelectBooleanCheckbox
 - SelectBooleanButton
