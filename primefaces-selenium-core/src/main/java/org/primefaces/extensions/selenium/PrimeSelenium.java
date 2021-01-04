@@ -212,6 +212,17 @@ public final class PrimeSelenium {
     }
 
     /**
+     * Sets a value to a hidden input.
+     *
+     * @param input the WebElement input to set
+     * @param value the value to set
+     * @see https://stackoverflow.com/questions/11858366/how-to-type-some-text-in-hidden-field-in-selenium-webdriver-using-java
+     */
+    public static void setHiddenInput(WebElement input, String value) {
+        executeScript(" document.getElementById('" + input.getAttribute("id") + "').value='" + value + "'");
+    }
+
+    /**
      * Is the current WebDriver a Chrome driver?
      *
      * @return true if Chrome, false if any other browser
