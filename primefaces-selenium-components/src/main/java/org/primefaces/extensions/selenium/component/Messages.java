@@ -28,19 +28,16 @@ import java.util.stream.Collectors;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
 import org.primefaces.extensions.selenium.component.base.AbstractComponent;
 import org.primefaces.extensions.selenium.component.model.Msg;
 import org.primefaces.extensions.selenium.component.model.Severity;
 
 public abstract class Messages extends AbstractComponent {
 
-    @FindBy(tagName = "div")
-    private List<WebElement> messagesSeverities;
-
     public List<Msg> getAllMessages() {
         List<Msg> result = new ArrayList<>();
 
+        List<WebElement> messagesSeverities = findElements(By.tagName("div"));
         for (WebElement messageSeverity : messagesSeverities) {
 
             Severity severity = Severity.toSeverity(messageSeverity.getAttribute("class"));

@@ -44,6 +44,7 @@ Currently only the following components are implemented (partially):
 - Messages
 - Panel
 - Password
+- Rating
 - Schedule
 - SelectBooleanCheckbox
 - SelectBooleanButton
