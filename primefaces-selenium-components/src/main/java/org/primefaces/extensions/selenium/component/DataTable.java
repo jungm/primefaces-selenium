@@ -29,6 +29,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.primefaces.extensions.selenium.PrimeSelenium;
 import org.primefaces.extensions.selenium.component.base.AbstractPageableData;
+import org.primefaces.extensions.selenium.component.base.ComponentUtils;
 import org.primefaces.extensions.selenium.component.model.datatable.Cell;
 import org.primefaces.extensions.selenium.component.model.datatable.Header;
 import org.primefaces.extensions.selenium.component.model.datatable.HeaderCell;
@@ -107,5 +108,18 @@ public abstract class DataTable extends AbstractPageableData {
 
     public void removeFilter(String headerText) {
         filter(headerText, null);
+    }
+
+    /**
+     * If using multiple checkbox mode this toggles the Select All checkbox in the header.
+     */
+    public void toggleSelectAllCheckBox() {
+        WebElement checkboxAll = getHeader().getCell(0).getWebElement();
+        if (ComponentUtils.hasBehavior(this, "rowSelect") || ComponentUtils.hasBehavior(this, "rowUnselect")) {
+            PrimeSelenium.guardAjax(checkboxAll).click();
+        }
+        else {
+            checkboxAll.click();
+        }
     }
 }
