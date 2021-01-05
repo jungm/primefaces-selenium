@@ -114,12 +114,21 @@ public abstract class DataTable extends AbstractPageableData {
      * If using multiple checkbox mode this toggles the Select All checkbox in the header.
      */
     public void toggleSelectAllCheckBox() {
-        WebElement checkboxAll = getHeader().getCell(0).getWebElement();
+        WebElement checkboxAll = getSelectAllCheckBox();
         if (ComponentUtils.hasBehavior(this, "rowSelect") || ComponentUtils.hasBehavior(this, "rowUnselect")) {
             PrimeSelenium.guardAjax(checkboxAll).click();
         }
         else {
             checkboxAll.click();
         }
+    }
+
+    /**
+     * Gets the Select All checkbox in the header of the table.
+     *
+     * @return the WebElement representing the checkbox
+     */
+    public WebElement getSelectAllCheckBox() {
+        return getHeader().getCell(0).getWebElement();
     }
 }
