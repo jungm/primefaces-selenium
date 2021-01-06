@@ -41,6 +41,11 @@ public final class PrimeSelenium {
         super();
     }
 
+    /**
+     * Gets the current Selenium WebDriver.
+     *
+     * @return the {@link WebDriver} currently being used
+     */
     public static WebDriver getWebDriver() {
         return WebDriverProvider.get();
     }
@@ -70,11 +75,26 @@ public final class PrimeSelenium {
         return PrimePageFragmentFactory.create(fragmentClass, element);
     }
 
+    /**
+     * Executes JavaScript in the browser.
+     *
+     * @param script the script to execute
+     * @param args any arguments to the script
+     * @param <T> the return type
+     * @return the result of running the JavaScript
+     */
     public static <T> T executeScript(String script, Object... args) {
         JavascriptExecutor executor = (JavascriptExecutor) getWebDriver();
         return (T) executor.executeScript(script, args);
     }
 
+    /**
+     * Goto a particular page.
+     *
+     * @param pageClass the Page class to go to
+     * @param <T> the {@link AbstractPrimePage} type
+     * @return the {@link AbstractPrimePage} page created
+     */
     public static <T extends AbstractPrimePage> T goTo(Class<T> pageClass) {
         WebDriver driver = WebDriverProvider.get();
 
@@ -84,11 +104,22 @@ public final class PrimeSelenium {
         return page;
     }
 
+    /**
+     * Goto a particular page.
+     *
+     * @param page the {@link AbstractPrimePage} to go to
+     */
     public static void goTo(AbstractPrimePage page) {
         WebDriver driver = WebDriverProvider.get();
         driver.get(getUrl(page));
     }
 
+    /**
+     * Gets the URL of the page.
+     *
+     * @param page the {@link AbstractPrimePage}
+     * @return the URL of the page
+     */
     public static String getUrl(AbstractPrimePage page) {
         PrimeSeleniumAdapter adapter = ConfigProvider.getInstance().getAdapter();
 
@@ -100,11 +131,24 @@ public final class PrimeSelenium {
         return baseLocation + page.getLocation();
     }
 
+    /**
+     * Gets the URL of the page.
+     *
+     * @param url the URL to construct
+     * @return the full URL
+     */
     public static String getUrl(String url) {
         PrimeSeleniumAdapter adapter = ConfigProvider.getInstance().getAdapter();
         return adapter.getBaseUrl() + url;
     }
 
+    /**
+     * Checks a WebElement if it has a CSS class.
+     *
+     * @param element the element to check
+     * @param cssClass the CSS class to look for
+     * @return true if this element has the CSS class
+     */
     public static boolean hasCssClass(WebElement element, String cssClass) {
         String classes = element.getAttribute("class");
         if (classes == null || cssClass.isEmpty()) {
@@ -120,6 +164,12 @@ public final class PrimeSelenium {
         return false;
     }
 
+    /**
+     * Is the Element present on the page?
+     *
+     * @param by the selector
+     * @return true if present
+     */
     public static boolean isElementPresent(By by) {
         try {
             getWebDriver().findElement(by);
@@ -130,6 +180,12 @@ public final class PrimeSelenium {
         }
     }
 
+    /**
+     * Is the Element present on the page?
+     *
+     * @param element the WebElement to check
+     * @return true if present
+     */
     public static boolean isElementPresent(WebElement element) {
         try {
             element.isDisplayed(); // just any method to check if NoSuchElementException will be thrown
@@ -140,6 +196,12 @@ public final class PrimeSelenium {
         }
     }
 
+    /**
+     * Is the Element displayed on the page?
+     *
+     * @param by the selector
+     * @return true if displayed
+     */
     public static boolean isElementDisplayed(By by) {
         try {
             return getWebDriver().findElement(by).isDisplayed();
@@ -149,6 +211,12 @@ public final class PrimeSelenium {
         }
     }
 
+    /**
+     * Is the Element displayed on the page?
+     *
+     * @param element the WebElement to check
+     * @return true if displayed
+     */
     public static boolean isElementDisplayed(WebElement element) {
         try {
             return element.isDisplayed();
@@ -158,6 +226,12 @@ public final class PrimeSelenium {
         }
     }
 
+    /**
+     * Is the Element enabled on the page?
+     *
+     * @param by the selector
+     * @return true if enabled
+     */
     public static boolean isElementEnabled(By by) {
         try {
             return getWebDriver().findElement(by).isEnabled();
@@ -167,6 +241,12 @@ public final class PrimeSelenium {
         }
     }
 
+    /**
+     * Is the Element enabled on the page?
+     *
+     * @param element the WebElement to check
+     * @return true if enabled
+     */
     public static boolean isElementEnabled(WebElement element) {
         try {
             return element.isEnabled();
@@ -176,14 +256,34 @@ public final class PrimeSelenium {
         }
     }
 
+    /**
+     * Guard the HTTP request which means wait until it has completed before returning.
+     *
+     * @param target the target to guard
+     * @param <T> the type
+     * @return the type
+     */
     public static <T> T guardHttp(T target) {
         return Guard.http(target);
     }
 
+    /**
+     * Guard the AJAX request which means wait until it has completed before returning.
+     *
+     * @param target the element to guard
+     * @param <T> the type
+     * @return the type
+     */
     public static <T> T guardAjax(T target) {
         return Guard.ajax(target);
     }
 
+    /**
+     * Wait will ignore instances of NotFoundException that are encountered (thrown) by default in the 'until' condition, and immediately propagate all others.
+     * You can add more to the ignore list by calling ignoring(exceptions to add).
+     *
+     * @return the {@link WebDriverWait}
+     */
     public static WebDriverWait waitGui() {
         ConfigProvider config = ConfigProvider.getInstance();
         WebDriver driver = WebDriverProvider.get();
@@ -193,6 +293,11 @@ public final class PrimeSelenium {
         return wait;
     }
 
+    /**
+     * Wait until the document is loaded.
+     *
+     * @return the {@link WebDriverWait}
+     */
     public static WebDriverWait waitDocumentLoad() {
         ConfigProvider config = ConfigProvider.getInstance();
         WebDriver driver = WebDriverProvider.get();
@@ -203,10 +308,16 @@ public final class PrimeSelenium {
         return wait;
     }
 
+    /**
+     * Globally disable all jQuery animations.
+     */
     public static void disableAnimations() {
         executeScript("if (window.$) { $(function() { $.fx.off = true; }); }");
     }
 
+    /**
+     * Globally enable all jQuery animations.
+     */
     public static void enableAnimations() {
         executeScript("if (window.$) { $(function() { $.fx.off = false; }); }");
     }
@@ -253,7 +364,7 @@ public final class PrimeSelenium {
     }
 
     /**
-     * Do we run on MacOS?
+     * Are we running on MacOS?
      *
      * @return true if MacOS
      */
@@ -267,6 +378,11 @@ public final class PrimeSelenium {
         }
     }
 
+    /**
+     * Is this driver running headless? Meaning without a UI.
+     *
+     * @return true if headless, false if not
+     */
     public static boolean isHeadless() {
         return Boolean.parseBoolean(System.getProperty(HEADLESS_MODE_SYSPROP_NAME, HEADLESS_MODE_SYSPROP_VAL_DEFAULT));
     }
