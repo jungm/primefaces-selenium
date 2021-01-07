@@ -24,6 +24,7 @@ package org.primefaces.extensions.selenium;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Assertions;
@@ -228,6 +229,84 @@ public abstract class AbstractPrimePageTest {
 
     protected WebDriver getWebDriver() {
         return WebDriverProvider.get();
+    }
+
+    /**
+     * Asserts text of a web element and cleanses it of whitespace issues due to different WebDriver results.
+     *
+     * @param element the element to check its text
+     * @param text the text expected in the element
+     */
+    protected void assertText(WebElement element, String text) {
+        String actual = normalizeSpace(element.getText()).trim();
+        String expected = normalizeSpace(text).trim();
+        Assertions.assertEquals(expected, actual);
+    }
+
+    /**
+     * <p>
+     * Similar to <a href="http://www.w3.org/TR/xpath/#function-normalize-space">http://www.w3.org/TR/xpath/#function-normalize -space</a>
+     * </p>
+     * <p>
+     * The function returns the argument string with whitespace normalized by using to remove leading and trailing whitespace and then replacing sequences of
+     * whitespace characters by a single space.
+     * </p>
+     * In XML Whitespace characters are the same as those allowed by the <a href="http://www.w3.org/TR/REC-xml/#NT-S">S</a> production, which is S ::= (#x20 |
+     * #x9 | #xD | #xA)+
+     * <p>
+     * Java's regexp pattern \s defines whitespace as [ \t\n\x0B\f\r]
+     * <p>
+     * For reference:
+     * </p>
+     * <ul>
+     * <li>\x0B = vertical tab</li>
+     * <li>\f = #xC = form feed</li>
+     * <li>#x20 = space</li>
+     * <li>#x9 = \t</li>
+     * <li>#xA = \n</li>
+     * <li>#xD = \r</li>
+     * </ul>
+     * <p>
+     * The difference is that Java's whitespace includes vertical tab and form feed, which this functional will also normalize. Additionally removes control
+     * characters (char &lt;= 32) from both ends of this String.
+     * </p>
+     *
+     * @param str the source String to normalize whitespaces from, may be null
+     * @return the modified string with whitespace normalized, {@code null} if null String input
+     * @see Pattern
+     * @see <a href="http://www.w3.org/TR/xpath/#function-normalize-space">http://www.w3.org/TR/xpath/#function-normalize-space</a>
+     * @since 3.0
+     */
+    public static String normalizeSpace(final String str) {
+        // LANG-1020: Improved performance significantly by normalizing manually instead of using regex
+        // See https://github.com/librucha/commons-lang-normalizespaces-benchmark for performance test
+        if (str == null || str.length() == 0) {
+            return str;
+        }
+        final int size = str.length();
+        final char[] newChars = new char[size];
+        int count = 0;
+        int whitespacesCount = 0;
+        boolean startWhitespaces = true;
+        for (int i = 0; i < size; i++) {
+            final char actualChar = str.charAt(i);
+            final boolean isWhitespace = Character.isWhitespace(actualChar);
+            if (isWhitespace) {
+                if (whitespacesCount == 0 && !startWhitespaces) {
+                    newChars[count++] = " ".charAt(0);
+                }
+                whitespacesCount++;
+            }
+            else {
+                startWhitespaces = false;
+                newChars[count++] = (actualChar == 160 ? 32 : actualChar);
+                whitespacesCount = 0;
+            }
+        }
+        if (startWhitespaces) {
+            return "";
+        }
+        return new String(newChars, 0, count - (whitespacesCount > 0 ? 1 : 0)).trim();
     }
 
 }
