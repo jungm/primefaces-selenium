@@ -244,6 +244,41 @@ public abstract class AbstractPrimePageTest {
     }
 
     /**
+     * Checks a WebElement if it has a CSS class or classes. If more than one is listed then ALL must be found on the element.
+     *
+     * @param element the element to check
+     * @param cssClasses the CSS class or classes to look for
+     * @return true if this element has all the CSS classes
+     */
+    protected void assertCss(WebElement element, String... cssClasses) {
+        String elementClass = element.getAttribute("class");
+        if (elementClass == null) {
+            Assertions.fail("Element did not have CSS 'class' attribute.");
+            return;
+        }
+
+        String[] elementClasses = elementClass.split(" ");
+
+        boolean result = true;
+        for (String expected : cssClasses) {
+            boolean found = false;
+            for (String actual : elementClasses) {
+                if (actual.equalsIgnoreCase(expected)) {
+                    found = true;
+                    break;
+                }
+            }
+
+            if (!found) {
+                Assertions.fail("Element expected CSS class '" + expected + "' but was not found.");
+                break;
+            }
+        }
+
+        // success
+    }
+
+    /**
      * <p>
      * Similar to <a href="http://www.w3.org/TR/xpath/#function-normalize-space">http://www.w3.org/TR/xpath/#function-normalize -space</a>
      * </p>

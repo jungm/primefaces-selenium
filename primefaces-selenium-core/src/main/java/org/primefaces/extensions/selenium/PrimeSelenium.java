@@ -143,25 +143,37 @@ public final class PrimeSelenium {
     }
 
     /**
-     * Checks a WebElement if it has a CSS class.
+     * Checks a WebElement if it has a CSS class or classes. If more than one is listed then ALL must be found on the element.
      *
      * @param element the element to check
-     * @param cssClass the CSS class to look for
+     * @param cssClass the CSS class or classes to look for
      * @return true if this element has the CSS class
      */
-    public static boolean hasCssClass(WebElement element, String cssClass) {
-        String classes = element.getAttribute("class");
-        if (classes == null || cssClass.isEmpty()) {
+    public static boolean hasCssClass(WebElement element, String... cssClass) {
+        String elementClass = element.getAttribute("class");
+        if (elementClass == null) {
             return false;
         }
 
-        for (String currentClass : classes.split(" ")) {
-            if (currentClass.equals(cssClass)) {
-                return true;
+        String[] elementClasses = elementClass.split(" ");
+
+        boolean result = true;
+        for (String expected : cssClass) {
+            boolean found = false;
+            for (String actual : elementClasses) {
+                if (actual.equalsIgnoreCase(expected)) {
+                    found = true;
+                    break;
+                }
+            }
+
+            if (!found) {
+                result = false;
+                break;
             }
         }
 
-        return false;
+        return result;
     }
 
     /**
