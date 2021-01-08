@@ -56,6 +56,10 @@ public class HeaderCell extends Cell {
         }
 
         columnFilterElt.clear();
+
+        // filters always use AJAX
+        columnFilterElt = PrimeSelenium.guardAjax(columnFilterElt);
+
         if (filterValue != null) {
             ComponentUtils.sendKeys(columnFilterElt, filterValue);
         }
@@ -67,14 +71,7 @@ public class HeaderCell extends Cell {
         if (unfocusFilterField) {
             columnFilterElt.sendKeys(Keys.TAB);
         }
-        else {
-            try {
-                // default-filter runs delayed - so wait...
-                Thread.sleep(500);
-            }
-            catch (InterruptedException ex) {
-            }
-        }
+
         PrimeSelenium.waitGui().until(PrimeExpectedConditions.jQueryNotActive());
     }
 }
