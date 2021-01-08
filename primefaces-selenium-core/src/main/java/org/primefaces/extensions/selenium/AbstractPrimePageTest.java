@@ -270,7 +270,7 @@ public abstract class AbstractPrimePageTest {
             }
 
             if (!found) {
-                Assertions.fail("Element expected CSS class '" + expected + "' but was not found.");
+                Assertions.fail("Element expected CSS class '" + expected + "' but was not found in '" + elementClass + "'.");
                 break;
             }
         }
