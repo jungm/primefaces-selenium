@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.json.JSONObject;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.primefaces.extensions.selenium.PrimeSelenium;
@@ -84,6 +85,11 @@ public abstract class DataTable extends AbstractPageableData {
         return new Header(getHeaderWebElement(), cells);
     }
 
+    /**
+     * Sorts the column found by its header text. It toggles to the next sort direction.
+     *
+     * @param headerText the header text to look for
+     */
     public void sort(String headerText) {
         Optional<HeaderCell> cell = getHeader().getCell(headerText);
         if (cell.isPresent()) {
@@ -91,23 +97,68 @@ public abstract class DataTable extends AbstractPageableData {
         }
     }
 
-    public void filter(int cellIndex, String filterValue) {
-        getHeader().getCell(cellIndex).setFilterValue(filterValue, false);
-    }
-
-    public void filter(String headerText, String filterValue) {
-        Optional<HeaderCell> cell = getHeader().getCell(headerText);
-        if (cell.isPresent()) {
-            cell.get().setFilterValue(filterValue, false);
+    /**
+     * Sorts the column found by its index. It toggles to the next sort direction.
+     *
+     * @param index the index of the column
+     */
+    public void sort(int index) {
+        HeaderCell cell = getHeader().getCell(index);
+        if (cell != null) {
+            PrimeSelenium.guardAjax(cell.getWebElement().findElement(By.className("ui-sortable-column-icon"))).click();
         }
     }
 
+    /**
+     * Filter the column by its index.
+     *
+     * @param cellIndex the index of the column
+     * @param filterValue the value to pass to the filter
+     */
+    public void filter(int cellIndex, String filterValue) {
+        filter(getHeader().getCell(cellIndex), filterValue);
+    }
+
+    /**
+     * Filter the column by its header text.
+     *
+     * @param headerText the header text to look for
+     * @param filterValue the value to pass to the filter
+     */
+    public void filter(String headerText, String filterValue) {
+        Optional<HeaderCell> cell = getHeader().getCell(headerText);
+        if (cell.isPresent()) {
+            filter(cell.get(), filterValue);
+        }
+    }
+
+    /**
+     * Removes the current filter at this column index.
+     *
+     * @param cellIndex the index of the column
+     */
     public void removeFilter(int cellIndex) {
         filter(cellIndex, null);
     }
 
+    /**
+     * Removes the current filter for a column with the header text
+     *
+     * @param headerText the header text to look for
+     */
     public void removeFilter(String headerText) {
         filter(headerText, null);
+    }
+
+    /**
+     * Filter using the widget configuration for "filterDelay" and "filterEvent".
+     *
+     * @param cell the cell to filter
+     * @param filterValue the value to pass to the filter.
+     */
+    private void filter(HeaderCell cell, String filterValue) {
+        JSONObject cfg = getWidgetConfiguration();
+        cell.setFilterValue(cfg, filterValue);
     }
 
     /**

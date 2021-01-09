@@ -283,11 +283,24 @@ public final class PrimeSelenium {
      * Guard the AJAX request which means wait until it has completed before returning.
      *
      * @param target the element to guard
-     * @param <T> the type
-     * @return the type
+     * @param <T> the type of element
+     * @return the element
      */
     public static <T> T guardAjax(T target) {
         return Guard.ajax(target);
+    }
+
+    /**
+     * Guard the AJAX request which means wait until it has completed before returning. This introduces a delay because some client side activity uses
+     * "setTimeout" Javascript to delay the execution of AJAX.
+     *
+     * @param target the element to guard
+     * @param delayInMilliseconds how long to delay before expecting an AJAX event
+     * @param <T> the element type
+     * @return the element
+     */
+    public static <T> T guardAjax(T target, int delayInMilliseconds) {
+        return Guard.ajax(target, delayInMilliseconds);
     }
 
     /**
@@ -299,9 +312,7 @@ public final class PrimeSelenium {
     public static WebDriverWait waitGui() {
         ConfigProvider config = ConfigProvider.getInstance();
         WebDriver driver = WebDriverProvider.get();
-
         WebDriverWait wait = new WebDriverWait(driver, config.getGuiTimeout(), 100);
-
         return wait;
     }
 

@@ -21,11 +21,13 @@
  */
 package org.primefaces.extensions.selenium.component.model.datatable;
 
+import java.util.Locale;
+
+import org.json.JSONObject;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
-import org.primefaces.extensions.selenium.PrimeExpectedConditions;
 import org.primefaces.extensions.selenium.PrimeSelenium;
 import org.primefaces.extensions.selenium.component.base.ComponentUtils;
 
@@ -43,38 +45,69 @@ public class HeaderCell extends Cell {
         return null;
     }
 
-    public void setFilterValue(String filterValue, boolean unfocusFilterField) {
-        WebElement columnFilterElt;
+    /**
+     * Filter using the Widget configuration "filterDelay" and "filterEvent" values.
+     *
+     * @param cfg the widget configuration JSON object
+     * @param filterValue the value to set the filter
+     */
+    public void setFilterValue(JSONObject cfg, String filterValue) {
+        String filterEvent = cfg.getString("filterEvent");
+        int filterDelay = cfg.getInt("filterDelay");
+        setFilterValue(filterValue, filterEvent, filterDelay);
+    }
+
+    /**
+     * Filter the column using these values.
+     *
+     * @param filterValue the value to filter for
+     * @param filterEvent the event causing the filter to trigger such as "keyup" or "enter"
+     * @param filterDelay the delay in milliseconds if a "keyup" filter
+     */
+    public void setFilterValue(String filterValue, String filterEvent, int filterDelay) {
+        WebElement columnFilter;
 
         try {
             // default-filter
-            columnFilterElt = getColumnFilter();
+            columnFilter = getColumnFilter();
         }
         catch (NoSuchElementException ex) {
             // for <f:facet name="filter">
-            columnFilterElt = getWebElement().findElement(By.tagName("input"));
+            columnFilter = getWebElement().findElement(By.tagName("input"));
         }
 
-        columnFilterElt.clear();
+        columnFilter.clear();
+
+        Keys triggerKey = null;
+        filterEvent = filterEvent.toLowerCase(Locale.ROOT);
+        switch (filterEvent) {
+            case "keyup":
+            case "keydown":
+            case "keypress":
+            case "input":
+                columnFilter = PrimeSelenium.guardAjax(columnFilter, filterDelay + 100);
+                break;
+            case "enter":
+                triggerKey = Keys.ENTER;
+                break;
+            case "change":
+            case "blur":
+                triggerKey = Keys.TAB;
+                break;
+            default:
+                break;
+        }
+
         if (filterValue != null) {
-            ComponentUtils.sendKeys(columnFilterElt, filterValue);
+            ComponentUtils.sendKeys(columnFilter, filterValue);
         }
         else {
-            // null filter press backspace to trigger the refiltering
-            columnFilterElt.sendKeys(Keys.BACK_SPACE);
+            // null filter press backspace to trigger the re-filtering
+            columnFilter.sendKeys(Keys.BACK_SPACE);
         }
 
-        if (unfocusFilterField) {
-            columnFilterElt.sendKeys(Keys.TAB);
+        if (triggerKey != null) {
+            PrimeSelenium.guardAjax(columnFilter).sendKeys(triggerKey);
         }
-        else {
-            try {
-                // default-filter runs delayed - so wait...
-                Thread.sleep(500);
-            }
-            catch (InterruptedException ex) {
-            }
-        }
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.jQueryNotActive());
     }
 }

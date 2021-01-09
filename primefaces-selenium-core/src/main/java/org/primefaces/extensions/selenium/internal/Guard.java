@@ -71,6 +71,10 @@ public class Guard {
     }
 
     public static <T> T ajax(T target) {
+        return ajax(target, 0);
+    }
+
+    public static <T> T ajax(T target, int delayInMilliseconds) {
         OnloadScripts.execute();
 
         return proxy(target, (Object p, Method method, Object[] args) -> {
@@ -78,6 +82,16 @@ public class Guard {
                 PrimeSelenium.executeScript("pfselenium.xhr = 'somethingJustNotNull';");
 
                 Object result = method.invoke(target, args);
+
+                // if JS uses setTimeout on the client we want to wait before trying to capture AJAX call
+                if (delayInMilliseconds > 0) {
+                    try {
+                        Thread.sleep(delayInMilliseconds);
+                    }
+                    catch (InterruptedException ex) {
+                        System.err.println("AJAX Guard delay was interrupted!");
+                    }
+                }
 
                 WebDriver driver = WebDriverProvider.get();
 
