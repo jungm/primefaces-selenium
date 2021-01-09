@@ -28,6 +28,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
+import org.primefaces.extensions.selenium.PrimeExpectedConditions;
 import org.primefaces.extensions.selenium.PrimeSelenium;
 import org.primefaces.extensions.selenium.component.base.ComponentUtils;
 
@@ -85,7 +86,9 @@ public class HeaderCell extends Cell {
             case "keydown":
             case "keypress":
             case "input":
-                columnFilter = PrimeSelenium.guardAjax(columnFilter, filterDelay + 10);
+                if (filterDelay == 0) {
+                    columnFilter = PrimeSelenium.guardAjax(columnFilter);
+                }
                 break;
             case "enter":
                 triggerKey = Keys.ENTER;
@@ -108,6 +111,16 @@ public class HeaderCell extends Cell {
 
         if (triggerKey != null) {
             PrimeSelenium.guardAjax(columnFilter).sendKeys(triggerKey);
+        }
+        else if (filterDelay > 0) {
+            try {
+                // default-filter runs delayed - so wait...
+                Thread.sleep(filterDelay * 2);
+            }
+            catch (InterruptedException ex) {
+                System.err.println("AJAX Guard delay was interrupted!");
+            }
+            PrimeSelenium.waitGui().until(PrimeExpectedConditions.jQueryNotActive());
         }
     }
 }
