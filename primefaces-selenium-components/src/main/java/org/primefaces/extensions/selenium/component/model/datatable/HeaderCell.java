@@ -85,7 +85,7 @@ public class HeaderCell extends Cell {
             case "keydown":
             case "keypress":
             case "input":
-                columnFilter = PrimeSelenium.guardAjax(columnFilter, filterDelay + 100);
+                columnFilter = PrimeSelenium.guardAjax(columnFilter, filterDelay * 2);
                 break;
             case "enter":
                 triggerKey = Keys.ENTER;
