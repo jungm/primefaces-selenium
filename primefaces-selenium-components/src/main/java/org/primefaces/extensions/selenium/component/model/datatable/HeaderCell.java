@@ -38,6 +38,24 @@ public class HeaderCell extends Cell {
         super(webElement);
     }
 
+    /**
+     * Gets the title element if it exists for this column.
+     *
+     * @return the WebElement representing the title
+     */
+    public WebElement getColumnTitle() {
+        if (getWebElement() != null) {
+            return getWebElement().findElement(By.className("ui-column-title"));
+        }
+
+        return null;
+    }
+
+    /**
+     * Gets the filter element if it exists for this column.
+     *
+     * @return the WebElement representing the filter
+     */
     public WebElement getColumnFilter() {
         if (getWebElement() != null) {
             return getWebElement().findElement(By.className("ui-column-filter"));
@@ -122,5 +140,10 @@ public class HeaderCell extends Cell {
             }
             PrimeSelenium.waitGui().until(PrimeExpectedConditions.jQueryNotActive());
         }
+    }
+
+    @Override
+    public String toString() {
+        return "HeaderCell{text=" + getColumnTitle().getText() + "}";
     }
 }

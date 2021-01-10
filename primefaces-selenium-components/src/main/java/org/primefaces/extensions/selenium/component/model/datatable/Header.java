@@ -58,7 +58,7 @@ public class Header {
 
     public Optional<HeaderCell> getCell(String headerText) {
         return getCells().stream()
-                    .filter(cell -> cell.getText().equals(headerText))
+                    .filter(cell -> headerText.equals(cell.getColumnTitle().getText()))
                     .findFirst();
     }
 }

@@ -95,6 +95,9 @@ public abstract class DataTable extends AbstractPageableData {
         if (cell.isPresent()) {
             PrimeSelenium.guardAjax(cell.get().getWebElement().findElement(By.className("ui-sortable-column-icon"))).click();
         }
+        else {
+            System.err.println("Header Cell '" + headerText + "' not found.");
+        }
     }
 
     /**
@@ -106,6 +109,9 @@ public abstract class DataTable extends AbstractPageableData {
         HeaderCell cell = getHeader().getCell(index);
         if (cell != null) {
             PrimeSelenium.guardAjax(cell.getWebElement().findElement(By.className("ui-sortable-column-icon"))).click();
+        }
+        else {
+            System.err.println("Header Cell '" + index + "' not found.");
         }
     }
 
@@ -129,6 +135,9 @@ public abstract class DataTable extends AbstractPageableData {
         Optional<HeaderCell> cell = getHeader().getCell(headerText);
         if (cell.isPresent()) {
             filter(cell.get(), filterValue);
+        }
+        else {
+            System.err.println("Header Cell '" + headerText + "' not found.");
         }
     }
 
