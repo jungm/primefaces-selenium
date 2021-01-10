@@ -113,9 +113,9 @@ public abstract class DatePicker extends AbstractInputComponent {
                     "return " + getWidgetByIdScript() + ".jq.data().primeDatePicker.formatDateTime(new Date(" + millis + "));");
     }
 
-    public String setDate(long millis) {
-        return PrimeSelenium.executeScript(
-                    "return " + getWidgetByIdScript() + ".setDate(new Date(" + millis + "));");
+    public void setDate(long millis) {
+        PrimeSelenium.executeScript(getWidgetByIdScript() + ".jq.data().primeDatePicker.value = new Date(" + millis + ");");
+        PrimeSelenium.executeScript(getWidgetByIdScript() + ".setDate(new Date(" + millis + "));");
     }
 
     public String updateViewDate(long millis) {
@@ -123,9 +123,12 @@ public abstract class DatePicker extends AbstractInputComponent {
                     "return " + getWidgetByIdScript() + ".jq.data().primeDatePicker.updateViewDate(null, new Date(" + millis + "));");
     }
 
-    public String showPanel() {
-        return PrimeSelenium.executeScript(
-                    "return " + getWidgetByIdScript() + ".jq.data().primeDatePicker.showOverlay();");
+    public void showPanel() {
+        PrimeSelenium.executeScript(getWidgetByIdScript() + ".jq.data().primeDatePicker.showOverlay();");
+    }
+
+    public void hidePanel() {
+        PrimeSelenium.executeScript(getWidgetByIdScript() + ".jq.data().primeDatePicker.hideOverlay();");
     }
 
     public long getTimezoneOffset() {
