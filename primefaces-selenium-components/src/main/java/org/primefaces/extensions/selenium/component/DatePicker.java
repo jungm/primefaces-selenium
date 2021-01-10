@@ -50,7 +50,7 @@ public abstract class DatePicker extends AbstractInputComponent {
     }
 
     public LocalDateTime getValue() {
-        Object date = PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".getDate()");
+        Object date = PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".getDate();");
 
         if (date == null) {
             return null;
@@ -86,14 +86,19 @@ public abstract class DatePicker extends AbstractInputComponent {
         String formattedDate = millisAsFormattedDate(millis);
 
         // Emulate user input instead of using js, calendar.setDate() can't go beyond mindate/maxdate
-        WebElement input = getInput();
-        if (PrimeSelenium.isMacOs()) {
-            input.sendKeys(Keys.chord(Keys.COMMAND, "a")); // select everything
+        if (PrimeSelenium.isSafari()) {
+            setDate(millis);
         }
         else {
-            input.sendKeys(Keys.chord(Keys.CONTROL, "a")); // select everything
+            WebElement input = getInput();
+            if (PrimeSelenium.isMacOs()) {
+                input.sendKeys(Keys.chord(Keys.COMMAND, "a")); // select everything
+            }
+            else {
+                input.sendKeys(Keys.chord(Keys.CONTROL, "a")); // select everything
+            }
+            input.sendKeys(formattedDate); // overwrite value
         }
-        input.sendKeys(formattedDate); // overwrite value
 
         if (ComponentUtils.hasAjaxBehavior(getRoot(), "dateSelect")) {
             PrimeSelenium.guardAjax(input).sendKeys(Keys.TAB);
@@ -106,6 +111,21 @@ public abstract class DatePicker extends AbstractInputComponent {
     public String millisAsFormattedDate(long millis) {
         return PrimeSelenium.executeScript(
                     "return " + getWidgetByIdScript() + ".jq.data().primeDatePicker.formatDateTime(new Date(" + millis + "));");
+    }
+
+    public String setDate(long millis) {
+        return PrimeSelenium.executeScript(
+                    "return " + getWidgetByIdScript() + ".setDate(new Date(" + millis + "));");
+    }
+
+    public String updateViewDate(long millis) {
+        return PrimeSelenium.executeScript(
+                    "return " + getWidgetByIdScript() + ".jq.data().primeDatePicker.updateViewDate(null, new Date(" + millis + "));");
+    }
+
+    public String showPanel() {
+        return PrimeSelenium.executeScript(
+                    "return " + getWidgetByIdScript() + ".jq.data().primeDatePicker.showOverlay();");
     }
 
     public long getTimezoneOffset() {
