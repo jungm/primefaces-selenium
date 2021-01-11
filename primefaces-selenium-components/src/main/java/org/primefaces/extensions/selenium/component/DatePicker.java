@@ -114,7 +114,6 @@ public abstract class DatePicker extends AbstractInputComponent {
     }
 
     public void setDate(long millis) {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".jq.data().primeDatePicker.value = new Date(" + millis + ");");
         PrimeSelenium.executeScript(getWidgetByIdScript() + ".setDate(new Date(" + millis + "));");
     }
 
