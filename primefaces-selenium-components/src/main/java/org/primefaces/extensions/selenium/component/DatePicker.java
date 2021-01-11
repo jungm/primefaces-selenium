@@ -78,7 +78,6 @@ public abstract class DatePicker extends AbstractInputComponent {
 
     public void setValue(LocalDateTime dateTime) {
         long millis = dateTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
-
         setValue(millis);
     }
 
@@ -113,19 +112,44 @@ public abstract class DatePicker extends AbstractInputComponent {
                     "return " + getWidgetByIdScript() + ".jq.data().primeDatePicker.formatDateTime(new Date(" + millis + "));");
     }
 
-    public void setDate(long millis) {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".setDate(new Date(" + millis + "));");
+    /**
+     * Widget API call to set date to this LocalDateTime.
+     *
+     * @param dateTime the LocalDateTime to set to
+     */
+    public void setDate(LocalDateTime dateTime) {
+        long millis = dateTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+        setDate(millis);
     }
 
-    public String updateViewDate(long millis) {
-        return PrimeSelenium.executeScript(
-                    "return " + getWidgetByIdScript() + ".jq.data().primeDatePicker.updateViewDate(null, new Date(" + millis + "));");
+    /**
+     * Widget API call to set date to this epoch in millis.
+     *
+     * @param epoch epoch in milliseconds
+     */
+    public void setDate(long epoch) {
+        PrimeSelenium.executeScript(getWidgetByIdScript() + ".setDate(new Date(" + epoch + "));");
     }
 
+    /**
+     * Widget API call to update the overlay popup to this epoch in millis.
+     *
+     * @param epoch epoch in milliseconds
+     */
+    public void updateViewDate(long epoch) {
+        PrimeSelenium.executeScript(getWidgetByIdScript() + ".jq.data().primeDatePicker.updateViewDate(null, new Date(" + epoch + "));");
+    }
+
+    /**
+     * Shows the overlay panel.
+     */
     public void showPanel() {
         PrimeSelenium.executeScript(getWidgetByIdScript() + ".jq.data().primeDatePicker.showOverlay();");
     }
 
+    /**
+     * Hides the overlay panel.
+     */
     public void hidePanel() {
         PrimeSelenium.executeScript(getWidgetByIdScript() + ".jq.data().primeDatePicker.hideOverlay();");
     }
