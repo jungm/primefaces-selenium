@@ -269,6 +269,16 @@ public final class PrimeSelenium {
     }
 
     /**
+     * Is this element clickable?
+     *
+     * @param element the WebElement to check for clickable
+     * @return true if clickable false if not
+     */
+    public static boolean isElementClickable(WebElement element) {
+        return isElementDisplayed(element) && isElementEnabled(element) && !hasCssClass(element, "ui-state-disabled");
+    }
+
+    /**
      * Guard the HTTP request which means wait until it has completed before returning.
      *
      * @param target the target to guard

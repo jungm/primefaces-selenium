@@ -42,14 +42,25 @@ public abstract class SelectOneRadio extends AbstractComponent {
         return radioButtons;
     }
 
-    public void select(int index) {
-        if (getSelectedIndex() == index) {
-            return;
-        }
-
+    public WebElement getRadioButton(int index) {
         WebElement radiobutton = getRadioButtons().get(index);
         PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(radiobutton));
+        return radiobutton;
+    }
 
+    public WebElement getRadioButtonBox(int index) {
+        WebElement radiobutton = getRadioButton(index);
+        return radiobutton.findElement(By.className("ui-radiobutton-box"));
+    }
+
+    public void select(int index) {
+        if (!getWidgetConfiguration().getBoolean("unselectable")) {
+            if (getSelectedIndex() == index) {
+                return;
+            }
+        }
+
+        WebElement radiobutton = getRadioButton(index);
         WebElement box = radiobutton.findElement(By.className("ui-radiobutton-box"));
         WebElement input = radiobutton.findElement(By.tagName("input"));
         if (isAjaxified(input, "onchange")) {
@@ -77,9 +88,19 @@ public abstract class SelectOneRadio extends AbstractComponent {
         return -1;
     }
 
+    public String getSelectedLabel() {
+        for (SelectItem item : getItems()) {
+            if (item.isSelected()) {
+                return item.getLabel();
+            }
+        }
+
+        return "";
+    }
+
     public List<String> getLabels() {
-        return getRadioButtons().stream()
-                    .map(WebElement::getText)
+        return getItems().stream()
+                    .map(SelectItem::getLabel)
                     .collect(Collectors.toList());
     }
 
@@ -111,5 +132,37 @@ public abstract class SelectOneRadio extends AbstractComponent {
         }
 
         return items;
+    }
+
+    /**
+     * Disables the entire component.
+     */
+    public void disable() {
+        PrimeSelenium.executeScript(getWidgetByIdScript() + ".disable();");
+    }
+
+    /**
+     * Enables the entire component
+     */
+    public void enable() {
+        PrimeSelenium.executeScript(getWidgetByIdScript() + ".enable();");
+    }
+
+    /**
+     * Disables a given radio button option of this widget.
+     *
+     * @param index Index of the radio button option to disable.
+     */
+    public void disableOption(int index) {
+        PrimeSelenium.executeScript(getWidgetByIdScript() + ".disable(" + index + ");");
+    }
+
+    /**
+     * Enables a given radio button option of this widget.
+     *
+     * @param index Index of the radio button option to enable.
+     */
+    public void enableOption(int index) {
+        PrimeSelenium.executeScript(getWidgetByIdScript() + ".enable(" + index + ");");
     }
 }
