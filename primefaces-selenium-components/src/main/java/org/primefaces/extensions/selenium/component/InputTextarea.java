@@ -21,6 +21,9 @@
  */
 package org.primefaces.extensions.selenium.component;
 
+/**
+ * Component wrapper for the PrimeFaces {@code p:inputTextarea}.
+ */
 public abstract class InputTextarea extends InputText {
 
 }

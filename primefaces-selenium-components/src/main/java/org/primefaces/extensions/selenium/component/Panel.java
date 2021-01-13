@@ -29,6 +29,9 @@ import org.primefaces.extensions.selenium.component.base.AbstractComponent;
 import org.primefaces.extensions.selenium.component.base.ComponentUtils;
 import org.primefaces.extensions.selenium.findby.FindByParentPartialId;
 
+/**
+ * Component wrapper for the PrimeFaces {@code p:panel}.
+ */
 public abstract class Panel extends AbstractComponent {
 
     @FindByParentPartialId("_toggler")

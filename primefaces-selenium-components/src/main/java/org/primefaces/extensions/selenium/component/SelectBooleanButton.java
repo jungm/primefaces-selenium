@@ -23,6 +23,9 @@ package org.primefaces.extensions.selenium.component;
 
 import org.primefaces.extensions.selenium.component.base.AbstractToggleComponent;
 
+/**
+ * Component wrapper for the PrimeFaces {@code p:selectBooleanButton}.
+ */
 public abstract class SelectBooleanButton extends AbstractToggleComponent {
 
 }

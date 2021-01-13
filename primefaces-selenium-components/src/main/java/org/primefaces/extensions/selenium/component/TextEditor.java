@@ -27,6 +27,9 @@ import org.openqa.selenium.WebElement;
 import org.primefaces.extensions.selenium.PrimeSelenium;
 import org.primefaces.extensions.selenium.findby.FindByParentPartialId;
 
+/**
+ * Component wrapper for the PrimeFaces {@code p:textEditor}.
+ */
 public abstract class TextEditor extends InputText {
 
     @FindByParentPartialId(value = "_input", name = "_input")

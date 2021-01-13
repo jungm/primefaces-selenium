@@ -26,6 +26,9 @@ import org.openqa.selenium.support.FindBy;
 import org.primefaces.extensions.selenium.PrimeSelenium;
 import org.primefaces.extensions.selenium.component.base.AbstractComponent;
 
+/**
+ * Component wrapper for the PrimeFaces {@code p:dialog}.
+ */
 public abstract class Dialog extends AbstractComponent {
 
     @FindBy(className = "ui-dialog-content")

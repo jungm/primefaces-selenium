@@ -30,6 +30,9 @@ import org.primefaces.extensions.selenium.PrimeSelenium;
 import org.primefaces.extensions.selenium.component.base.AbstractInputComponent;
 import org.primefaces.extensions.selenium.component.base.ComponentUtils;
 
+/**
+ * Component wrapper for the PrimeFaces {@code p:selectOneButton}.
+ */
 public abstract class SelectOneButton extends AbstractInputComponent {
 
     @FindBy(css = ".ui-button")

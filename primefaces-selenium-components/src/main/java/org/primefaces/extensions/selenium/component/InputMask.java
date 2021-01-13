@@ -26,6 +26,9 @@ import java.io.Serializable;
 import org.openqa.selenium.WebElement;
 import org.primefaces.extensions.selenium.PrimeSelenium;
 
+/**
+ * Component wrapper for the PrimeFaces {@code p:inputMask}.
+ */
 public abstract class InputMask extends InputText {
 
     @Override

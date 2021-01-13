@@ -26,6 +26,9 @@ import org.primefaces.extensions.selenium.component.base.AbstractInputComponent;
 import org.primefaces.extensions.selenium.component.base.ComponentUtils;
 import org.primefaces.extensions.selenium.component.base.Script;
 
+/**
+ * Component wrapper for the PrimeFaces {@code p:slider}.
+ */
 public abstract class Slider extends AbstractInputComponent {
 
     public Number getValue() {

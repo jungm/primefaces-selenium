@@ -28,6 +28,10 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.extensions.selenium.component.base.AbstractPageableData;
 
+/**
+ * @deprecated since 10.0 and removal possible anytime after that
+ */
+@Deprecated
 public abstract class DataList extends AbstractPageableData {
 
     @FindBy(className = "ui-datalist-content")

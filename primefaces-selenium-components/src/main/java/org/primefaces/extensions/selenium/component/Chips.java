@@ -32,6 +32,9 @@ import org.primefaces.extensions.selenium.component.base.AbstractInputComponent;
 import org.primefaces.extensions.selenium.component.base.ComponentUtils;
 import org.primefaces.extensions.selenium.findby.FindByParentPartialId;
 
+/**
+ * Component wrapper for the PrimeFaces {@code p:chips}.
+ */
 public abstract class Chips extends AbstractInputComponent {
 
     @FindByParentPartialId("_input")

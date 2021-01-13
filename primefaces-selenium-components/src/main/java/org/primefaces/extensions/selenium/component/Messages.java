@@ -32,6 +32,9 @@ import org.primefaces.extensions.selenium.component.base.AbstractComponent;
 import org.primefaces.extensions.selenium.component.model.Msg;
 import org.primefaces.extensions.selenium.component.model.Severity;
 
+/**
+ * Component wrapper for the PrimeFaces {@code p:messages}.
+ */
 public abstract class Messages extends AbstractComponent {
 
     public List<Msg> getAllMessages() {

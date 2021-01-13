@@ -29,6 +29,9 @@ import org.primefaces.extensions.selenium.PrimeSelenium;
 import org.primefaces.extensions.selenium.component.base.AbstractInputComponent;
 import org.primefaces.extensions.selenium.component.base.ComponentUtils;
 
+/**
+ * Component wrapper for the PrimeFaces {@code p:inputText}.
+ */
 public abstract class InputText extends AbstractInputComponent {
 
     public boolean isOnchangeAjaxified() {

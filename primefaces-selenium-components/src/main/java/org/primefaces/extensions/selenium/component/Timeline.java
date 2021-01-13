@@ -26,6 +26,9 @@ import org.openqa.selenium.WebElement;
 import org.primefaces.extensions.selenium.PrimeSelenium;
 import org.primefaces.extensions.selenium.component.base.AbstractComponent;
 
+/**
+ * Component wrapper for the PrimeFaces {@code p:timeline}.
+ */
 public abstract class Timeline extends AbstractComponent {
 
     /**

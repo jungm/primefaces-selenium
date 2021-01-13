@@ -31,6 +31,9 @@ import org.primefaces.extensions.selenium.PrimeSelenium;
 import org.primefaces.extensions.selenium.component.base.AbstractInputComponent;
 import org.primefaces.extensions.selenium.findby.FindByParentPartialId;
 
+/**
+ * Component wrapper for the PrimeFaces {@code p:selectOneMenu}.
+ */
 public abstract class SelectOneMenu extends AbstractInputComponent {
 
     @FindByParentPartialId("_input")

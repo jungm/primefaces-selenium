@@ -36,6 +36,9 @@ import org.primefaces.extensions.selenium.component.model.datatable.Header;
 import org.primefaces.extensions.selenium.component.model.datatable.HeaderCell;
 import org.primefaces.extensions.selenium.component.model.datatable.Row;
 
+/**
+ * Component wrapper for the PrimeFaces {@code p:dataTable}.
+ */
 public abstract class DataTable extends AbstractPageableData {
 
     @Override

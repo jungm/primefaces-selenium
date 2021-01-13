@@ -33,6 +33,9 @@ import org.primefaces.extensions.selenium.PrimeSelenium;
 import org.primefaces.extensions.selenium.component.base.AbstractComponent;
 import org.primefaces.extensions.selenium.component.model.SelectItem;
 
+/**
+ * Component wrapper for the PrimeFaces {@code p:selectManyCheckbox}.
+ */
 public abstract class SelectManyCheckbox extends AbstractComponent {
 
     @FindBy(css = ".ui-chkbox")

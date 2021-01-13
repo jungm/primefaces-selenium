@@ -28,6 +28,9 @@ import org.primefaces.extensions.selenium.PrimeSelenium;
 import org.primefaces.extensions.selenium.component.base.Script;
 import org.primefaces.extensions.selenium.findby.FindByParentPartialId;
 
+/**
+ * Component wrapper for the PrimeFaces {@code p:inputNumber}.
+ */
 public abstract class InputNumber extends InputText {
 
     @FindByParentPartialId("_input")

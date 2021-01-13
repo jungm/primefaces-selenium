@@ -25,6 +25,9 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.primefaces.extensions.selenium.PrimeSelenium;
 import org.primefaces.extensions.selenium.component.html.Link;
 
+/**
+ * Component wrapper for the PrimeFaces {@code p:commandLink}.
+ */
 public abstract class CommandLink extends Link {
 
     @Override

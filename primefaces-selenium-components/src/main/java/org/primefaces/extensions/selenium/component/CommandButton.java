@@ -25,6 +25,9 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.primefaces.extensions.selenium.PrimeSelenium;
 import org.primefaces.extensions.selenium.component.base.AbstractComponent;
 
+/**
+ * Component wrapper for the PrimeFaces {@code p:commandButton}.
+ */
 public abstract class CommandButton extends AbstractComponent {
 
     @Override

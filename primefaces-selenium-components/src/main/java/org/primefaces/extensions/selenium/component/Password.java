@@ -25,6 +25,9 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.primefaces.extensions.selenium.PrimeSelenium;
 
+/**
+ * Component wrapper for the PrimeFaces {@code p:password}.
+ */
 public abstract class Password extends InputText {
 
     /**

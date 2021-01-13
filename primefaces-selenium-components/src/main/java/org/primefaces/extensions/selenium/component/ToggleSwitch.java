@@ -25,7 +25,10 @@ import org.primefaces.extensions.selenium.component.base.AbstractToggleComponent
 
 /**
  * Component wrapper for the PrimeFaces {@code p:toggleSwitch}.
+ *
+ * @deprecated since 10.0 and removal possible anytime after that
  */
+@Deprecated
 public abstract class ToggleSwitch extends AbstractToggleComponent {
 
 }
