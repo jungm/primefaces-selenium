@@ -52,6 +52,14 @@ public abstract class DatePicker extends AbstractInputComponent {
         return getWebDriver().findElement(By.id(getId() + "_panel"));
     }
 
+    public WebElement getClearButton() {
+        return getPanel().findElement(By.className("ui-datepicker-buttonbar")).findElement(By.className("ui-clear-button"));
+    }
+
+    public WebElement getTodayButton() {
+        return getPanel().findElement(By.className("ui-datepicker-buttonbar")).findElement(By.className("ui-today-button"));
+    }
+
     public LocalDateTime getValue() {
         Object date = PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".getDate();");
 
