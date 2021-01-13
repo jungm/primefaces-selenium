@@ -32,13 +32,13 @@ Currently only the following components are implemented (partially):
 - Chips
 - CommandButton
 - CommandLink
-- DataList
+- ~~DataList~~ (use DataView)
 - DataTable
 - DatePicker
 - Dialog
 - InputMask
 - InputNumber
-- InputSwitch
+- ~~InputSwitch~~ (use ToggleSwitch)
 - InputText
 - InputTextarea
 - Messages

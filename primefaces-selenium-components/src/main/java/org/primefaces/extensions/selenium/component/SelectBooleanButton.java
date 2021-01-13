@@ -21,11 +21,21 @@
  */
 package org.primefaces.extensions.selenium.component;
 
+import org.openqa.selenium.By;
 import org.primefaces.extensions.selenium.component.base.AbstractToggleComponent;
 
 /**
  * Component wrapper for the PrimeFaces {@code p:selectBooleanButton}.
  */
 public abstract class SelectBooleanButton extends AbstractToggleComponent {
+
+    /**
+     * Gets the current label on the button.
+     *
+     * @return the label text of the button
+     */
+    public String getLabel() {
+        return findElement(By.className("ui-button-text")).getText();
+    }
 
 }
