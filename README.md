@@ -18,7 +18,7 @@ Only tested on PrimeFaces 8.0+.
 
 ### Status
 
-Currently only the following components are implemented (partially):
+Currently, only the following components are implemented (partially):
 
 #### HTML
 
