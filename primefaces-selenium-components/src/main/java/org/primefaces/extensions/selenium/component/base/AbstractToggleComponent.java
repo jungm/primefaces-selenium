@@ -23,6 +23,7 @@ package org.primefaces.extensions.selenium.component.base;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.primefaces.extensions.selenium.PrimeExpectedConditions;
 import org.primefaces.extensions.selenium.PrimeSelenium;
 import org.primefaces.extensions.selenium.findby.FindByParentPartialId;
 
@@ -58,7 +59,12 @@ public abstract class AbstractToggleComponent extends AbstractInputComponent {
     }
 
     public boolean getValue() {
-        return input.getAttribute("checked") != null;
+        return getInput().getAttribute("checked") != null;
+    }
+
+    @Override
+    public boolean isSelected() {
+        return getValue();
     }
 
     /**
@@ -66,6 +72,8 @@ public abstract class AbstractToggleComponent extends AbstractInputComponent {
      */
     public void toggle() {
         PrimeSelenium.executeScript(getWidgetByIdScript() + ".toggle();");
+        PrimeSelenium.waitGui().until(PrimeExpectedConditions.documentLoaded());
+        PrimeSelenium.waitGui().until(PrimeExpectedConditions.jQueryNotActive());
     }
 
     /**
@@ -73,6 +81,8 @@ public abstract class AbstractToggleComponent extends AbstractInputComponent {
      */
     public void check() {
         PrimeSelenium.executeScript(getWidgetByIdScript() + ".check();");
+        PrimeSelenium.waitGui().until(PrimeExpectedConditions.documentLoaded());
+        PrimeSelenium.waitGui().until(PrimeExpectedConditions.jQueryNotActive());
     }
 
     /**
@@ -80,6 +90,8 @@ public abstract class AbstractToggleComponent extends AbstractInputComponent {
      */
     public void uncheck() {
         PrimeSelenium.executeScript(getWidgetByIdScript() + ".uncheck();");
+        PrimeSelenium.waitGui().until(PrimeExpectedConditions.documentLoaded());
+        PrimeSelenium.waitGui().until(PrimeExpectedConditions.jQueryNotActive());
     }
 
 }
