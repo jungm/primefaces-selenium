@@ -42,9 +42,10 @@ public abstract class AbstractToggleComponent extends AbstractInputComponent {
 
     @Override
     public void click() {
+        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(getRoot()));
         PrimeSelenium.waitGui().until(ExpectedConditions.elementToBeClickable(getRoot()));
 
-        if (ComponentUtils.hasAjaxBehavior(getRoot(), "change")) {
+        if (isAjaxified(getInput(), "onchange") || ComponentUtils.hasAjaxBehavior(getRoot(), "change")) {
             PrimeSelenium.guardAjax(getRoot()).click();
         }
         else {

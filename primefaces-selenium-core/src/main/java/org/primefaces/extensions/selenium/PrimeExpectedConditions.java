@@ -43,12 +43,14 @@ public final class PrimeExpectedConditions {
 
     public static ExpectedCondition<Boolean> visibleAndAnimationComplete(WebElement element) {
         return ExpectedConditions.and(
+                    documentLoaded(),
                     jQueryNotActive(),
                     ExpectedConditions.visibilityOf(element));
     }
 
     public static ExpectedCondition<Boolean> invisibleAndAnimationComplete(WebElement element) {
         return ExpectedConditions.and(
+                    documentLoaded(),
                     jQueryNotActive(),
                     ExpectedConditions.invisibilityOf(element));
     }
