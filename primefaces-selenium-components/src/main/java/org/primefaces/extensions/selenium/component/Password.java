@@ -23,6 +23,7 @@ package org.primefaces.extensions.selenium.component;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.primefaces.extensions.selenium.PrimeExpectedConditions;
 import org.primefaces.extensions.selenium.PrimeSelenium;
 
 /**
@@ -44,6 +45,7 @@ public abstract class Password extends InputText {
      */
     public void showFeedback() {
         PrimeSelenium.executeScript(getWidgetByIdScript() + ".show();");
+        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(getFeedbackPanel()));
     }
 
     /**

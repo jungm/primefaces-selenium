@@ -30,6 +30,7 @@ import java.time.format.DateTimeFormatter;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
+import org.primefaces.extensions.selenium.PrimeExpectedConditions;
 import org.primefaces.extensions.selenium.PrimeSelenium;
 import org.primefaces.extensions.selenium.component.base.AbstractInputComponent;
 import org.primefaces.extensions.selenium.component.base.ComponentUtils;
@@ -156,6 +157,7 @@ public abstract class DatePicker extends AbstractInputComponent {
      */
     public void showPanel() {
         PrimeSelenium.executeScript(getWidgetByIdScript() + ".jq.data().primeDatePicker.showOverlay();");
+        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(getPanel()));
     }
 
     /**
