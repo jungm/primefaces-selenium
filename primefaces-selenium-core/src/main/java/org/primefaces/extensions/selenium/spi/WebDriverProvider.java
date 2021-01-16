@@ -54,6 +54,9 @@ public class WebDriverProvider {
                  */
                 driver.manage().window().setSize(new Dimension(1920, 1080));
             }
+            else if (PrimeSelenium.isSafari()) {
+                driver.manage().window().setSize(new Dimension(1280, 800));
+            }
 
             EventFiringWebDriver eventDriver = new EventFiringWebDriver(driver);
             eventDriver.register(new OnloadScriptsEventListener());
