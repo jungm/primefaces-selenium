@@ -30,6 +30,7 @@ import java.time.format.DateTimeFormatter;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.primefaces.extensions.selenium.PrimeExpectedConditions;
 import org.primefaces.extensions.selenium.PrimeSelenium;
 import org.primefaces.extensions.selenium.component.base.AbstractInputComponent;
@@ -53,22 +54,67 @@ public abstract class DatePicker extends AbstractInputComponent {
         return getWebDriver().findElement(By.id(getId() + "_panel"));
     }
 
-    public WebElement getClearButton() {
-        return getPanel().findElement(By.className("ui-datepicker-buttonbar")).findElement(By.className("ui-clear-button"));
+    /**
+     * Gets the Next Month link in the navigator.
+     *
+     * @return the Next Month link
+     */
+    public WebElement getNextMonthLink() {
+        WebElement link = getPanel().findElement(By.className("ui-datepicker-next"));
+        PrimeSelenium.waitGui().until(ExpectedConditions.elementToBeClickable(link));
+        return link;
     }
 
+    /**
+     * Gets the Previous Month link in the navigator.
+     *
+     * @return the Previous Month link
+     */
+    public WebElement getPreviousMonthLink() {
+        WebElement link = getPanel().findElement(By.className("ui-datepicker-prev"));
+        PrimeSelenium.waitGui().until(ExpectedConditions.elementToBeClickable(link));
+        return link;
+    }
+
+    /**
+     * Selects a day in the overlay panel.
+     *
+     * @param day the day to select
+     * @return the day selected
+     */
+    public WebElement selectDay(String day) {
+        WebElement link = getPanel().findElement(By.linkText(day));
+        PrimeSelenium.waitGui().until(ExpectedConditions.elementToBeClickable(link));
+        link.click();
+        return link;
+    }
+
+    /**
+     * Gets the Clear button on the overlay panel.
+     *
+     * @return the Clear button
+     */
+    public WebElement getClearButton() {
+        WebElement button = getPanel().findElement(By.className("ui-datepicker-buttonbar")).findElement(By.className("ui-clear-button"));
+        PrimeSelenium.waitGui().until(ExpectedConditions.elementToBeClickable(button));
+        return button;
+    }
+
+    /**
+     * Gets the Today button on the overlay panel.
+     *
+     * @return the Today button
+     */
     public WebElement getTodayButton() {
-        return getPanel().findElement(By.className("ui-datepicker-buttonbar")).findElement(By.className("ui-today-button"));
+        WebElement button = getPanel().findElement(By.className("ui-datepicker-buttonbar")).findElement(By.className("ui-today-button"));
+        PrimeSelenium.waitGui().until(ExpectedConditions.elementToBeClickable(button));
+        return button;
     }
 
     public LocalDateTime getValue() {
-        Object date = PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".getDate();");
-
-        if (date == null) {
+        if (getWidgetDate() == null) {
             return null;
         }
-
-        // TODO: take timeZone - attribute into account when set; currently we always use the default ZoneId.systemDefault()
 
         String utcTimeString = PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".getDate().toUTCString();");
 
@@ -80,8 +126,11 @@ public abstract class DatePicker extends AbstractInputComponent {
     }
 
     public LocalDate getValueAsLocalDate() {
-        LocalDateTime value = getValue();
-        return value != null ? value.toLocalDate() : null;
+        if (getWidgetDate() == null) {
+            return null;
+        }
+        String utcTimeString = PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".getDate().toUTCString();");
+        return LocalDate.parse(utcTimeString, DateTimeFormatter.RFC_1123_DATE_TIME);
     }
 
     public void setValue(LocalDate localDate) {
@@ -142,6 +191,15 @@ public abstract class DatePicker extends AbstractInputComponent {
      */
     public void setDate(long epoch) {
         PrimeSelenium.executeScript(getWidgetByIdScript() + ".setDate(new Date(" + epoch + "));");
+    }
+
+    /**
+     * Gets the JS date value from the widget.
+     *
+     * @return the JS date value or null
+     */
+    public String getWidgetDate() {
+        return PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".getDate();");
     }
 
     /**
