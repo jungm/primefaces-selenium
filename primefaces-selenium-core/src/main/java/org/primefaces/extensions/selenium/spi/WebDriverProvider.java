@@ -47,15 +47,15 @@ public class WebDriverProvider {
 
             driver = adapter.createWebDriver();
 
+            /*
+             * Define window-size for headless-mode. Selenium WebDriver-default seems to be 800x600. This causes issues with modern themes (eg Saga) which use
+             * more space for some components. (eg DatePicker-popup)
+             */
             if (PrimeSelenium.isHeadless()) {
-                /*
-                 * Define window-size for headless-mode. Selenium WebDriver-default seems to be 800x600. This causes issues with modern themes (eg Saga) which
-                 * use more space for some components. (eg DatePicker-popup)
-                 */
                 driver.manage().window().setSize(new Dimension(1920, 1080));
             }
-            else if (PrimeSelenium.isSafari()) {
-                driver.manage().window().setSize(new Dimension(1280, 800));
+            else {
+                driver.manage().window().setSize(new Dimension(1280, 1000));
             }
 
             EventFiringWebDriver eventDriver = new EventFiringWebDriver(driver);
