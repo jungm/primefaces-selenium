@@ -44,7 +44,11 @@ public abstract class InputMask extends InputText {
      * @param value the value to set the input to
      */
     public void setWidgetValue(Serializable value) {
-        PrimeSelenium.executeScript(isOnchangeAjaxified(), getWidgetByIdScript() + ".setValue('" + value + "');");
+        PrimeSelenium.executeScript(getWidgetByIdScript() + ".setValue('" + value + "');");
+        boolean isAjaxified = isOnchangeAjaxified();
+        if (isAjaxified) {
+            PrimeSelenium.executeScript(isAjaxified, getWidgetByIdScript() + ".jq.trigger('change');");
+        }
     }
 
     /**

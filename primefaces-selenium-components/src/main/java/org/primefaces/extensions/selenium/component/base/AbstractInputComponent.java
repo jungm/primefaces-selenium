@@ -33,7 +33,7 @@ public abstract class AbstractInputComponent extends AbstractComponent {
     }
 
     public boolean isOnchangeAjaxified() {
-        return isAjaxified(getInput(), "onchange") || ComponentUtils.hasAjaxBehavior(getRoot(), "onchange");
+        return isAjaxified(getInput(), "onchange") || ComponentUtils.hasAjaxBehavior(getRoot(), "change");
     }
 
     @Override
