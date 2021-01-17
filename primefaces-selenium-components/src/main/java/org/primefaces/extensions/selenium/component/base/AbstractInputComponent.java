@@ -28,10 +28,20 @@ import org.primefaces.extensions.selenium.PrimeSelenium;
 
 public abstract class AbstractInputComponent extends AbstractComponent {
 
+    /**
+     * The input element reference.
+     *
+     * @return the {@link WebElement} representing the input.
+     */
     public WebElement getInput() {
         return getRoot();
     }
 
+    /**
+     * Is the input using AJAX "onchange" event. ?
+     *
+     * @return true if using AJAX for onchange
+     */
     public boolean isOnchangeAjaxified() {
         return isAjaxified(getInput(), "onchange") || ComponentUtils.hasAjaxBehavior(getRoot(), "change");
     }
@@ -41,10 +51,20 @@ public abstract class AbstractInputComponent extends AbstractComponent {
         return getInput().isEnabled();
     }
 
+    /**
+     * The HTML label assigned to this input.
+     *
+     * @return the {@link WebElement} representing the label.
+     */
     public WebElement getAssignedLabel() {
         return getWebDriver().findElement(By.cssSelector("label[for='" + getInput().getAttribute("id") + "']"));
     }
 
+    /**
+     * The HTML label text assigned to this input.
+     *
+     * @return the value of the label text
+     */
     public String getAssignedLabelText() {
         return getAssignedLabel().getText();
     }
