@@ -34,10 +34,6 @@ import org.primefaces.extensions.selenium.component.base.ComponentUtils;
  */
 public abstract class InputText extends AbstractInputComponent {
 
-    public boolean isOnchangeAjaxified() {
-        return isAjaxified(getInput(), "onchange");
-    }
-
     public String getValue() {
         return getInput().getAttribute("value");
     }

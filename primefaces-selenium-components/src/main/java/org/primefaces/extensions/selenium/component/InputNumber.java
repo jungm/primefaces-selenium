@@ -25,7 +25,6 @@ import java.io.Serializable;
 
 import org.openqa.selenium.WebElement;
 import org.primefaces.extensions.selenium.PrimeSelenium;
-import org.primefaces.extensions.selenium.component.base.Script;
 import org.primefaces.extensions.selenium.findby.FindByParentPartialId;
 
 /**
@@ -55,10 +54,7 @@ public abstract class InputNumber extends InputText {
         }
 
         PrimeSelenium.executeScript(getWidgetByIdScript() + ".setValue(" + value.toString() + ")");
-
-        Script changeTriggerScript = () -> PrimeSelenium.executeScript(getWidgetByIdScript() + ".input.trigger('change')");
-        changeTriggerScript = isOnchangeAjaxified() ? PrimeSelenium.guardAjax(changeTriggerScript) : changeTriggerScript;
-        changeTriggerScript.execute();
+        PrimeSelenium.executeScript(isOnchangeAjaxified(), getWidgetByIdScript() + ".input.trigger('change')");
     }
 
     public Double getValueToRender() {

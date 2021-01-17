@@ -57,8 +57,12 @@ public abstract class Calendar extends AbstractInputComponent {
     }
 
     public LocalDate getValueAsLocalDate() {
-        LocalDateTime value = getValue();
-        return value != null ? value.toLocalDate() : null;
+        Object date = PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".getDate()");
+        if (date == null) {
+            return null;
+        }
+        String utcTimeString = PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".getDate().toUTCString();");
+        return LocalDate.parse(utcTimeString, DateTimeFormatter.RFC_1123_DATE_TIME);
     }
 
     public void setValue(LocalDate localDate) {

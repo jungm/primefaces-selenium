@@ -42,6 +42,24 @@ public abstract class Rating extends AbstractInputComponent {
     }
 
     /**
+     * Is Cancel event AJAX enabled?
+     *
+     * @return true if AJAX enabled false if not
+     */
+    public boolean isCancelAjaxified() {
+        return ComponentUtils.hasBehavior(this, "cancel") || isOnchangeAjaxified();
+    }
+
+    /**
+     * Is Rating event AJAX enabled?
+     *
+     * @return true if AJAX enabled false if not
+     */
+    public boolean isRatingAjaxified() {
+        return ComponentUtils.hasBehavior(this, "rate") || isOnchangeAjaxified();
+    }
+
+    /**
      * Gets the cancel icon if available.
      *
      * @return the cancel icon
@@ -55,12 +73,13 @@ public abstract class Rating extends AbstractInputComponent {
      */
     public void cancel() {
         WebElement cancelIcon = getCancelIcon();
-        if (ComponentUtils.hasBehavior(this, "cancel") || ComponentUtils.hasBehavior(this, "rate")) {
+        if (isCancelAjaxified() || isRatingAjaxified()) {
             PrimeSelenium.guardAjax(cancelIcon).click();
         }
         else {
             cancelIcon.click();
         }
+
     }
 
     /**
@@ -78,7 +97,7 @@ public abstract class Rating extends AbstractInputComponent {
      * @param value New rating value to set (number of starts selected).
      */
     public void setValue(Number value) {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".setValue(" + value + ");");
+        PrimeSelenium.executeScript(isRatingAjaxified(), getWidgetByIdScript() + ".setValue(" + value + ");");
     }
 
     /**
@@ -99,7 +118,7 @@ public abstract class Rating extends AbstractInputComponent {
      * Resets the rating so that no stars are selected.
      */
     public void reset() {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".reset();");
+        PrimeSelenium.executeScript(isCancelAjaxified(), getWidgetByIdScript() + ".reset();");
     }
 
     /**

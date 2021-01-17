@@ -28,7 +28,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.extensions.selenium.PrimeSelenium;
 import org.primefaces.extensions.selenium.component.base.AbstractInputComponent;
-import org.primefaces.extensions.selenium.component.base.ComponentUtils;
 
 /**
  * Component wrapper for the PrimeFaces {@code p:selectOneButton}.
@@ -158,7 +157,7 @@ public abstract class SelectOneButton extends AbstractInputComponent {
     }
 
     protected void click(WebElement element) {
-        if (ComponentUtils.hasAjaxBehavior(getRoot(), "change") || ComponentUtils.hasAjaxBehavior(getRoot(), "onchange")) {
+        if (isOnchangeAjaxified()) {
             PrimeSelenium.guardAjax(element).click();
         }
         else {

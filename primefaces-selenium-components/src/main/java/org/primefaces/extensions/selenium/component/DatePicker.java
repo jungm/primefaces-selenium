@@ -55,6 +55,15 @@ public abstract class DatePicker extends AbstractInputComponent {
     }
 
     /**
+     * Is this component AJAX enabled?
+     *
+     * @return true if AJAX enabled false if not
+     */
+    public boolean isAjaxified() {
+        return isAjaxified(getInput(), "onchange") || ComponentUtils.hasAjaxBehavior(getRoot(), "dateSelect");
+    }
+
+    /**
      * Gets the Next Month link in the navigator.
      *
      * @return the Next Month link
@@ -160,7 +169,7 @@ public abstract class DatePicker extends AbstractInputComponent {
             }
             input.sendKeys(formattedDate); // overwrite value
 
-            if (ComponentUtils.hasAjaxBehavior(getRoot(), "dateSelect")) {
+            if (isAjaxified()) {
                 PrimeSelenium.guardAjax(input).sendKeys(Keys.TAB);
             }
             else {
@@ -190,7 +199,7 @@ public abstract class DatePicker extends AbstractInputComponent {
      * @param epoch epoch in milliseconds
      */
     public void setDate(long epoch) {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".setDate(new Date(" + epoch + "));");
+        PrimeSelenium.executeScript(isAjaxified(), getWidgetByIdScript() + ".setDate(new Date(" + epoch + "));");
     }
 
     /**
@@ -226,6 +235,11 @@ public abstract class DatePicker extends AbstractInputComponent {
         PrimeSelenium.executeScript(getWidgetByIdScript() + ".jq.data().primeDatePicker.hideOverlay();");
     }
 
+    /**
+     * Gets the browser time zone offset.
+     *
+     * @return the browser time zone offset in milliseconds
+     */
     public long getTimezoneOffset() {
         return (Long) PrimeSelenium.executeScript("return new Date().getTimezoneOffset();");
     }

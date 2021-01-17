@@ -38,13 +38,18 @@ public final class PrimeExpectedConditions {
     }
 
     public static ExpectedCondition<Boolean> jQueryNotActive() {
-        return driver -> (Boolean) ((JavascriptExecutor) driver).executeScript("return jQuery.active == 0;");
+        return driver -> (Boolean) ((JavascriptExecutor) driver).executeScript("return (!window.jQuery || jQuery.active == 0);");
+    }
+
+    public static ExpectedCondition<Boolean> ajaxQueueEmpty() {
+        return driver -> (Boolean) ((JavascriptExecutor) driver).executeScript("return (!window.PrimeFaces || PrimeFaces.ajax.Queue.isEmpty());");
     }
 
     public static ExpectedCondition<Boolean> visibleAndAnimationComplete(WebElement element) {
         return ExpectedConditions.and(
                     documentLoaded(),
                     jQueryNotActive(),
+                    ajaxQueueEmpty(),
                     ExpectedConditions.visibilityOf(element));
     }
 
@@ -52,6 +57,7 @@ public final class PrimeExpectedConditions {
         return ExpectedConditions.and(
                     documentLoaded(),
                     jQueryNotActive(),
+                    ajaxQueueEmpty(),
                     ExpectedConditions.invisibilityOf(element));
     }
 

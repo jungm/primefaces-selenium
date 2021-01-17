@@ -76,26 +76,6 @@ public final class PrimeSelenium {
     }
 
     /**
-     * Executes JavaScript in the browser.
-     *
-     * @param script the script to execute
-     * @param args any arguments to the script
-     * @param <T> the return type
-     * @return the result of running the JavaScript
-     */
-    public static <T> T executeScript(String script, Object... args) {
-        JavascriptExecutor executor = (JavascriptExecutor) getWebDriver();
-        T t = (T) executor.executeScript(script, args);
-        if (isSafari()) {
-            /*
-             * Safari has sometimes weird timing issues. (At least on Github Actions.) So wait a bit.
-             */
-            wait(100);
-        }
-        return t;
-    }
-
-    /**
      * Goto a particular page.
      *
      * @param pageClass the Page class to go to
@@ -327,6 +307,56 @@ public final class PrimeSelenium {
     }
 
     /**
+     * Guard the widget script which fires an AJAX request and means wait until it has completed before returning.
+     *
+     * @param script the script to execute
+     * @param args any arguments to the script
+     * @param <T> the return type
+     * @return the result of running the JavaScript
+     */
+    public static <T> T guardScript(String script, Object... args) {
+        return Guard.script(script, args);
+    }
+
+    /**
+     * Executes JavaScript in the browser.
+     *
+     * @param script the script to execute
+     * @param args any arguments to the script
+     * @param <T> the return type
+     * @return the result of running the JavaScript
+     */
+    public static <T> T executeScript(String script, Object... args) {
+        JavascriptExecutor executor = (JavascriptExecutor) getWebDriver();
+        T t = (T) executor.executeScript(script, args);
+        if (isSafari()) {
+            /*
+             * Safari has sometimes weird timing issues. (At least on Github Actions.) So wait a bit.
+             */
+            wait(100);
+        }
+        return t;
+    }
+
+    /**
+     * Executes JavaScript in the browser and will wait if the request is an AJAX request.
+     *
+     * @param isAjaxified true if this is an AJAX request, false if regular script
+     * @param script the script to execute
+     * @param args any arguments to the script
+     * @param <T> the return type
+     * @return the result of running the JavaScript
+     */
+    public static <T> T executeScript(boolean isAjaxified, String script, Object... args) {
+        if (isAjaxified) {
+            return guardScript(script, args);
+        }
+        else {
+            return executeScript(script, args);
+        }
+    }
+
+    /**
      * Wait will ignore instances of NotFoundException that are encountered (thrown) by default in the 'until' condition, and immediately propagate all others.
      * You can add more to the ignore list by calling ignoring(exceptions to add).
      *
@@ -373,7 +403,7 @@ public final class PrimeSelenium {
      *
      * @param input the WebElement input to set
      * @param value the value to set
-     * @see https://stackoverflow.com/questions/11858366/how-to-type-some-text-in-hidden-field-in-selenium-webdriver-using-java
+     * @see <a href="https://stackoverflow.com/questions/11858366/how-to-type-some-text-in-hidden-field-in-selenium-webdriver-using-java">Stack Overflow</a>
      */
     public static void setHiddenInput(WebElement input, String value) {
         executeScript(" document.getElementById('" + input.getAttribute("id") + "').value='" + value + "'");
@@ -416,12 +446,7 @@ public final class PrimeSelenium {
      */
     public static boolean isMacOs() {
         String os = System.getProperty("os.name").toUpperCase();
-        if ((os.indexOf("DARWIN") >= 0) || (os.indexOf("MAC") >= 0)) {
-            return true;
-        }
-        else {
-            return false;
-        }
+        return (os.contains("DARWIN")) || (os.contains("MAC"));
     }
 
     /**
@@ -436,7 +461,7 @@ public final class PrimeSelenium {
     /**
      * Waits specified amount of milliseconds.
      *
-     * @param milliseconds
+     * @param milliseconds how many milliseconds to wait
      */
     public static void wait(int milliseconds) {
         try {

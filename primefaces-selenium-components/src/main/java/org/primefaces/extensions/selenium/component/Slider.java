@@ -24,12 +24,20 @@ package org.primefaces.extensions.selenium.component;
 import org.primefaces.extensions.selenium.PrimeSelenium;
 import org.primefaces.extensions.selenium.component.base.AbstractInputComponent;
 import org.primefaces.extensions.selenium.component.base.ComponentUtils;
-import org.primefaces.extensions.selenium.component.base.Script;
 
 /**
  * Component wrapper for the PrimeFaces {@code p:slider}.
  */
 public abstract class Slider extends AbstractInputComponent {
+
+    /**
+     * Is this component AJAX enabled?
+     *
+     * @return true if AJAX enabled false if not
+     */
+    public boolean isAjaxified() {
+        return ComponentUtils.hasAjaxBehavior(getRoot(), "slideEnd");
+    }
 
     public Number getValue() {
         return PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".getValue();");
@@ -38,15 +46,21 @@ public abstract class Slider extends AbstractInputComponent {
     public void setValue(Number value) {
         PrimeSelenium.executeScript(getWidgetByIdScript() + ".setValue(" + value + ");");
         PrimeSelenium.executeScript(getWidgetByIdScript() + ".onSlide(null, { value: " + value + " });");
+        PrimeSelenium.executeScript(isAjaxified(), getWidgetByIdScript() + ".onSlideEnd(null, { value: " + value + " });");
+    }
 
-        if (ComponentUtils.hasAjaxBehavior(getRoot(), "slideEnd")) {
-            PrimeSelenium.guardAjax((Script) () -> {
-                PrimeSelenium.executeScript(getWidgetByIdScript() + ".onSlideEnd(null, { value: " + value + " });");
-            }).execute();
-        }
-        else {
-            PrimeSelenium.executeScript(getWidgetByIdScript() + ".onSlideEnd(null, { value: " + value + " });");
-        }
+    /**
+     * Enables the slider.
+     */
+    public void enable() {
+        PrimeSelenium.executeScript(getWidgetByIdScript() + ".enable();");
+    }
+
+    /**
+     * Disables the slider.
+     */
+    public void disable() {
+        PrimeSelenium.executeScript(getWidgetByIdScript() + ".disable();");
     }
 
 }

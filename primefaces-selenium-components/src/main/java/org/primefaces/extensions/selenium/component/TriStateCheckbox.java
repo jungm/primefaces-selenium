@@ -25,7 +25,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.primefaces.extensions.selenium.PrimeSelenium;
 import org.primefaces.extensions.selenium.component.base.AbstractInputComponent;
-import org.primefaces.extensions.selenium.component.base.ComponentUtils;
 import org.primefaces.extensions.selenium.findby.FindByParentPartialId;
 
 /**
@@ -45,7 +44,7 @@ public abstract class TriStateCheckbox extends AbstractInputComponent {
     public void click() {
         PrimeSelenium.waitGui().until(ExpectedConditions.elementToBeClickable(getRoot()));
 
-        if (ComponentUtils.hasAjaxBehavior(getRoot(), "change")) {
+        if (isOnchangeAjaxified()) {
             PrimeSelenium.guardAjax(getRoot()).click();
         }
         else {
@@ -67,6 +66,6 @@ public abstract class TriStateCheckbox extends AbstractInputComponent {
      * Toggles between its three states. (0, 1, 2)
      */
     public void toggle() {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".toggle();");
+        PrimeSelenium.executeScript(isOnchangeAjaxified(), getWidgetByIdScript() + ".toggle();");
     }
 }

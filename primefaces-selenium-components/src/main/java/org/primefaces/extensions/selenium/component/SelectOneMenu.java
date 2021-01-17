@@ -55,9 +55,7 @@ public abstract class SelectOneMenu extends AbstractInputComponent {
             PrimeSelenium.waitGui().until(PrimeExpectedConditions.invisibleAndAnimationComplete(panel));
         }
         else {
-            // label.click();
             PrimeSelenium.executeScript(getWidgetByIdScript() + ".show();");
-
             PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(panel));
         }
     }
@@ -171,7 +169,7 @@ public abstract class SelectOneMenu extends AbstractInputComponent {
     }
 
     protected void click(WebElement element) {
-        if (isAjaxified(getInput(), "onchange")) {
+        if (isOnchangeAjaxified()) {
             PrimeSelenium.guardAjax(element).click();
         }
         else {

@@ -45,10 +45,6 @@ public abstract class AutoComplete extends AbstractInputComponent {
     @FindByParentPartialId(value = "_panel", searchFromRoot = true)
     private WebElement panel;
 
-    public boolean isOnchangeAjaxified() {
-        return isAjaxified(getInput(), "onchange");
-    }
-
     @Override
     public WebElement getInput() {
         return input;

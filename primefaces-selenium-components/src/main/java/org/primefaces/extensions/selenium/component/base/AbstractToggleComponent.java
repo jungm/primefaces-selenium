@@ -41,11 +41,16 @@ public abstract class AbstractToggleComponent extends AbstractInputComponent {
     }
 
     @Override
+    public boolean isSelected() {
+        return getValue();
+    }
+
+    @Override
     public void click() {
         PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(getRoot()));
         PrimeSelenium.waitGui().until(ExpectedConditions.elementToBeClickable(getRoot()));
 
-        if (isAjaxified(getInput(), "onchange") || ComponentUtils.hasAjaxBehavior(getRoot(), "change")) {
+        if (isAjaxified()) {
             PrimeSelenium.guardAjax(getRoot()).click();
         }
         else {
@@ -53,46 +58,54 @@ public abstract class AbstractToggleComponent extends AbstractInputComponent {
         }
     }
 
+    /**
+     * Is this toggle component AJAX enabled?
+     *
+     * @return true if AJAX enabled false if not
+     */
+    public boolean isAjaxified() {
+        return isAjaxified(getInput(), "onchange") || ComponentUtils.hasAjaxBehavior(getRoot(), "change");
+    }
+
+    /**
+     * Set the value of the the toggle component.
+     *
+     * @param value true for checked, false for unchecked
+     */
     public void setValue(boolean value) {
         if (getValue() != value) {
             click();
         }
     }
 
+    /**
+     * Gets the value of the toggle component.
+     *
+     * @return true for checked, false for unchecked
+     */
     public boolean getValue() {
         return getInput().getAttribute("checked") != null;
-    }
-
-    @Override
-    public boolean isSelected() {
-        return getValue();
     }
 
     /**
      * Turns this switch in case it is off, or turns of off in case it is on.
      */
     public void toggle() {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".toggle();");
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.documentLoaded());
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.jQueryNotActive());
+        PrimeSelenium.executeScript(isAjaxified(), getWidgetByIdScript() + ".toggle();");
     }
 
     /**
      * Turns this switch on if it is not already turned on.
      */
     public void check() {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".check();");
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.documentLoaded());
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.jQueryNotActive());
+        PrimeSelenium.executeScript(isAjaxified(), getWidgetByIdScript() + ".check();");
     }
 
     /**
      * Turns this switch off if it is not already turned of.
      */
     public void uncheck() {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".uncheck();");
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.documentLoaded());
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.jQueryNotActive());
+        PrimeSelenium.executeScript(isAjaxified(), getWidgetByIdScript() + ".uncheck();");
     }
 
 }
