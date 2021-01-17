@@ -314,8 +314,8 @@ public final class PrimeSelenium {
      * @param <T> the return type
      * @return the result of running the JavaScript
      */
-    public static <T> T guardScript(String script, Object... args) {
-        return Guard.script(script, args);
+    public static <T> T guardAjax(String script, Object... args) {
+        return Guard.ajax(script, args);
     }
 
     /**
@@ -349,7 +349,7 @@ public final class PrimeSelenium {
      */
     public static <T> T executeScript(boolean isAjaxified, String script, Object... args) {
         if (isAjaxified) {
-            return guardScript(script, args);
+            return guardAjax(script, args);
         }
         else {
             return executeScript(script, args);

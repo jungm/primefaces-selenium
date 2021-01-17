@@ -70,7 +70,7 @@ public class Guard {
         });
     }
 
-    public static <T> T script(String script, Object... args) {
+    public static <T> T ajax(String script, Object... args) {
         try {
             WebDriver driver = WebDriverProvider.get();
             JavascriptExecutor executor = (JavascriptExecutor) driver;
