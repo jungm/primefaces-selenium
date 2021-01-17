@@ -59,7 +59,7 @@ public abstract class DatePicker extends AbstractInputComponent {
      *
      * @return true if AJAX enabled false if not
      */
-    public boolean isAjaxified() {
+    public boolean isDateSelectAjaxified() {
         return isAjaxified(getInput(), "onchange") || ComponentUtils.hasAjaxBehavior(getRoot(), "dateSelect");
     }
 
@@ -169,7 +169,7 @@ public abstract class DatePicker extends AbstractInputComponent {
             }
             input.sendKeys(formattedDate); // overwrite value
 
-            if (isAjaxified()) {
+            if (isDateSelectAjaxified()) {
                 PrimeSelenium.guardAjax(input).sendKeys(Keys.TAB);
             }
             else {
@@ -199,7 +199,7 @@ public abstract class DatePicker extends AbstractInputComponent {
      * @param epoch epoch in milliseconds
      */
     public void setDate(long epoch) {
-        PrimeSelenium.executeScript(isAjaxified(), getWidgetByIdScript() + ".setDate(new Date(" + epoch + "));");
+        PrimeSelenium.executeScript(isDateSelectAjaxified(), getWidgetByIdScript() + ".setDate(new Date(" + epoch + "));");
     }
 
     /**

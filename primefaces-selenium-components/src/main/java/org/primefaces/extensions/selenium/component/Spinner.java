@@ -26,7 +26,6 @@ import java.io.Serializable;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.primefaces.extensions.selenium.PrimeSelenium;
-import org.primefaces.extensions.selenium.component.base.ComponentUtils;
 import org.primefaces.extensions.selenium.findby.FindByParentPartialId;
 
 /**
@@ -46,15 +45,6 @@ public abstract class Spinner extends InputText {
     @Override
     public WebElement getInput() {
         return input;
-    }
-
-    /**
-     * Is this toggle component AJAX enabled?
-     *
-     * @return true if AJAX enabled false if not
-     */
-    public boolean isAjaxified() {
-        return isAjaxified(getInput(), "onchange") || ComponentUtils.hasAjaxBehavior(getRoot(), "change");
     }
 
     /**
@@ -102,6 +92,6 @@ public abstract class Spinner extends InputText {
      * Fire the change event for the spinner
      */
     public void change() {
-        PrimeSelenium.executeScript(isAjaxified(), getWidgetByIdScript() + ".input.trigger('change');");
+        PrimeSelenium.executeScript(isOnchangeAjaxified(), getWidgetByIdScript() + ".input.trigger('change');");
     }
 }
