@@ -60,7 +60,7 @@ public abstract class DatePicker extends AbstractInputComponent {
      * @return true if AJAX enabled false if not
      */
     public boolean isDateSelectAjaxified() {
-        return isAjaxified(getInput(), "onchange") || ComponentUtils.hasAjaxBehavior(getRoot(), "dateSelect");
+        return ComponentUtils.hasAjaxBehavior(getRoot(), "dateSelect");
     }
 
     /**
@@ -94,6 +94,9 @@ public abstract class DatePicker extends AbstractInputComponent {
     public WebElement selectDay(String day) {
         WebElement link = getPanel().findElement(By.linkText(day));
         PrimeSelenium.waitGui().until(ExpectedConditions.elementToBeClickable(link));
+        if (isDateSelectAjaxified()) {
+            link = PrimeSelenium.guardAjax(link);
+        }
         link.click();
         return link;
     }
@@ -169,7 +172,7 @@ public abstract class DatePicker extends AbstractInputComponent {
             }
             input.sendKeys(formattedDate); // overwrite value
 
-            if (isDateSelectAjaxified()) {
+            if (isOnchangeAjaxified()) {
                 PrimeSelenium.guardAjax(input).sendKeys(Keys.TAB);
             }
             else {
@@ -233,6 +236,7 @@ public abstract class DatePicker extends AbstractInputComponent {
      */
     public void hidePanel() {
         PrimeSelenium.executeScript(getWidgetByIdScript() + ".jq.data().primeDatePicker.hideOverlay();");
+        PrimeSelenium.waitGui().until(PrimeExpectedConditions.invisibleAndAnimationComplete(getPanel()));
     }
 
     /**
