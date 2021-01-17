@@ -39,6 +39,9 @@ public abstract class Messages extends AbstractComponent {
 
     public List<Msg> getAllMessages() {
         List<Msg> result = new ArrayList<>();
+        if (!isDisplayed()) {
+            return result;
+        }
 
         List<WebElement> messagesSeverities = findElements(By.tagName("div"));
         for (WebElement messageSeverity : messagesSeverities) {

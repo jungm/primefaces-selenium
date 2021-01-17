@@ -55,12 +55,30 @@ public abstract class DatePicker extends AbstractInputComponent {
     }
 
     /**
-     * Is this component AJAX enabled?
+     * Is this component AJAX enabled with "dateSelect"?
      *
      * @return true if AJAX enabled false if not
      */
     public boolean isDateSelectAjaxified() {
         return ComponentUtils.hasAjaxBehavior(getRoot(), "dateSelect");
+    }
+
+    /**
+     * Is this component AJAX enabled with "viewChange"?
+     *
+     * @return true if AJAX enabled false if not
+     */
+    public boolean isViewChangeAjaxified() {
+        return ComponentUtils.hasAjaxBehavior(getRoot(), "viewChange");
+    }
+
+    /**
+     * Is this component AJAX enabled with "close"?
+     *
+     * @return true if AJAX enabled false if not
+     */
+    public boolean isCloseAjaxified() {
+        return ComponentUtils.hasAjaxBehavior(getRoot(), "close");
     }
 
     /**
@@ -71,6 +89,9 @@ public abstract class DatePicker extends AbstractInputComponent {
     public WebElement getNextMonthLink() {
         WebElement link = getPanel().findElement(By.className("ui-datepicker-next"));
         PrimeSelenium.waitGui().until(ExpectedConditions.elementToBeClickable(link));
+        if (isViewChangeAjaxified()) {
+            link = PrimeSelenium.guardAjax(link);
+        }
         return link;
     }
 
@@ -82,6 +103,9 @@ public abstract class DatePicker extends AbstractInputComponent {
     public WebElement getPreviousMonthLink() {
         WebElement link = getPanel().findElement(By.className("ui-datepicker-prev"));
         PrimeSelenium.waitGui().until(ExpectedConditions.elementToBeClickable(link));
+        if (isViewChangeAjaxified()) {
+            link = PrimeSelenium.guardAjax(link);
+        }
         return link;
     }
 
@@ -235,7 +259,7 @@ public abstract class DatePicker extends AbstractInputComponent {
      * Hides the overlay panel.
      */
     public void hidePanel() {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".jq.data().primeDatePicker.hideOverlay();");
+        PrimeSelenium.executeScript(isCloseAjaxified(), getWidgetByIdScript() + ".jq.data().primeDatePicker.hideOverlay();");
         PrimeSelenium.waitGui().until(PrimeExpectedConditions.invisibleAndAnimationComplete(getPanel()));
     }
 
