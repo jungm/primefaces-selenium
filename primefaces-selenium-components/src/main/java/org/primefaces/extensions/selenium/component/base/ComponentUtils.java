@@ -36,7 +36,6 @@ public final class ComponentUtils {
         }
 
         String id = element.getAttribute("id");
-
         String result = PrimeSelenium.executeScript("return " + getWidgetByIdScript(id) + ".getBehavior('" + behavior + "').toString();");
         return isAjaxScript(result);
     }
@@ -47,7 +46,6 @@ public final class ComponentUtils {
         }
 
         String id = element.getAttribute("id");
-
         return PrimeSelenium.executeScript("return " + getWidgetByIdScript(id) + ".hasBehavior('" + behavior + "');");
     }
 

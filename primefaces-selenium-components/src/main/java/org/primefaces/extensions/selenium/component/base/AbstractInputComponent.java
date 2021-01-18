@@ -53,8 +53,7 @@ public abstract class AbstractInputComponent extends AbstractComponent {
      * @return true if using AJAX for onchange, change or valueChange
      */
     public boolean isOnchangeAjaxified() {
-        return isAjaxified(getInput(), "onchange") || ComponentUtils.hasAjaxBehavior(getRoot(), "change") || ComponentUtils
-                    .hasAjaxBehavior(getRoot(), "valueChange");
+        return isAjaxified(getInput(), "onchange") || ComponentUtils.hasAjaxBehavior(getRoot(), "change");
     }
 
     /**
