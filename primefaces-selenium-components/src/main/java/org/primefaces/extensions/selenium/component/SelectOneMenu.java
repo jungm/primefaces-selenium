@@ -29,6 +29,7 @@ import org.openqa.selenium.WebElement;
 import org.primefaces.extensions.selenium.PrimeExpectedConditions;
 import org.primefaces.extensions.selenium.PrimeSelenium;
 import org.primefaces.extensions.selenium.component.base.AbstractInputComponent;
+import org.primefaces.extensions.selenium.component.base.ComponentUtils;
 import org.primefaces.extensions.selenium.findby.FindByParentPartialId;
 
 /**
@@ -39,29 +40,68 @@ public abstract class SelectOneMenu extends AbstractInputComponent {
     @FindByParentPartialId("_input")
     private WebElement input;
 
-    @FindByParentPartialId(value = "_items", searchFromRoot = true)
-    private WebElement items;
-
     @FindByParentPartialId(value = "_panel", searchFromRoot = true)
     private WebElement panel;
+
+    /**
+     * Is the input using AJAX "itemSelect" event?
+     *
+     * @return true if using AJAX for itemSelect
+     */
+    public boolean isItemSelectAjaxified() {
+        return ComponentUtils.hasAjaxBehavior(getRoot(), "itemSelect");
+    }
 
     /**
      * Either display the dropdown or select the item it if is already displayed.
      */
     public void toggleDropdown() {
         if (getPanel().isDisplayed()) {
-            getLabel().click();
-
-            PrimeSelenium.waitGui().until(PrimeExpectedConditions.invisibleAndAnimationComplete(panel));
+            hide();
         }
         else {
+            show();
+        }
+    }
+
+    /**
+     * Shows the SelectOneMenu panel.
+     */
+    public void show() {
+        WebElement panel = getPanel();
+        if (isEnabled() && !panel.isDisplayed()) {
             PrimeSelenium.executeScript(getWidgetByIdScript() + ".show();");
             PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(panel));
         }
     }
 
+    /**
+     * Hides the SelectOneMenu panel.
+     */
+    public void hide() {
+        WebElement panel = getPanel();
+        if (isEnabled() && panel.isDisplayed()) {
+            PrimeSelenium.executeScript(getWidgetByIdScript() + ".hide();");
+            PrimeSelenium.waitGui().until(PrimeExpectedConditions.invisibleAndAnimationComplete(panel));
+        }
+    }
+
+    /**
+     * Enables the SelectOneMenu
+     */
+    public void enable() {
+        PrimeSelenium.executeScript(getWidgetByIdScript() + ".enable();");
+    }
+
+    /**
+     * Disables the SelectOneMenu
+     */
+    public void disable() {
+        PrimeSelenium.executeScript(getWidgetByIdScript() + ".disable();");
+    }
+
     public void deselect(String label) {
-        if (!isSelected(label)) {
+        if (!isSelected(label) || !isEnabled()) {
             return;
         }
 
@@ -82,7 +122,7 @@ public abstract class SelectOneMenu extends AbstractInputComponent {
     }
 
     public void select(String label) {
-        if (isSelected(label)) {
+        if (isSelected(label) || !isEnabled()) {
             return;
         }
 
@@ -161,7 +201,7 @@ public abstract class SelectOneMenu extends AbstractInputComponent {
     }
 
     public WebElement getItems() {
-        return items;
+        return getWebDriver().findElement(By.id(getId() + "_items"));
     }
 
     public WebElement getPanel() {
@@ -169,7 +209,7 @@ public abstract class SelectOneMenu extends AbstractInputComponent {
     }
 
     protected void click(WebElement element) {
-        if (isOnchangeAjaxified()) {
+        if (isOnchangeAjaxified() || isItemSelectAjaxified()) {
             PrimeSelenium.guardAjax(element).click();
         }
         else {

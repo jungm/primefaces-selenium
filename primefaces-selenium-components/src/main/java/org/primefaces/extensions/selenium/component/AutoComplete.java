@@ -175,7 +175,7 @@ public abstract class AutoComplete extends AbstractInputComponent {
      */
     public void show() {
         WebElement panel = getPanel();
-        if (!panel.isDisplayed()) {
+        if (isEnabled() && !panel.isDisplayed()) {
             PrimeSelenium.executeScript(getWidgetByIdScript() + ".show();");
             wait4Panel();
         }
@@ -186,7 +186,7 @@ public abstract class AutoComplete extends AbstractInputComponent {
      */
     public void hide() {
         WebElement panel = getPanel();
-        if (panel.isDisplayed()) {
+        if (isEnabled() && panel.isDisplayed()) {
             PrimeSelenium.executeScript(getWidgetByIdScript() + ".hide();");
             PrimeSelenium.waitGui().until(PrimeExpectedConditions.invisibleAndAnimationComplete(panel));
         }

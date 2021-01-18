@@ -254,7 +254,7 @@ public final class PrimeSelenium {
      */
     public static boolean isElementEnabled(WebElement element) {
         try {
-            return element.isEnabled();
+            return element.isEnabled() && !hasCssClass(element, "ui-state-disabled");
         }
         catch (NoSuchElementException | StaleElementReferenceException e) {
             return false;

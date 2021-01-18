@@ -151,6 +151,18 @@ public abstract class AbstractPrimePageTest {
         assertIsAt(page.getLocation());
     }
 
+    protected void assertClickable(WebElement element) {
+        if (!PrimeSelenium.isElementClickable(element)) {
+            Assertions.fail("Element should be clickable!");
+        }
+    }
+
+    protected void assertNotClickable(WebElement element) {
+        if (PrimeSelenium.isElementClickable(element)) {
+            Assertions.fail("Element should not be clickable!");
+        }
+    }
+
     protected void assertIsAt(Class<? extends AbstractPrimePage> pageClass) {
         String location;
         try {
@@ -248,7 +260,6 @@ public abstract class AbstractPrimePageTest {
      *
      * @param element the element to check
      * @param cssClasses the CSS class or classes to look for
-     * @return true if this element has all the CSS classes
      */
     protected void assertCss(WebElement element, String... cssClasses) {
         String elementClass = element.getAttribute("class");

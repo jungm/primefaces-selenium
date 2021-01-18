@@ -38,17 +38,23 @@ public abstract class AbstractInputComponent extends AbstractComponent {
     }
 
     /**
-     * Is the input using AJAX "onchange" event. ?
+     * Is this SelectOneMenu enabled?
      *
-     * @return true if using AJAX for onchange
+     * @return true if enabled, false if not
      */
-    public boolean isOnchangeAjaxified() {
-        return isAjaxified(getInput(), "onchange") || ComponentUtils.hasAjaxBehavior(getRoot(), "change");
-    }
-
     @Override
     public boolean isEnabled() {
-        return getInput().isEnabled();
+        return getInput().isEnabled() && !PrimeSelenium.hasCssClass(this, "ui-state-disabled");
+    }
+
+    /**
+     * Is the input using AJAX "change" or "valueChange" event?
+     *
+     * @return true if using AJAX for onchange, change or valueChange
+     */
+    public boolean isOnchangeAjaxified() {
+        return isAjaxified(getInput(), "onchange") || ComponentUtils.hasAjaxBehavior(getRoot(), "change") || ComponentUtils
+                    .hasAjaxBehavior(getRoot(), "valueChange");
     }
 
     /**
