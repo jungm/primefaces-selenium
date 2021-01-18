@@ -181,13 +181,12 @@ public abstract class DatePicker extends AbstractInputComponent {
     }
 
     public void setValue(long millis) {
-        String formattedDate = millisAsFormattedDate(millis);
-
         if (PrimeSelenium.isSafari()) {
             // Safari not overwriting with command+a so use JS code
             setDate(millis);
         }
         else {
+            String formattedDate = millisAsFormattedDate(millis);
             // Emulate user input instead of using js, calendar.setDate() can't go beyond mindate/maxdate
             WebElement input = getInput();
 

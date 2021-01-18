@@ -42,6 +42,52 @@ public abstract class Calendar extends AbstractInputComponent {
     @FindByParentPartialId("_input")
     private WebElement input;
 
+    @Override
+    public WebElement getInput() {
+        return input;
+    }
+
+    /**
+     * Is this component AJAX enabled with "dateSelect"?
+     *
+     * @return true if AJAX enabled false if not
+     */
+    public boolean isDateSelectAjaxified() {
+        return ComponentUtils.hasAjaxBehavior(getRoot(), "dateSelect");
+    }
+
+    /**
+     * Is this component AJAX enabled with "viewChange"?
+     *
+     * @return true if AJAX enabled false if not
+     */
+    public boolean isViewChangeAjaxified() {
+        return ComponentUtils.hasAjaxBehavior(getRoot(), "viewChange");
+    }
+
+    /**
+     * Is this component AJAX enabled with "close"?
+     *
+     * @return true if AJAX enabled false if not
+     */
+    public boolean isCloseAjaxified() {
+        return ComponentUtils.hasAjaxBehavior(getRoot(), "close");
+    }
+
+    /**
+     * Enables the input field
+     */
+    public void enable() {
+        PrimeSelenium.executeScript(getWidgetByIdScript() + ".enable();");
+    }
+
+    /**
+     * Disables the input field
+     */
+    public void disable() {
+        PrimeSelenium.executeScript(getWidgetByIdScript() + ".disable();");
+    }
+
     public LocalDateTime getValue() {
         Object date = PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".getDate()");
 
@@ -61,8 +107,10 @@ public abstract class Calendar extends AbstractInputComponent {
         if (date == null) {
             return null;
         }
-        String utcTimeString = PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".getDate().toUTCString();");
-        return LocalDate.parse(utcTimeString, DateTimeFormatter.RFC_1123_DATE_TIME);
+        Long dayOfMonth = PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".getDate().getDate();");
+        Long month = PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".getDate().getMonth();");
+        Long year = PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".getDate().getFullYear();");
+        return LocalDate.of(year.intValue(), month.intValue() + 1, dayOfMonth.intValue());
     }
 
     public void setValue(LocalDate localDate) {
@@ -82,18 +130,62 @@ public abstract class Calendar extends AbstractInputComponent {
     }
 
     public void setValue(long millis) {
-        String formattedDate = millisAsFormattedDate(millis);
-
-        // Emulate user input instead of using js, calendar.setDate() can't go beyond mindate/maxdate
-        getInput().sendKeys(Keys.chord(Keys.CONTROL, "a")); // select everything
-        getInput().sendKeys(formattedDate); // overwrite value
-
-        if (ComponentUtils.hasAjaxBehavior(getRoot(), "dateSelect")) {
-            PrimeSelenium.guardAjax(getInput()).sendKeys(Keys.TAB);
+        if (PrimeSelenium.isSafari()) {
+            // Safari not overwriting with command+a so use JS code
+            setDate(millis);
         }
         else {
-            getInput().sendKeys(Keys.TAB);
+            String formattedDate = millisAsFormattedDate(millis);
+            // Emulate user input instead of using js, calendar.setDate() can't go beyond mindate/maxdate
+            WebElement input = getInput();
+
+            // select everything
+            selectAllText();
+
+            // overwrite value
+            if (isViewChangeAjaxified()) {
+                PrimeSelenium.guardAjax(input).sendKeys(formattedDate);
+            }
+            else {
+                input.sendKeys(formattedDate);
+            }
+
+            // force change event
+            if (isOnchangeAjaxified()) {
+                PrimeSelenium.guardAjax(input).sendKeys(Keys.TAB);
+            }
+            else {
+                input.sendKeys(Keys.TAB);
+            }
         }
+    }
+
+    /**
+     * Widget API call to set date to this LocalDateTime.
+     *
+     * @param dateTime the LocalDateTime to set to
+     */
+    public void setDate(LocalDateTime dateTime) {
+        long millis = dateTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+        setDate(millis);
+    }
+
+    /**
+     * Widget API call to set date to this epoch in millis.
+     *
+     * @param epoch epoch in milliseconds
+     */
+    public void setDate(long epoch) {
+        PrimeSelenium.executeScript(isDateSelectAjaxified(), getWidgetByIdScript() + ".setDate(new Date(" + epoch + "));");
+    }
+
+    /**
+     * Gets the JS date value from the widget.
+     *
+     * @return the JS date value or null
+     */
+    public String getWidgetDate() {
+        return PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".getDate();");
     }
 
     public String millisAsFormattedDate(long millis) {
@@ -105,8 +197,4 @@ public abstract class Calendar extends AbstractInputComponent {
         return (Long) PrimeSelenium.executeScript("return new Date().getTimezoneOffset();");
     }
 
-    @Override
-    public WebElement getInput() {
-        return input;
-    }
 }
