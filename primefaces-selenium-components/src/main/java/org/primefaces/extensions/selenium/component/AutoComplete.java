@@ -160,12 +160,7 @@ public abstract class AutoComplete extends AbstractInputComponent {
      */
     @Override
     public void clear() {
-        WebElement input = getInput();
-        selectAllText();
-        if (isClearAjaxified()) {
-            input = PrimeSelenium.guardAjax(input);
-        }
-        input.sendKeys(Keys.BACK_SPACE);
+        PrimeSelenium.clearInput(getInput(), isClearAjaxified());
     }
 
     /**

@@ -410,6 +410,43 @@ public final class PrimeSelenium {
     }
 
     /**
+     * Clears the input field of text.
+     *
+     * @param input the WebElement input to set
+     * @param isAjaxified true if using AJAX
+     * @see <a href="https://stackoverflow.com/a/64067604/502366">Safari Hack</a>
+     */
+    public static void clearInput(WebElement input, boolean isAjaxified) {
+        if (PrimeSelenium.isSafari()) {
+            // Safari hack https://stackoverflow.com/a/64067604/502366
+            String inputText = input.getAttribute("value");
+            if (inputText != null) {
+                CharSequence[] clearText = new CharSequence[inputText.length()];
+                for (int i = 0; i < inputText.length(); i++) {
+                    clearText[i] = Keys.BACK_SPACE;
+                }
+                if (isAjaxified) {
+                    guardAjax(input).sendKeys(clearText);
+                }
+                else {
+                    input.sendKeys(clearText);
+                }
+            }
+        }
+        else {
+            // CTRL+A then BACKSPACE
+            Keys command = PrimeSelenium.isMacOs() ? Keys.COMMAND : Keys.CONTROL;
+            input.sendKeys(Keys.chord(command, "a"));
+            if (isAjaxified) {
+                guardAjax(input).sendKeys(Keys.BACK_SPACE);
+            }
+            else {
+                input.sendKeys(Keys.BACK_SPACE);
+            }
+        }
+    }
+
+    /**
      * Is the current WebDriver a Chrome driver?
      *
      * @return true if Chrome, false if any other browser

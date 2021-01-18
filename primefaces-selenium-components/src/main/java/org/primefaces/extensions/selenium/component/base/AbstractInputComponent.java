@@ -103,4 +103,12 @@ public abstract class AbstractInputComponent extends AbstractComponent {
         getInput().sendKeys(Keys.chord(command, "a"));
     }
 
+    /**
+     * Clears the input and guards AJAX for "clear" event.
+     */
+    @Override
+    public void clear() {
+        PrimeSelenium.clearInput(getInput(), false);
+    }
+
 }
