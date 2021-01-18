@@ -333,7 +333,7 @@ public final class PrimeSelenium {
             /*
              * Safari has sometimes weird timing issues. (At least on Github Actions.) So wait a bit.
              */
-            wait(100);
+            wait(50);
         }
         return t;
     }
