@@ -68,6 +68,42 @@ public abstract class AutoComplete extends AbstractInputComponent {
     }
 
     /**
+     * Is the input using AJAX "clear" event?
+     *
+     * @return true if using AJAX for clear
+     */
+    public boolean isClearAjaxified() {
+        return ComponentUtils.hasAjaxBehavior(getRoot(), "clear");
+    }
+
+    /**
+     * Is the input using AJAX "itemSelect" event?
+     *
+     * @return true if using AJAX for itemSelect
+     */
+    public boolean isItemSelectAjaxified() {
+        return ComponentUtils.hasAjaxBehavior(getRoot(), "itemSelect");
+    }
+
+    /**
+     * Is the input using AJAX "itemUnselect" event?
+     *
+     * @return true if using AJAX for itemUnselect
+     */
+    public boolean isItemUnselectAjaxified() {
+        return ComponentUtils.hasAjaxBehavior(getRoot(), "itemUnselect");
+    }
+
+    /**
+     * Is the input using AJAX "query" event?
+     *
+     * @return true if using AJAX for query
+     */
+    public boolean isQueryAjaxified() {
+        return ComponentUtils.hasAjaxBehavior(getRoot(), "query");
+    }
+
+    /**
      * If using multiple mode gets the values of the tokens.
      *
      * @return the values in a list
@@ -117,6 +153,19 @@ public abstract class AutoComplete extends AbstractInputComponent {
         else {
             input.sendKeys(Keys.TAB);
         }
+    }
+
+    /**
+     * Clears the Autocomplete input and guards AJAX for "clear" event.
+     */
+    @Override
+    public void clear() {
+        WebElement input = getInput();
+        selectAllText();
+        if (isClearAjaxified()) {
+            input = PrimeSelenium.guardAjax(input);
+        }
+        input.sendKeys(Keys.BACK_SPACE);
     }
 
     /**
@@ -188,8 +237,14 @@ public abstract class AutoComplete extends AbstractInputComponent {
         PrimeSelenium.executeScript(getWidgetByIdScript() + ".removeItem('" + item + "');");
     }
 
+    /**
+     * Execute the AutoComplete search.
+     *
+     * @param value the search to execute
+     */
     public void search(String value) {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".search(arguments[0]);", value);
+        // search always uses AJAX no matter what
+        PrimeSelenium.executeScript(true, getWidgetByIdScript() + ".search(arguments[0]);", value);
         wait4Panel();
     }
 }

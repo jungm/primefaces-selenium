@@ -95,4 +95,12 @@ public abstract class AbstractInputComponent extends AbstractComponent {
         return input.getAttribute("value");
     }
 
+    /**
+     * Selects all text in the input component.
+     */
+    public void selectAllText() {
+        Keys command = PrimeSelenium.isMacOs() ? Keys.COMMAND : Keys.CONTROL;
+        getInput().sendKeys(Keys.chord(command, "a"));
+    }
+
 }

@@ -190,8 +190,7 @@ public abstract class DatePicker extends AbstractInputComponent {
             WebElement input = getInput();
 
             // select everything
-            Keys command = PrimeSelenium.isMacOs() ? Keys.COMMAND : Keys.CONTROL;
-            input.sendKeys(Keys.chord(command, "a"));
+            selectAllText();
 
             // overwrite value
             if (isViewChangeAjaxified()) {
