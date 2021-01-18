@@ -256,16 +256,22 @@ public abstract class DatePicker extends AbstractInputComponent {
      * Shows the overlay panel.
      */
     public void showPanel() {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".jq.data().primeDatePicker.showOverlay();");
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(getPanel()));
+        WebElement panel = getPanel();
+        if (!panel.isDisplayed()) {
+            PrimeSelenium.executeScript(getWidgetByIdScript() + ".jq.data().primeDatePicker.showOverlay();");
+            PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(getPanel()));
+        }
     }
 
     /**
      * Hides the overlay panel.
      */
     public void hidePanel() {
-        PrimeSelenium.executeScript(isCloseAjaxified(), getWidgetByIdScript() + ".jq.data().primeDatePicker.hideOverlay();");
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.invisibleAndAnimationComplete(getPanel()));
+        WebElement panel = getPanel();
+        if (panel.isDisplayed()) {
+            PrimeSelenium.executeScript(isCloseAjaxified(), getWidgetByIdScript() + ".jq.data().primeDatePicker.hideOverlay();");
+            PrimeSelenium.waitGui().until(PrimeExpectedConditions.invisibleAndAnimationComplete(getPanel()));
+        }
     }
 
     /**

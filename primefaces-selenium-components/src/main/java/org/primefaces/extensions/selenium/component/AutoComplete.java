@@ -179,16 +179,22 @@ public abstract class AutoComplete extends AbstractInputComponent {
      * Shows the AutoComplete-Panel.
      */
     public void show() {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".show();");
-        wait4Panel();
+        WebElement panel = getPanel();
+        if (!panel.isDisplayed()) {
+            PrimeSelenium.executeScript(getWidgetByIdScript() + ".show();");
+            wait4Panel();
+        }
     }
 
     /**
      * Hides the AutoComplete-Panel.
      */
     public void hide() {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".hide();");
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.invisibleAndAnimationComplete(panel));
+        WebElement panel = getPanel();
+        if (panel.isDisplayed()) {
+            PrimeSelenium.executeScript(getWidgetByIdScript() + ".hide();");
+            PrimeSelenium.waitGui().until(PrimeExpectedConditions.invisibleAndAnimationComplete(panel));
+        }
     }
 
     /**
