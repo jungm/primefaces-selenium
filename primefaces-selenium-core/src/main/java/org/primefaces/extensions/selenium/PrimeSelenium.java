@@ -420,7 +420,7 @@ public final class PrimeSelenium {
         if (PrimeSelenium.isSafari()) {
             // Safari hack https://stackoverflow.com/a/64067604/502366
             String inputText = input.getAttribute("value");
-            if (inputText != null) {
+            if (inputText != null && inputText.length() > 0) {
                 CharSequence[] clearText = new CharSequence[inputText.length()];
                 for (int i = 0; i < inputText.length(); i++) {
                     clearText[i] = Keys.BACK_SPACE;

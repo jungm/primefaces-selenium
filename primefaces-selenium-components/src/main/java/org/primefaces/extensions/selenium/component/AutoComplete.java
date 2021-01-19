@@ -127,15 +127,25 @@ public abstract class AutoComplete extends AbstractInputComponent {
     /**
      * Sets the value and presses tab afterwards. Attention: Pressing tab selects the first suggested value.
      *
-     * @param value
+     * @param value the value to set
      */
-    public void setValue(Serializable value) {
-        setValueWithoutTab(value);
-        sendTabKey();
+    public void setValue(String value) {
+        WebElement input = getInput();
+        input.clear();
+
+        String send = value + Keys.TAB;
+        if (isOnchangeAjaxified()) {
+            PrimeSelenium.guardAjax(input).sendKeys(send);
+        }
+        else {
+            input.sendKeys(send);
+        }
     }
 
     /**
      * Sets the value without pressing tab afterwards.
+     *
+     * @param value the value to set
      */
     public void setValueWithoutTab(Serializable value) {
         WebElement input = getInput();
@@ -148,10 +158,10 @@ public abstract class AutoComplete extends AbstractInputComponent {
      */
     public void sendTabKey() {
         if (isOnchangeAjaxified()) {
-            PrimeSelenium.guardAjax(input).sendKeys(Keys.TAB);
+            PrimeSelenium.guardAjax(getInput()).sendKeys(Keys.TAB);
         }
         else {
-            input.sendKeys(Keys.TAB);
+            getInput().sendKeys(Keys.TAB);
         }
     }
 
