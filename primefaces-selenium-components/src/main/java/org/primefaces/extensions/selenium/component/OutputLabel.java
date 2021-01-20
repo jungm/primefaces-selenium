@@ -54,7 +54,7 @@ public abstract class OutputLabel extends AbstractComponent {
      */
     public WebElement getFor() {
         try {
-            return findElement(By.id(getAttribute("for")));
+            return getWebDriver().findElement(By.id(getAttribute("for")));
         }
         catch (NoSuchElementException | StaleElementReferenceException e) {
             return null;
