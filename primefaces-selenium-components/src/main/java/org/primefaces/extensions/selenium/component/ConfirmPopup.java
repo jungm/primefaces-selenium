@@ -22,32 +22,61 @@
 package org.primefaces.extensions.selenium.component;
 
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.FindBy;
 import org.primefaces.extensions.selenium.PrimeExpectedConditions;
 import org.primefaces.extensions.selenium.PrimeSelenium;
 import org.primefaces.extensions.selenium.component.base.AbstractComponent;
 
 /**
- * Component wrapper for the PrimeFaces {@code p:commandButton}.
+ * Component wrapper for the PrimeFaces {@code p:confirmPopup}.
  */
-public abstract class CommandButton extends AbstractComponent {
+public abstract class ConfirmPopup extends AbstractComponent {
 
-    @Override
-    public void click() {
-        WebElement button = getRoot();
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(button));
-        PrimeSelenium.waitGui().until(ExpectedConditions.elementToBeClickable(button));
+    @FindBy(className = "ui-confirm-popup-icon")
+    private WebElement icon;
 
-        if (button.getAttribute("data-pfconfirmcommand") != null) {
-            // normal button click below don't want AJAX to fire
-        }
-        else if (isAjaxified("onclick")) {
-            button = PrimeSelenium.guardAjax(button);
-        }
-        else if ("submit".equals(button.getAttribute("type"))) {
-            button = PrimeSelenium.guardHttp(button);
-        }
+    @FindBy(className = "ui-confirm-popup-message")
+    private WebElement message;
 
-        button.click();
+    @FindBy(className = "ui-confirm-popup-yes")
+    private CommandButton yesButton;
+
+    @FindBy(className = "ui-confirm-popup-no")
+    private CommandButton noButton;
+
+    public WebElement getMessage() {
+        return message;
     }
+
+    public WebElement getIcon() {
+        return icon;
+    }
+
+    public CommandButton getYesButton() {
+        return yesButton;
+    }
+
+    public CommandButton getNoButton() {
+        return noButton;
+    }
+
+    /**
+     * Is the popup currently visible.
+     *
+     * @return true if visible false if not
+     */
+    public boolean isVisible() {
+        return PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".isVisible();");
+    }
+
+    /**
+     * Hides the overlay panel.
+     */
+    public void hidePopup() {
+        if (isEnabled() && isDisplayed()) {
+            PrimeSelenium.executeScript(getWidgetByIdScript() + ".hide();");
+            PrimeSelenium.waitGui().until(PrimeExpectedConditions.invisibleAndAnimationComplete(this));
+        }
+    }
+
 }

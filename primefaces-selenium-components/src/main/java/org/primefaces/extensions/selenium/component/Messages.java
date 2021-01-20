@@ -37,6 +37,13 @@ import org.primefaces.extensions.selenium.component.model.Severity;
  */
 public abstract class Messages extends AbstractComponent {
 
+    public boolean isEmpty() {
+        if (!isDisplayed()) {
+            return true;
+        }
+        return getAllMessages().isEmpty();
+    }
+
     public List<Msg> getAllMessages() {
         List<Msg> result = new ArrayList<>();
         if (!isDisplayed()) {
