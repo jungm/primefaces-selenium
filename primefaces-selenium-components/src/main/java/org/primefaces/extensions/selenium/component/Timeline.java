@@ -23,6 +23,7 @@ package org.primefaces.extensions.selenium.component;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.primefaces.extensions.selenium.PrimeExpectedConditions;
 import org.primefaces.extensions.selenium.PrimeSelenium;
 import org.primefaces.extensions.selenium.component.base.AbstractComponent;
 
@@ -37,6 +38,7 @@ public abstract class Timeline extends AbstractComponent {
      * @param cssClass the CSS class to select
      */
     public void select(String cssClass) {
+        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(this));
         WebElement element = findElement(By.className(cssClass));
         PrimeSelenium.guardAjax(element).click();
     }
@@ -45,6 +47,7 @@ public abstract class Timeline extends AbstractComponent {
      * Force render the timeline component.
      */
     public void update() {
+        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(this));
         PrimeSelenium.executeScript(getWidgetByIdScript() + ".renderTimeline();");
     }
 
