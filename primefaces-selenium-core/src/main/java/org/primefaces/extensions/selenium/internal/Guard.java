@@ -22,6 +22,7 @@
 package org.primefaces.extensions.selenium.internal;
 
 import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
@@ -31,6 +32,7 @@ import java.util.List;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.primefaces.extensions.selenium.PrimeSelenium;
 import org.primefaces.extensions.selenium.spi.WebDriverProvider;
@@ -101,12 +103,7 @@ public class Guard {
 
                 // if JS uses setTimeout on the client we want to wait before trying to capture AJAX call
                 if (delayInMilliseconds > 0) {
-                    try {
-                        Thread.sleep(delayInMilliseconds);
-                    }
-                    catch (InterruptedException ex) {
-                        System.err.println("AJAX Guard delay was interrupted!");
-                    }
+                    Thread.sleep(delayInMilliseconds);
                 }
 
                 waitUntilAjaxCompletes(driver);
@@ -115,6 +112,17 @@ public class Guard {
             }
             catch (TimeoutException e) {
                 throw new TimeoutException("Timeout while waiting for AJAX complete!", e);
+            }
+            catch (InterruptedException e) {
+                throw new TimeoutException("AJAX Guard delay was interrupted!", e);
+            }
+            catch (InvocationTargetException e) {
+                if (e.getCause() instanceof WebDriverException) {
+                    throw e.getCause();
+                }
+                else {
+                    throw e;
+                }
             }
         });
     }

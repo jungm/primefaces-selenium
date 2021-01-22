@@ -22,32 +22,39 @@
 package org.primefaces.extensions.selenium.component;
 
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.primefaces.extensions.selenium.PrimeExpectedConditions;
-import org.primefaces.extensions.selenium.PrimeSelenium;
-import org.primefaces.extensions.selenium.component.base.AbstractComponent;
+import org.openqa.selenium.support.FindBy;
 
 /**
- * Component wrapper for the PrimeFaces {@code p:commandButton}.
+ * Component wrapper for the PrimeFaces {@code p:confirmDialog}.
  */
-public abstract class CommandButton extends AbstractComponent {
+public abstract class ConfirmDialog extends Dialog {
 
-    @Override
-    public void click() {
-        WebElement button = getRoot();
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(button));
-        PrimeSelenium.waitGui().until(ExpectedConditions.elementToBeClickable(button));
+    @FindBy(className = "ui-confirm-dialog-severity")
+    private WebElement icon;
 
-        if (button.getAttribute("data-pfconfirmcommand") != null) {
-            // Confirm Dialog/Popup we don't want to guard for AJAX
-        }
-        else if (isAjaxified("onclick")) {
-            button = PrimeSelenium.guardAjax(button);
-        }
-        else if ("submit".equals(button.getAttribute("type"))) {
-            button = PrimeSelenium.guardHttp(button);
-        }
+    @FindBy(className = "ui-confirm-dialog-message")
+    private WebElement message;
 
-        button.click();
+    @FindBy(className = "ui-confirmdialog-yes")
+    private CommandButton yesButton;
+
+    @FindBy(className = "ui-confirmdialog-no")
+    private CommandButton noButton;
+
+    public WebElement getMessage() {
+        return message;
     }
+
+    public WebElement getIcon() {
+        return icon;
+    }
+
+    public CommandButton getYesButton() {
+        return yesButton;
+    }
+
+    public CommandButton getNoButton() {
+        return noButton;
+    }
+
 }

@@ -23,6 +23,7 @@ package org.primefaces.extensions.selenium.component;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.primefaces.extensions.selenium.PrimeExpectedConditions;
 import org.primefaces.extensions.selenium.PrimeSelenium;
 import org.primefaces.extensions.selenium.component.base.AbstractComponent;
 
@@ -37,14 +38,6 @@ public abstract class Dialog extends AbstractComponent {
     @FindBy(className = "ui-dialog-title")
     private WebElement title;
 
-    public void show() {
-        PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".show();");
-    }
-
-    public void hide() {
-        PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".hide();");
-    }
-
     public WebElement getContent() {
         return content;
     }
@@ -52,4 +45,34 @@ public abstract class Dialog extends AbstractComponent {
     public String getTitle() {
         return title.getText();
     }
+
+    /**
+     * Is the dialog currently visible.
+     *
+     * @return true if visible false if not
+     */
+    public boolean isVisible() {
+        return PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".isVisible();");
+    }
+
+    /**
+     * Shows the dialog.
+     */
+    public void show() {
+        if (isEnabled() && !isDisplayed()) {
+            PrimeSelenium.executeScript(getWidgetByIdScript() + ".show();");
+            PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(this));
+        }
+    }
+
+    /**
+     * Hides the dialog.
+     */
+    public void hide() {
+        if (isEnabled() && isDisplayed()) {
+            PrimeSelenium.executeScript(getWidgetByIdScript() + ".hide();");
+            PrimeSelenium.waitGui().until(PrimeExpectedConditions.invisibleAndAnimationComplete(this));
+        }
+    }
+
 }
