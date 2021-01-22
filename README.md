@@ -32,6 +32,8 @@ Currently, only the following components are implemented (partially):
 - Chips
 - CommandButton
 - CommandLink
+- ConfirmDialog
+- ConfirmPopup
 - ~~DataList~~ (use DataView)
 - DataTable
 - DatePicker
