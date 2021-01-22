@@ -259,7 +259,7 @@ public abstract class DatePicker extends AbstractInputComponent {
     public void showPanel() {
         WebElement panel = getPanel();
         if (isEnabled() && !panel.isDisplayed()) {
-            PrimeSelenium.executeScript(getWidgetByIdScript() + ".jq.data().primeDatePicker.showOverlay();");
+            PrimeSelenium.executeScript(getWidgetByIdScript() + ".show()");
             PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(getPanel()));
         }
     }
@@ -270,9 +270,23 @@ public abstract class DatePicker extends AbstractInputComponent {
     public void hidePanel() {
         WebElement panel = getPanel();
         if (isEnabled() && panel.isDisplayed()) {
-            PrimeSelenium.executeScript(isCloseAjaxified(), getWidgetByIdScript() + ".jq.data().primeDatePicker.hideOverlay();");
+            PrimeSelenium.executeScript(isCloseAjaxified(), getWidgetByIdScript() + ".hide();");
             PrimeSelenium.waitGui().until(PrimeExpectedConditions.invisibleAndAnimationComplete(getPanel()));
         }
+    }
+
+    /**
+     * Widget API call to disable the DatePicker.
+     */
+    public void disable() {
+        PrimeSelenium.executeScript(getWidgetByIdScript() + ".disable();");
+    }
+
+    /**
+     * Widget API call to enable the DatePicker.
+     */
+    public void enable() {
+        PrimeSelenium.executeScript(getWidgetByIdScript() + ".enable();");
     }
 
     /**
