@@ -64,7 +64,7 @@ public abstract class AbstractComponent extends AbstractPrimePageFragment {
      * Is the event for the root-element ajaxified?
      *
      * @param event Event with the `on` prefix, such as `onclick` or `onblur`.
-     * @return
+     * @return true if using AJAX false if not
      */
     protected boolean isAjaxified(String event) {
         return isAjaxified(getRoot(), event);
@@ -75,7 +75,7 @@ public abstract class AbstractComponent extends AbstractPrimePageFragment {
      *
      * @param element Element for which to do the check. (May be a child element of a complex component.) If no element is passed it defaults to getRoot().
      * @param event Event with the `on` prefix, such as `onclick` or `onblur`.
-     * @return
+     * @return true is using AJAX false it not
      */
     protected boolean isAjaxified(WebElement element, String event) {
         if (element == null) {

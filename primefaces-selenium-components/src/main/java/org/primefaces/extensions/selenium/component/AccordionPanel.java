@@ -46,6 +46,19 @@ public abstract class AccordionPanel extends AbstractComponent {
 
     private List<Tab> tabs = null;
 
+    public List<WebElement> getHeaders() {
+        return headers;
+    }
+
+    public List<WebElement> getContents() {
+        return contents;
+    }
+
+    /**
+     * Gets the accordion tabs.
+     *
+     * @return the list of tabs
+     */
     public List<Tab> getTabs() {
         if (tabs == null) {
             List<Tab> tabs = new ArrayList<>();
@@ -54,7 +67,7 @@ public abstract class AccordionPanel extends AbstractComponent {
             headers.forEach(headerElt -> {
                 String title = headerElt.getText();
                 int index = cnt.getAndIncrement();
-                WebElement content = contents.get(index);
+                WebElement content = getContents().get(index);
 
                 tabs.add(new Tab(title, index, headerElt, content));
             });
@@ -62,7 +75,7 @@ public abstract class AccordionPanel extends AbstractComponent {
             this.tabs = tabs;
         }
 
-        return this.tabs;
+        return tabs;
     }
 
     /**
@@ -72,10 +85,10 @@ public abstract class AccordionPanel extends AbstractComponent {
      */
     public void toggleTab(int index) {
         if (ComponentUtils.hasAjaxBehavior(getRoot(), "tabChange")) {
-            PrimeSelenium.guardAjax(headers.get(index)).click();
+            PrimeSelenium.guardAjax(getHeaders().get(index)).click();
         }
         else {
-            headers.get(index).click();
+            getHeaders().get(index).click();
         }
     }
 
