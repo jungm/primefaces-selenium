@@ -501,11 +501,13 @@ public final class PrimeSelenium {
      * @param milliseconds how many milliseconds to wait
      */
     public static void wait(int milliseconds) {
-        try {
-            Thread.sleep(milliseconds);
-        }
-        catch (InterruptedException ex) {
-            System.err.println("Wait was interrupted!");
+        if (milliseconds > 0) {
+            try {
+                Thread.sleep(milliseconds);
+            }
+            catch (InterruptedException ex) {
+                System.err.println("Wait was interrupted!");
+            }
         }
     }
 }

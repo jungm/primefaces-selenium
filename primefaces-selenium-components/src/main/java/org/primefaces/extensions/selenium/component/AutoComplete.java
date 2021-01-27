@@ -56,7 +56,7 @@ public abstract class AutoComplete extends AbstractInputComponent {
 
     public List<String> getItemValues() {
         List<WebElement> itemElements = getItems().findElements(By.className("ui-autocomplete-item"));
-        return itemElements.stream().map(elt -> elt.getText()).collect(Collectors.toList());
+        return itemElements.stream().map(WebElement::getText).collect(Collectors.toList());
     }
 
     public WebElement getPanel() {
@@ -130,8 +130,10 @@ public abstract class AutoComplete extends AbstractInputComponent {
      * @param value the value to set
      */
     public void setValue(String value) {
-        setValueWithoutTab(value);
-        PrimeSelenium.waitGui().until(PrimeExpectedConditions.jQueryNotActive());
+        int delay = setValueWithoutTab(value);
+        if (delay > 0) {
+            PrimeSelenium.waitGui().until(PrimeExpectedConditions.jQueryNotActive());
+        }
         sendTabKey();
     }
 
@@ -139,12 +141,15 @@ public abstract class AutoComplete extends AbstractInputComponent {
      * Sets the value without pressing tab afterwards.
      *
      * @param value the value to set
+     * @return the delay in milliseconds
      */
-    public void setValueWithoutTab(Serializable value) {
+    public int setValueWithoutTab(Serializable value) {
         WebElement input = getInput();
         input.clear();
         ComponentUtils.sendKeys(input, value.toString());
-        PrimeSelenium.wait(getDelay() * 2);
+        int delay = getDelay();
+        PrimeSelenium.wait(delay * 2);
+        return delay;
     }
 
     /**
