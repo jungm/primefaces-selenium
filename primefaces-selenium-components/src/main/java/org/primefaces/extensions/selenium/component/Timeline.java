@@ -65,4 +65,13 @@ public abstract class Timeline extends AbstractComponent {
     public void zoom(double zoomFactor) {
         PrimeSelenium.executeScript(getWidgetByIdScript() + ".zoom(" + zoomFactor + ");");
     }
+
+    /**
+     * Move the timeline left or right by a factor
+     *
+     * @param moveFactor a number between 0 and 1
+     */
+    public void move(double moveFactor) {
+        PrimeSelenium.executeScript(getWidgetByIdScript() + ".move(" + moveFactor + ");");
+    }
 }
