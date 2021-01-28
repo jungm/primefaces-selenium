@@ -25,6 +25,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.primefaces.extensions.selenium.PrimeSelenium;
 import org.primefaces.extensions.selenium.component.base.AbstractComponent;
+import org.primefaces.extensions.selenium.component.base.ComponentUtils;
 
 /**
  * Component wrapper for the PrimeFaces {@code p:timeline}.
@@ -39,6 +40,15 @@ public abstract class Timeline extends AbstractComponent {
     public void select(String cssClass) {
         WebElement element = findElement(By.className(cssClass));
         PrimeSelenium.guardAjax(element).click();
+    }
+
+    /**
+     * Is the timeline using AJAX "rangechanged" event?
+     *
+     * @return true if using AJAX for rangechanged
+     */
+    public boolean isRangeChangedAjaxified() {
+        return ComponentUtils.hasAjaxBehavior(getRoot(), "rangechanged");
     }
 
     /**
@@ -63,7 +73,7 @@ public abstract class Timeline extends AbstractComponent {
      * @param zoomFactor a number between 0 and 1
      */
     public void zoom(double zoomFactor) {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".zoom(" + zoomFactor + ");");
+        PrimeSelenium.executeScript(isRangeChangedAjaxified(), getWidgetByIdScript() + ".zoom(" + zoomFactor + ");");
     }
 
     /**
@@ -72,6 +82,6 @@ public abstract class Timeline extends AbstractComponent {
      * @param moveFactor a number between 0 and 1
      */
     public void move(double moveFactor) {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".move(" + moveFactor + ");");
+        PrimeSelenium.executeScript(isRangeChangedAjaxified(), getWidgetByIdScript() + ".move(" + moveFactor + ");");
     }
 }
