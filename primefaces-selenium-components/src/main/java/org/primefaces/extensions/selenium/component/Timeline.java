@@ -56,4 +56,13 @@ public abstract class Timeline extends AbstractComponent {
     public long getNumberOfEvents() {
         return PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".getNumberOfEvents();");
     }
+
+    /**
+     * Zoom the timeline in by the zoom factor.
+     *
+     * @param zoomFactor a number between 0 and 1
+     */
+    public void zoom(double zoomFactor) {
+        PrimeSelenium.executeScript(getWidgetByIdScript() + ".zoom(" + zoomFactor + ");");
+    }
 }
