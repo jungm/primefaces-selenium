@@ -39,7 +39,12 @@ public abstract class Timeline extends AbstractComponent {
      */
     public void select(String cssClass) {
         WebElement element = findElement(By.className(cssClass));
-        PrimeSelenium.guardAjax(element).click();
+        if (isSelectAjaxified()) {
+            PrimeSelenium.guardAjax(element).click();
+        }
+        else {
+            element.click();
+        }
     }
 
     /**
@@ -49,6 +54,15 @@ public abstract class Timeline extends AbstractComponent {
      */
     public boolean isRangeChangedAjaxified() {
         return ComponentUtils.hasAjaxBehavior(getRoot(), "rangechanged");
+    }
+
+    /**
+     * Is the timeline using AJAX "select" event?
+     *
+     * @return true if using AJAX for select
+     */
+    public boolean isSelectAjaxified() {
+        return ComponentUtils.hasAjaxBehavior(getRoot(), "select");
     }
 
     /**
