@@ -17,7 +17,7 @@ This is the successor of primefaces-arquillian and heavily inspired by Arquillia
 ## Configuration
 
 PrimeFaces-Selenium requires a `/primefaces-selenium/config.properties` to set a `PrimeSeleniumAdapter`.
-A sample implementation, which starts a local TomEE, can be found here: https://github.com/primefaces-extensions/primefaces-integration-tests/blob/master/src/test/java/org/primefaces/extensions/integrationtests/PrimeFacesSeleniumTomEEAdapter.java and https://github.com/primefaces-extensions/primefaces-integration-tests/blob/master/src/test/java/org/primefaces/extensions/integrationtests/PrimeFacesSeleniumTomEEFirefoxAdapterImpl.java
+A sample implementation, which starts a local TomEE, can be found here: [TomEE Adapter](https://github.com/primefaces-extensions/primefaces-integration-tests/blob/master/src/test/java/org/primefaces/extensions/integrationtests/PrimeFacesSeleniumTomEEAdapter.java) and [FireFox TomEE Adapter](https://github.com/primefaces-extensions/primefaces-integration-tests/blob/master/src/test/java/org/primefaces/extensions/integrationtests/PrimeFacesSeleniumTomEEFirefoxAdapterImpl.java)
 
 Properties:
 |       property name      |   type  | default |                 description                 |
