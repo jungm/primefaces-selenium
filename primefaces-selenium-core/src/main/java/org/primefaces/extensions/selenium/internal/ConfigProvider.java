@@ -84,7 +84,7 @@ public class ConfigProvider {
             }
 
             if (adapter == null) {
-                throw new RuntimeException("No lifecycle set via config.properties!");
+                throw new RuntimeException("No 'adapter' set via config.properties!");
             }
 
             buildOnloadScripts();
