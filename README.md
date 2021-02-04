@@ -10,7 +10,25 @@
 PrimeFaces testing support based on JUnit5, Selenium and the concept of page ojects / fragements. It also supports JUnit5 parallel test execution to speed up
 tests.
 
+PrimeFaces-Selenium provides a hook-in to either startup a local server, use a remote adress and to instantiate the WebDriver.
+
 This is the successor of primefaces-arquillian and heavily inspired by Arquillian Graphene.
+
+## Configuration
+
+PrimeFaces-Selenium requires a `/primefaces-selenium/config.properties` to set a `PrimeSeleniumAdapter`.
+A sample implementation, which starts a local TomEE, can be found here: https://github.com/primefaces-extensions/primefaces-integration-tests/blob/master/src/test/java/org/primefaces/extensions/integrationtests/PrimeFacesSeleniumTomEEAdapter.java and https://github.com/primefaces-extensions/primefaces-integration-tests/blob/master/src/test/java/org/primefaces/extensions/integrationtests/PrimeFacesSeleniumTomEEFirefoxAdapterImpl.java
+
+Properties:
+|       property name      |   type  | default |                 description                 |
+|:------------------------:|:-------:|---------|:-------------------------------------------:|
+| adapter                  | org.primefaces.extensions.selenium.spi.PrimeSeleniumAdapter    |         | Adapter/Hook-In implementation class |
+|        guiTimeout        |   int   | 2       |       GUI timeout for waits in seconds      |
+|        ajaxTimeout       |   int   | 10      |      AJAX timeout for guards in seconds     |
+|        httpTimeout       |   int   | 10      |      HTTP timeout for guards in seconds     |
+|    documentLoadTimeout   |   int   | 15      |       Document load timeout in seconds      |
+| disableJQueryAnimtations | boolean | true    | If animtations should be disabled for tests |
+
 
 ### Compatibility
 
