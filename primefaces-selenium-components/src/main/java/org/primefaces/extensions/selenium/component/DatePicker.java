@@ -46,6 +46,12 @@ public abstract class DatePicker extends AbstractInputComponent {
     private WebElement input;
 
     @Override
+    public void click() {
+        input.click();
+        PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(getPanel()));
+    }
+
+    @Override
     public WebElement getInput() {
         return input;
     }
@@ -87,7 +93,7 @@ public abstract class DatePicker extends AbstractInputComponent {
      * @return the Next Month link
      */
     public WebElement getNextMonthLink() {
-        WebElement link = getPanel().findElement(By.className("ui-datepicker-next"));
+        WebElement link = showPanel().findElement(By.className("ui-datepicker-next"));
         PrimeSelenium.waitGui().until(ExpectedConditions.elementToBeClickable(link));
         if (isViewChangeAjaxified()) {
             link = PrimeSelenium.guardAjax(link);
@@ -101,7 +107,7 @@ public abstract class DatePicker extends AbstractInputComponent {
      * @return the Previous Month link
      */
     public WebElement getPreviousMonthLink() {
-        WebElement link = getPanel().findElement(By.className("ui-datepicker-prev"));
+        WebElement link = showPanel().findElement(By.className("ui-datepicker-prev"));
         PrimeSelenium.waitGui().until(ExpectedConditions.elementToBeClickable(link));
         if (isViewChangeAjaxified()) {
             link = PrimeSelenium.guardAjax(link);
@@ -116,7 +122,7 @@ public abstract class DatePicker extends AbstractInputComponent {
      * @return the day selected
      */
     public WebElement selectDay(String day) {
-        WebElement link = getPanel().findElement(By.linkText(day));
+        WebElement link = showPanel().findElement(By.linkText(day));
         PrimeSelenium.waitGui().until(ExpectedConditions.elementToBeClickable(link));
         if (isDateSelectAjaxified()) {
             link = PrimeSelenium.guardAjax(link);
@@ -131,7 +137,7 @@ public abstract class DatePicker extends AbstractInputComponent {
      * @return the Clear button
      */
     public WebElement getClearButton() {
-        WebElement button = getPanel().findElement(By.className("ui-datepicker-buttonbar")).findElement(By.className("ui-clear-button"));
+        WebElement button = showPanel().findElement(By.className("ui-datepicker-buttonbar")).findElement(By.className("ui-clear-button"));
         PrimeSelenium.waitGui().until(ExpectedConditions.elementToBeClickable(button));
         return button;
     }
@@ -142,7 +148,7 @@ public abstract class DatePicker extends AbstractInputComponent {
      * @return the Today button
      */
     public WebElement getTodayButton() {
-        WebElement button = getPanel().findElement(By.className("ui-datepicker-buttonbar")).findElement(By.className("ui-today-button"));
+        WebElement button = showPanel().findElement(By.className("ui-datepicker-buttonbar")).findElement(By.className("ui-today-button"));
         PrimeSelenium.waitGui().until(ExpectedConditions.elementToBeClickable(button));
         return button;
     }
@@ -255,13 +261,16 @@ public abstract class DatePicker extends AbstractInputComponent {
 
     /**
      * Shows the overlay panel.
+     *
+     * @return the panel shown
      */
-    public void showPanel() {
+    public WebElement showPanel() {
         WebElement panel = getPanel();
         if (isEnabled() && !panel.isDisplayed()) {
             PrimeSelenium.executeScript(getWidgetByIdScript() + ".show()");
             PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(getPanel()));
         }
+        return panel;
     }
 
     /**
