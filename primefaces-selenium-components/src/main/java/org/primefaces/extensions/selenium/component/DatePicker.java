@@ -28,7 +28,6 @@ import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.primefaces.extensions.selenium.PrimeExpectedConditions;
@@ -187,34 +186,7 @@ public abstract class DatePicker extends AbstractInputComponent {
     }
 
     public void setValue(long millis) {
-        if (PrimeSelenium.isSafari()) {
-            // Safari not overwriting with command+a so use JS code
-            setDate(millis);
-        }
-        else {
-            String formattedDate = millisAsFormattedDate(millis);
-            // Emulate user input instead of using js, calendar.setDate() can't go beyond mindate/maxdate
-            WebElement input = getInput();
-
-            // select everything
-            selectAllText();
-
-            // overwrite value
-            if (isViewChangeAjaxified()) {
-                PrimeSelenium.guardAjax(input).sendKeys(formattedDate);
-            }
-            else {
-                input.sendKeys(formattedDate);
-            }
-
-            // force change event
-            if (isOnchangeAjaxified()) {
-                PrimeSelenium.guardAjax(input).sendKeys(Keys.TAB);
-            }
-            else {
-                input.sendKeys(Keys.TAB);
-            }
-        }
+        setDate(millis);
     }
 
     public String millisAsFormattedDate(long millis) {
