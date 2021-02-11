@@ -21,7 +21,9 @@
  */
 package org.primefaces.extensions.selenium;
 
-import org.openqa.selenium.*;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
@@ -52,7 +54,7 @@ public final class PrimeExpectedConditions {
                     documentLoaded(),
                     jQueryNotActive(),
                     ajaxQueueEmpty(),
-                    steadinessOfElementLocated(element, true));
+                    ExpectedConditions.visibilityOf(element));
     }
 
     public static ExpectedCondition<Boolean> invisibleAndAnimationComplete(WebElement element) {
@@ -60,7 +62,7 @@ public final class PrimeExpectedConditions {
                     documentLoaded(),
                     jQueryNotActive(),
                     ajaxQueueEmpty(),
-                    steadinessOfElementLocated(element, false));
+                    ExpectedConditions.invisibilityOf(element));
     }
 
     public static ExpectedCondition<Boolean> visibleInViewport(WebElement element) {
@@ -87,78 +89,4 @@ public final class PrimeExpectedConditions {
         };
     }
 
-    /**
-     * For CSS animations keeps checking the location of an element.
-     *
-     * @param element the WebElement to check
-     * @param isDisplayed true if final state should be displayed false if hidden
-     * @return true if element is now steady false if not found
-     * @see <a href="https://stackoverflow.com/questions/39245064/wait-for-animated-button-to-stop/39247375#39247375">Stack Overflow</a>
-     */
-    public static ExpectedCondition<WebElement> steadinessOfElementLocated(final WebElement element, boolean isDisplayed) {
-        return new ExpectedCondition<WebElement>() {
-
-            private WebElement _element = null;
-            private Point _location = null;
-
-            @Override
-            public WebElement apply(WebDriver driver) {
-                if (_element == null) {
-                    try {
-                        if (element.getAttribute("id") != null) {
-                            _element = driver.findElement(By.id(element.getAttribute("id")));
-                        }
-                        else if (element.getAttribute("name") != null) {
-                            _element = driver.findElement(By.name(element.getAttribute("name")));
-                        }
-                        else {
-                            _element = driver.findElement(By.className(element.getAttribute("class")));
-                        }
-                    }
-                    catch (NoSuchElementException e) {
-                        return null;
-                    }
-                }
-
-                try {
-                    if (_element.isDisplayed() == isDisplayed) {
-                        Point location = _element.getLocation();
-                        if (location.equals(_location)) {
-                            return _element;
-                        }
-                        _location = location;
-                    }
-                }
-                catch (StaleElementReferenceException e) {
-                    _element = null;
-                }
-
-                return null;
-            }
-
-            @Override
-            public String toString() {
-                return "steadiness of element located by " + element;
-            }
-        };
-    }
-
-    public static ExpectedCondition<Boolean> isOnTop(WebElement element) {
-        return new ExpectedCondition<Boolean>() {
-            @Override
-            public Boolean apply(WebDriver webDriver) {
-                return (Boolean) PrimeSelenium.executeScript(
-                            "var elm = arguments[0];" +
-                                        "var doc = elm.ownerDocument || document;" +
-                                        "var rect = elm.getBoundingClientRect();" +
-                                        "return elm === doc.elementFromPoint(rect.left + (rect.width / 2), rect.top + (rect.height / 2));",
-                            element);
-            }
-
-            @Override
-            public String toString() {
-                return "is " + element + " on top";
-            }
-        };
-    }
 }
