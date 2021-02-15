@@ -42,7 +42,8 @@ public final class PrimeExpectedConditions {
     }
 
     public static ExpectedCondition<Boolean> ajaxQueueEmpty() {
-        return driver -> (Boolean) ((JavascriptExecutor) driver).executeScript("return (!window.PrimeFaces || PrimeFaces.ajax.Queue.isEmpty());");
+        return driver -> (Boolean) ((JavascriptExecutor) driver)
+                    .executeScript("return (!window.PrimeFaces || (PrimeFaces.ajax.Queue.isEmpty() && PrimeFaces.animationActive === false));");
     }
 
     public static ExpectedCondition<Boolean> elementToBeClickable(WebElement element) {

@@ -133,7 +133,7 @@ public class Guard {
             return (Boolean) ((JavascriptExecutor) driver)
                         .executeScript("return document.readyState === 'complete'"
                                     + " && (!window.jQuery || jQuery.active == 0)"
-                                    + " && (!window.PrimeFaces || PrimeFaces.ajax.Queue.isEmpty())"
+                                    + " && (!window.PrimeFaces || (PrimeFaces.ajax.Queue.isEmpty() && PrimeFaces.animationActive === false))"
                                     + " && (!window.pfselenium || (pfselenium.xhr === null && pfselenium.navigating === false));");
         });
     }

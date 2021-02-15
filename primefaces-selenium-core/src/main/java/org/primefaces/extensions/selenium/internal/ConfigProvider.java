@@ -41,7 +41,7 @@ public class ConfigProvider {
     private int httpTimeout = 10;
     private int documentLoadTimeout = 15;
 
-    private boolean disableJQueryAnimations = true;
+    private boolean disableAnimations = true;
     private PrimeSeleniumAdapter adapter;
     private List<String> onloadScripts;
 
@@ -72,9 +72,9 @@ public class ConfigProvider {
                     this.documentLoadTimeout = Integer.parseInt(documentLoadTimeout);
                 }
 
-                String disableJQueryAnimations = properties.getProperty("disableJQueryAnimations");
-                if (disableJQueryAnimations != null && !disableJQueryAnimations.trim().isEmpty()) {
-                    this.disableJQueryAnimations = Boolean.parseBoolean(disableJQueryAnimations);
+                String disableAnimations = properties.getProperty("disableAnimations");
+                if (disableAnimations != null && !disableAnimations.trim().isEmpty()) {
+                    this.disableAnimations = Boolean.parseBoolean(disableAnimations);
                 }
 
                 String adapter = properties.getProperty("adapter");
@@ -102,8 +102,8 @@ public class ConfigProvider {
             onloadScripts.add(buffer.lines().collect(Collectors.joining("\n")));
         }
 
-        if (disableJQueryAnimations) {
-            onloadScripts.add("if (window.$) { $(function() { $.fx.off = true; }); }");
+        if (disableAnimations) {
+            onloadScripts.add("if (window.PrimeFaces) { $(function() { PrimeFaces.utils.disableAnimations(); }); }");
         }
 
         adapter.registerOnloadScripts(onloadScripts);
@@ -125,8 +125,8 @@ public class ConfigProvider {
         return documentLoadTimeout;
     }
 
-    public boolean isDisableJQueryAnimations() {
-        return disableJQueryAnimations;
+    public boolean isDisableAnimations() {
+        return disableAnimations;
     }
 
     public PrimeSeleniumAdapter getAdapter() {

@@ -22,12 +22,12 @@ A sample implementation, which starts a local TomEE, can be found here: [TomEE A
 Properties:
 |       property name      |   type  | default |                 description                 |
 |:------------------------:|:-------:|---------|:-------------------------------------------:|
-| adapter                  | org.primefaces.extensions.selenium.spi.PrimeSeleniumAdapter    |         | Adapter/Hook-In implementation class |
+|          adapter         | org.primefaces.extensions.selenium.spi.PrimeSeleniumAdapter    |         | Adapter/Hook-In implementation class |
 |        guiTimeout        |   int   | 2       |       GUI timeout for waits in seconds      |
 |        ajaxTimeout       |   int   | 10      |      AJAX timeout for guards in seconds     |
 |        httpTimeout       |   int   | 10      |      HTTP timeout for guards in seconds     |
 |    documentLoadTimeout   |   int   | 15      |       Document load timeout in seconds      |
-| disableJQueryAnimtations | boolean | true    | If animtations should be disabled for tests |
+|    disableAnimtations    | boolean | true    | If animations should be disabled for tests  |
 
 
 ### Compatibility
