@@ -27,7 +27,7 @@ Properties:
 |        ajaxTimeout       |   int   | 10      |      AJAX timeout for guards in seconds     |
 |        httpTimeout       |   int   | 10      |      HTTP timeout for guards in seconds     |
 |    documentLoadTimeout   |   int   | 15      |       Document load timeout in seconds      |
-|    disableAnimtations    | boolean | true    | If animations should be disabled for tests  |
+|    disableAnimations     | boolean | true    | If animations should be disabled for tests  |
 
 
 ### Compatibility
