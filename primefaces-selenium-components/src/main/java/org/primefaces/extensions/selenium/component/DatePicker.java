@@ -237,7 +237,6 @@ public abstract class DatePicker extends AbstractInputComponent {
      * @return the panel shown
      */
     public WebElement showPanel() {
-        // PrimeSelenium.wait(200); // wait for whatever is going on, that impacts panel.isDisplayed()
         if (isEnabled() && !getPanel().isDisplayed()) {
             PrimeSelenium.executeScript(getWidgetByIdScript() + ".show()");
             PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(getPanel()));
@@ -249,7 +248,6 @@ public abstract class DatePicker extends AbstractInputComponent {
      * Hides the overlay panel.
      */
     public void hidePanel() {
-        // PrimeSelenium.wait(200); // wait for whatever is going on, that impacts panel.isDisplayed()
         if (isEnabled() && getPanel().isDisplayed()) {
             PrimeSelenium.executeScript(isCloseAjaxified(), getWidgetByIdScript() + ".hide();");
             PrimeSelenium.waitGui().until(PrimeExpectedConditions.invisibleAndAnimationComplete(getPanel()));
