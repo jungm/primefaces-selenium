@@ -132,7 +132,7 @@ public abstract class AutoComplete extends AbstractInputComponent {
     public void setValue(String value) {
         int delay = setValueWithoutTab(value);
         if (delay > 0) {
-            PrimeSelenium.waitGui().until(PrimeExpectedConditions.jQueryNotActive());
+            PrimeSelenium.waitGui().until(PrimeExpectedConditions.animationNotActive());
         }
         sendTabKey();
     }

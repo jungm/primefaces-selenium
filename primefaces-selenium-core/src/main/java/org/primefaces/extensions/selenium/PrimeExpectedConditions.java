@@ -37,13 +37,14 @@ public final class PrimeExpectedConditions {
         return driver -> (Boolean) ((JavascriptExecutor) driver).executeScript("return document.readyState === 'complete'");
     }
 
-    public static ExpectedCondition<Boolean> jQueryNotActive() {
-        return driver -> (Boolean) ((JavascriptExecutor) driver).executeScript("return (!window.jQuery || jQuery.active == 0);");
+    public static ExpectedCondition<Boolean> animationNotActive() {
+        return driver -> (Boolean) ((JavascriptExecutor) driver)
+                    .executeScript("return ((!window.jQuery || jQuery.active == 0) && (!window.PrimeFaces || PrimeFaces.animationActive === false));");
     }
 
     public static ExpectedCondition<Boolean> ajaxQueueEmpty() {
         return driver -> (Boolean) ((JavascriptExecutor) driver)
-                    .executeScript("return (!window.PrimeFaces || (PrimeFaces.ajax.Queue.isEmpty() && PrimeFaces.animationActive === false));");
+                    .executeScript("return (!window.PrimeFaces || PrimeFaces.ajax.Queue.isEmpty());");
     }
 
     public static ExpectedCondition<Boolean> elementToBeClickable(WebElement element) {
@@ -53,7 +54,7 @@ public final class PrimeExpectedConditions {
     public static ExpectedCondition<Boolean> visibleAndAnimationComplete(WebElement element) {
         return ExpectedConditions.and(
                     documentLoaded(),
-                    jQueryNotActive(),
+                    animationNotActive(),
                     ajaxQueueEmpty(),
                     ExpectedConditions.visibilityOf(element));
     }
@@ -61,7 +62,7 @@ public final class PrimeExpectedConditions {
     public static ExpectedCondition<Boolean> invisibleAndAnimationComplete(WebElement element) {
         return ExpectedConditions.and(
                     documentLoaded(),
-                    jQueryNotActive(),
+                    animationNotActive(),
                     ajaxQueueEmpty(),
                     ExpectedConditions.invisibilityOf(element));
     }

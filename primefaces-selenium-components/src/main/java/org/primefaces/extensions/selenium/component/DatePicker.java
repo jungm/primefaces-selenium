@@ -238,7 +238,9 @@ public abstract class DatePicker extends AbstractInputComponent {
      */
     public WebElement showPanel() {
         if (isEnabled()) {
-            PrimeSelenium.executeScript(getWidgetByIdScript() + ".show()");
+            if (!getPanel().isDisplayed()) {
+                PrimeSelenium.executeScript(getWidgetByIdScript() + ".show()");
+            }
             PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleAndAnimationComplete(getPanel()));
         }
         return getPanel();
@@ -249,7 +251,9 @@ public abstract class DatePicker extends AbstractInputComponent {
      */
     public void hidePanel() {
         if (isEnabled()) {
-            PrimeSelenium.executeScript(isCloseAjaxified(), getWidgetByIdScript() + ".hide();");
+            if (getPanel().isDisplayed()) {
+                PrimeSelenium.executeScript(isCloseAjaxified(), getWidgetByIdScript() + ".hide();");
+            }
             PrimeSelenium.waitGui().until(PrimeExpectedConditions.invisibleAndAnimationComplete(getPanel()));
         }
     }
