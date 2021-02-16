@@ -252,9 +252,9 @@ public abstract class DatePicker extends AbstractInputComponent {
      */
     public void hidePanel() {
         if (isEnabled()) {
-            PrimeSelenium.wait(110); // due to an async setTimeout in hideOverlay
             if (getPanel().isDisplayed()) {
                 PrimeSelenium.executeScript(isCloseAjaxified(), getWidgetByIdScript() + ".hide();");
+                PrimeSelenium.wait(110); // due to an async setTimeout in hideOverlay
             }
             PrimeSelenium.waitGui().until(PrimeExpectedConditions.invisibleAndAnimationComplete(getPanel()));
         }
