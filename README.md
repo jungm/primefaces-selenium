@@ -63,6 +63,7 @@ Currently, only the following components are implemented (partially):
 - InputTextarea
 - Messages
 - OutputLabel
+- OverlayPanel
 - Panel
 - Password
 - Rating
