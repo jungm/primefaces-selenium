@@ -88,8 +88,6 @@ public abstract class CascadeSelect extends AbstractInputComponent {
 
     /**
      * Enables the CascadeSelect
-     *
-     * @deprecated Not supported yet by CascadeSelect.
      */
     public void enable() {
         PrimeSelenium.executeScript(getWidgetByIdScript() + ".enable();");
@@ -97,8 +95,6 @@ public abstract class CascadeSelect extends AbstractInputComponent {
 
     /**
      * Disables the CascadeSelect
-     *
-     * @deprecated Not supported yet by CascadeSelect.
      */
     public void disable() {
         PrimeSelenium.executeScript(getWidgetByIdScript() + ".disable();");
@@ -121,12 +117,6 @@ public abstract class CascadeSelect extends AbstractInputComponent {
                 break;
             }
         }
-
-        // if (isLeaf) {
-        // if (getPanel().isDisplayed()) {
-        // toggleDropdown();
-        // }
-        // }
     }
 
     public String getSelectedLabel() {
