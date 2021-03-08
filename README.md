@@ -7,7 +7,7 @@
 
 # primefaces-selenium
 
-PrimeFaces testing support based on JUnit5, Selenium and the concept of page ojects / fragements. It also supports JUnit5 parallel test execution to speed up
+PrimeFaces testing support based on JUnit5, Selenium and the concept of page objects / fragments. It also supports JUnit5 parallel test execution to speed up
 tests.
 
 PrimeFaces-Selenium provides a hook-in to either startup a local server, use a remote adress and to instantiate the WebDriver.
