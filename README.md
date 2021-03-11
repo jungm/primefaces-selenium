@@ -32,7 +32,7 @@ Properties:
 
 ### Compatibility
 
-Only tested on PrimeFaces 8.0+.
+Only tested on PrimeFaces 10.0.0+.
 
 ### Status
 
