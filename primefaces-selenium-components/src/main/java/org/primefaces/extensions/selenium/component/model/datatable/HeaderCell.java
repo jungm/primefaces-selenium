@@ -137,6 +137,8 @@ public class HeaderCell extends Cell {
             }
             catch (InterruptedException ex) {
                 System.err.println("AJAX Guard delay was interrupted!");
+                // Restore interrupted state...
+                Thread.currentThread().interrupt();
             }
             PrimeSelenium.waitGui().until(PrimeExpectedConditions.animationNotActive());
         }
