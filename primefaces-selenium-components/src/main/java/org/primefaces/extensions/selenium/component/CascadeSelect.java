@@ -86,20 +86,6 @@ public abstract class CascadeSelect extends AbstractInputComponent {
         }
     }
 
-    /**
-     * Enables the CascadeSelect
-     */
-    public void enable() {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".enable();");
-    }
-
-    /**
-     * Disables the CascadeSelect
-     */
-    public void disable() {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".disable();");
-    }
-
     public void select(String label) {
         if (isSelected(label) || !isEnabled()) {
             return;

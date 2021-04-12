@@ -86,20 +86,6 @@ public abstract class SelectOneMenu extends AbstractInputComponent {
         }
     }
 
-    /**
-     * Enables the SelectOneMenu
-     */
-    public void enable() {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".enable();");
-    }
-
-    /**
-     * Disables the SelectOneMenu
-     */
-    public void disable() {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".disable();");
-    }
-
     public void deselect(String label) {
         if (!isSelected(label) || !isEnabled()) {
             return;

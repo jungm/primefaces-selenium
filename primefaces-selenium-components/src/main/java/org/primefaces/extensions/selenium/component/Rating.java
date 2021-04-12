@@ -101,20 +101,6 @@ public abstract class Rating extends AbstractInputComponent {
     }
 
     /**
-     * Enables the rating.
-     */
-    public void enable() {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".enable();");
-    }
-
-    /**
-     * Disables the rating.
-     */
-    public void disable() {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".disable();");
-    }
-
-    /**
      * Resets the rating so that no stars are selected.
      */
     public void reset() {

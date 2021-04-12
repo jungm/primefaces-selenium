@@ -216,20 +216,6 @@ public abstract class AutoComplete extends AbstractInputComponent {
     }
 
     /**
-     * Enables the input field
-     */
-    public void enable() {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".enable();");
-    }
-
-    /**
-     * Disables the input field
-     */
-    public void disable() {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".disable();");
-    }
-
-    /**
      * Adds an item to the input field. Especially useful in 'multiple' mode.
      *
      * @param item the item to add to the tokens

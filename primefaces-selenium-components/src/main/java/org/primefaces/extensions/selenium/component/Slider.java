@@ -49,18 +49,4 @@ public abstract class Slider extends AbstractInputComponent {
         PrimeSelenium.executeScript(isSlideEndAjaxified(), getWidgetByIdScript() + ".onSlideEnd(null, { value: " + value + " });");
     }
 
-    /**
-     * Enables the slider.
-     */
-    public void enable() {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".enable();");
-    }
-
-    /**
-     * Disables the slider.
-     */
-    public void disable() {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".disable();");
-    }
-
 }

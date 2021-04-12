@@ -74,20 +74,6 @@ public abstract class Calendar extends AbstractInputComponent {
         return ComponentUtils.hasAjaxBehavior(getRoot(), "close");
     }
 
-    /**
-     * Enables the input field
-     */
-    public void enable() {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".enable();");
-    }
-
-    /**
-     * Disables the input field
-     */
-    public void disable() {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".disable();");
-    }
-
     public LocalDateTime getValue() {
         Object date = PrimeSelenium.executeScript("return " + getWidgetByIdScript() + ".getDate()");
 

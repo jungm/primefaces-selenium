@@ -80,17 +80,4 @@ public abstract class TextEditor extends InputText {
         PrimeSelenium.executeScript(getWidgetByIdScript() + ".clear();");
     }
 
-    /**
-     * Enables this text editor so that text can be entered.
-     */
-    public void enable() {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".enable();");
-    }
-
-    /**
-     * Disables this text editor so that no text can be entered or removed.
-     */
-    public void disable() {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".disable();");
-    }
 }

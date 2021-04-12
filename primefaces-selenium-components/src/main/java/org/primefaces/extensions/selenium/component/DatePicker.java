@@ -261,20 +261,6 @@ public abstract class DatePicker extends AbstractInputComponent {
     }
 
     /**
-     * Widget API call to disable the DatePicker.
-     */
-    public void disable() {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".disable();");
-    }
-
-    /**
-     * Widget API call to enable the DatePicker.
-     */
-    public void enable() {
-        PrimeSelenium.executeScript(getWidgetByIdScript() + ".enable();");
-    }
-
-    /**
      * Gets the browser time zone offset.
      *
      * @return the browser time zone offset in milliseconds
