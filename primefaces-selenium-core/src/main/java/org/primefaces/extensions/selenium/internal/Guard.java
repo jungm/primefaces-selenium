@@ -94,9 +94,9 @@ public class Guard {
         OnloadScripts.execute();
 
         return proxy(target, (Object p, Method method, Object[] args) -> {
+            WebDriver driver = WebDriverProvider.get();
+            JavascriptExecutor executor = (JavascriptExecutor) driver;
             try {
-                WebDriver driver = WebDriverProvider.get();
-                JavascriptExecutor executor = (JavascriptExecutor) driver;
                 executor.executeScript("pfselenium.xhr = 'somethingJustNotNull';");
 
                 Object result = method.invoke(target, args);
@@ -111,7 +111,7 @@ public class Guard {
                 return result;
             }
             catch (TimeoutException e) {
-                throw new TimeoutException("Timeout while waiting for AJAX complete!", e);
+                throw new TimeoutException("Timeout while waiting for AJAX complete! (" + getAjaxDebugInfo(executor) + ")", e);
             }
             catch (InterruptedException e) {
                 throw new TimeoutException("AJAX Guard delay was interrupted!", e);
@@ -125,6 +125,18 @@ public class Guard {
                 }
             }
         });
+    }
+
+    private static String getAjaxDebugInfo(JavascriptExecutor executor) {
+        return "document.readyState=" + executor.executeScript("return document.readyState;") + ", " +
+                    "!window.jQuery=" + executor.executeScript("return !window.jQuery;") + ", " +
+                    "jQuery.active=" + executor.executeScript("return jQuery.active;") + ", " +
+                    "!window.PrimeFaces=" + executor.executeScript("return !window.PrimeFaces;") + ", " +
+                    "PrimeFaces.ajax.Queue.isEmpty()=" + executor.executeScript("return PrimeFaces.ajax.Queue.isEmpty();") + ", " +
+                    "PrimeFaces.animationActive=" + executor.executeScript("return PrimeFaces.animationActive;") + ", " +
+                    "!window.pfselenium=" + executor.executeScript("return !window.pfselenium;") + ", " +
+                    "pfselenium.xhr=" + executor.executeScript("return pfselenium.xhr;") + ", " +
+                    "pfselenium.navigating=" + executor.executeScript("return pfselenium.navigating;");
     }
 
     private static void waitUntilAjaxCompletes(WebDriver driver) {
