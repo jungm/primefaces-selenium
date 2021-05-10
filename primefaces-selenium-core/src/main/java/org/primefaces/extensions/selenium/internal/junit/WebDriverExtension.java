@@ -45,6 +45,10 @@ public class WebDriverExtension implements BeforeAllCallback, AfterAllCallback {
                 PrimeSelenium.wait(1000);
             }
             webDriver.quit();
+            if (PrimeSelenium.isSafari()) {
+                // wait a bit so Safari really get´s closed - adapted version of https://github.com/appium/appium/issues/9938
+                PrimeSelenium.wait(1000);
+            }
         }
         WebDriverProvider.set(null);
     }
