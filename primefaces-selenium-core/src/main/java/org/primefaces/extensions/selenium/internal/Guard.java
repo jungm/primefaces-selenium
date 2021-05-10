@@ -99,6 +99,8 @@ public class Guard {
             try {
                 executor.executeScript("pfselenium.xhr = 'somethingJustNotNull';");
 
+                System.out.println("Guard#ajax; ajaxDebugInfo before methode.invoke: " + getAjaxDebugInfo(executor));
+
                 Object result = method.invoke(target, args);
 
                 // if JS uses setTimeout on the client we want to wait before trying to capture AJAX call
@@ -107,6 +109,8 @@ public class Guard {
                 }
 
                 waitUntilAjaxCompletes(driver);
+
+                System.out.println("Guard#ajax; ajaxDebugInfo after methode.invoke: " + getAjaxDebugInfo(executor));
 
                 return result;
             }

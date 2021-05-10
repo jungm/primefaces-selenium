@@ -25,26 +25,13 @@ import org.junit.jupiter.api.extension.AfterAllCallback;
 import org.junit.jupiter.api.extension.BeforeAllCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.remote.RemoteWebDriver;
-import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.primefaces.extensions.selenium.spi.WebDriverProvider;
 
 public class WebDriverExtension implements BeforeAllCallback, AfterAllCallback {
 
     @Override
     public void beforeAll(ExtensionContext context) throws Exception {
-        WebDriver webDriver = WebDriverProvider.get(true);
-        System.out.println("WebDriverExtension#beforeAll - webDriver.getWindowHandle: " + webDriver.getWindowHandle());
-        System.out.println("WebDriverExtension#beforeAll - webDriver.getWindowHandles: " + String.join(",", webDriver.getWindowHandles()));
-
-        if (webDriver instanceof EventFiringWebDriver) {
-            EventFiringWebDriver eventFiringWebDriver = (EventFiringWebDriver) webDriver;
-            WebDriver wrappedWebDriver = eventFiringWebDriver.getWrappedDriver();
-            if (wrappedWebDriver instanceof RemoteWebDriver) {
-                RemoteWebDriver remoteWebDriver = (RemoteWebDriver) wrappedWebDriver;
-                System.out.println("WebDriverExtension#beforeAll - remoteWebDriver.getSessionId: " + remoteWebDriver.getSessionId());
-            }
-        }
+        WebDriverProvider.get(true);
     }
 
     @Override
